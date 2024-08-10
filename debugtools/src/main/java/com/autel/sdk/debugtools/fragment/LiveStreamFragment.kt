@@ -22,7 +22,7 @@ import com.autel.sdk.debugtools.databinding.FragmentLivestreamBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.webrtc.autel.VideoFrame
+import org.webrtc.VideoFrame
 
 /**
  * live streaming of video on autel media player(custom exoplayer)
