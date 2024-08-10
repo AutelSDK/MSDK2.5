@@ -1,12 +1,12 @@
 package com.autel.sdk.debugtools.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.autel.drone.sdk.SDKConstants
-import com.autel.drone.sdk.vmodelx.constants.SDKUtils
 import com.autel.module_player.player.AutelPlayerManager
 import com.autel.module_player.player.IVideoStreamListener
 import com.autel.module_player.player.autelplayer.AutelPlayer
@@ -34,7 +34,7 @@ class MuiltCodecFragment : AutelFragment() {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
         uiBinding = FragMuiltStreamBinding.inflate(inflater, container, false)
 
@@ -51,19 +51,28 @@ class MuiltCodecFragment : AutelFragment() {
 
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
         mAutelPlayer?.setVideoInfoListener(object : IVideoStreamListener {
-            override fun onVideoSizeChanged(p0: Int, p1: Int, p2: Int) {
+            override fun onVideoSizeChanged(playerId: Int, width: Int, height: Int) {
 
             }
 
-            override fun onVideoInfoCallback(p0: Int, p1: Int, p2: Int, p3: Int, p4: Int) {
+            /**
+             * video info call back with some info about video playing
+             *
+             * @param playerId id number for streaming
+             * @param x    x co-ordinates for video
+             * @param y    y co-ordinates for video
+             * @param w    width of video
+             * @param h    height of video
+             */
+            override fun onVideoInfoCallback(playerId: Int, x: Int, y: Int, w: Int, h: Int) {
 
             }
 
-            override fun onFrameYuv(p0: ByteBuffer?, p1: Int, p2: Int, p3: Int) {
-
+            override fun onFrameYuv(yuv: ByteBuffer?, width: Int, height: Int, stride: Int) {
+                Log.i("MuiltCodecFragment", " yuv ${yuv?.capacity()} width $width height $height stride $stride")
             }
 
-            override fun onVideoErrorCallback(p0: Int, p1: Int, p2: String?) {
+            override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
 
             }
 
