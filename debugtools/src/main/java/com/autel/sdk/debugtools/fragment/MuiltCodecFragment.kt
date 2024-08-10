@@ -8,10 +8,12 @@ import android.widget.LinearLayout
 import com.autel.drone.sdk.SDKConstants
 import com.autel.drone.sdk.vmodelx.constants.SDKUtils
 import com.autel.module_player.player.AutelPlayerManager
+import com.autel.module_player.player.IVideoStreamListener
 import com.autel.module_player.player.autelplayer.AutelPlayer
 import com.autel.module_player.player.autelplayer.AutelPlayerView
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragMuiltStreamBinding
+import java.nio.ByteBuffer
 
 /**
  * multiple type of codec for video streaming
@@ -48,6 +50,24 @@ class MuiltCodecFragment : AutelFragment() {
         with(left_view) { this?.addView(codecView) }
 
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
+        mAutelPlayer?.setVideoInfoListener(object : IVideoStreamListener {
+            override fun onVideoSizeChanged(p0: Int, p1: Int, p2: Int) {
+
+            }
+
+            override fun onVideoInfoCallback(p0: Int, p1: Int, p2: Int, p3: Int, p4: Int) {
+
+            }
+
+            override fun onFrameYuv(p0: ByteBuffer?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onVideoErrorCallback(p0: Int, p1: Int, p2: String?) {
+
+            }
+
+        })
         mAutelPlayer!!.addVideoView(codecView)
 
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer);
