@@ -1,0 +1,120 @@
+{
+    "gimbals": {
+        "XL801": {
+            "Zoom": 0,
+            "Thermal": 1
+        },
+        "XL802": {
+            "Zoom": 0,
+            "Thermal": 1
+        },
+        "XL805": {
+            "Zoom": 0
+        },
+        "XL806": {
+            "Zoom": 0,
+            "Thermal": 1
+        },
+        "XL807": {
+            "Zoom": 0,
+            "Thermal": 1
+        },
+        "XL809": {
+            "Zoom": 0,
+            "Thermal": 1
+        },
+        "XL811": {
+            "WideAngle": 0,
+            "NightVision": 1,
+            "Thermal": 2
+        },
+        "XL812": {
+            "WideAngle": 0,
+            "NightVision": 1,
+            "Thermal": 2
+        },
+        "XL821": {
+            "Zoom": 0
+        },
+        "XL831": {
+            "Zoom": 0,
+            "Thermal": 1
+        },
+        "XL861": {
+            "NightVision": 0,
+            "Thermal": 1
+        },
+        "XL862": {
+            "NightVision": 0,
+            "Thermal": 1
+        },
+        "XL863": {
+            "NightVision": 0,
+            "Thermal": 1
+        },
+        "XL864": {
+            "NightVision": 0,
+            "Thermal": 1
+        },
+        "XL865": {
+            "NightVision": 0,
+            "Thermal": 1
+        },
+        "XL866": {
+            "NightVision": 0,
+            "Thermal": 1
+        },
+        "XL705": {
+            "WideAngle": 0
+        },
+        "XL709": {
+            "WideAngle": 0,
+            "Thermal": 1
+        },
+        "XL715": {
+            "WideAngle": 0,
+            "Thermal": 1
+        },
+        "XL716": {
+            "WideAngle": 0,
+            "TeleZoom": 1,
+            "Thermal": 2
+        },
+        "XL720": {
+            "WideAngle": 0
+        },
+        "XL725": {
+            "WideAngle": 0,
+            "Thermal": 1
+        },
+	    "XL730": {
+            "WideAngle": 0,
+            "TeleZoom": 1,
+            "Thermal": 2
+        },
+        "XL731": {
+            "WideAngle": 0
+        },
+        "XL732": {
+            "WideAngle": 0,
+            "TeleZoom": 1,
+            "Thermal": 2
+        },
+        "XL736": {
+            "WideAngle": 0,
+            "TeleZoom": 1,
+            "Thermal": 2
+        },
+        "XL750": {
+            "WideAngle": 0,
+            "NightVision": 1,
+            "Thermal": 2
+        },
+        "XL751": {
+            "WideAngle": 0,
+            "NightVision": 1,
+            "Thermal": 2
+        }
+    }
+}
+
