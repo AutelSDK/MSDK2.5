@@ -807,4 +807,64 @@
     <string name="setting_success">%1$s 设置成功</string>
     <string name="setting_fail">%1$s 设置失败：%2$s</string>
     <string name="start_mesh_fail">开始组网失败:%1$s</string>
+    <string name="virtual_stick_hint">舒适档：满杆量（水平速度）前后10，左右10，（垂直速度）上升5，下降4. 偏航 90度\n标准档：满杆量（水平速度）前后15，左右10，（垂直速度）上升6，下降6. 偏航 90度\n狂暴档：满杆量（水平速度）前23后18，左右20，（垂直速度）上升6，下降6. 偏航 120度\n低速档：满杆量（水平速度）前3后3，左右3，（垂直速度）上升3，下降3. 偏航 90度</string>
+    <string name="send">发送</string>
+    <string name="unknown_solution">未知解</string>
+    <string name="position_specified_by_fix_position">位置由Fix Position指定</string>
+    <string name="unsupported">暂不支持</string>
+    <string name="speed_derived_from_doppler">速度由即时多普勒信息导出</string>
+    <string name="single_point_positioning">单点定位</string>
+    <string name="pseudorange_diff_solution">伪距差分解</string>
+    <string name="sbas_positioning">SBAS定位</string>
+    <string name="l1_float_solution">L1浮点解</string>
+    <string name="ionospheric_float_solution">消电离层浮点解</string>
+    <string name="narrow_lane_float_solution">窄巷浮点解</string>
+    <string name="l1_fixed_solution">L1固定解</string>
+    <string name="wide_lane_fixed_solution">宽巷固定解</string>
+    <string name="narrow_lane_fixed_solution">窄巷固定解</string>
+    <string name="inertial_navigation_solution">纯惯导定位解</string>
+    <string name="inertial_single_point_combination_solution">惯导与单点定位组合解</string>
+    <string name="inertial_pseudorange_combination_solution">惯导与伪距差分组合解</string>
+    <string name="inertial_carrier_phase_float_combination_solution">惯导与载波相位差分浮点解组合解</string>
+    <string name="inertial_carrier_phase_fixed_combination_solution">惯导与载波相位差分固定解组合解</string>
+    <string name="n_a">无</string>
+    <string name="fixed">固定</string>
+    <string name="float_name">浮点</string>
+    <string name="single">单点</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="mobile_network_status">移动网络状态：%s, Ntrip状态：%s, SIM状态：%s, 移动信号强度：%s</string>
+    <string name="mobile_network_unavailable">移动网络不可用</string>
+    <string name="fixed_with_time">固定, 用时：%d s</string>
+
+    <string name="difference_type">差分解类型值：</string>
+    <string name="pos_type">posType：</string>
+    <string name="is_fix">是否FIX：</string>
+    <string name="gps_count">GPS卫星数：</string>
+    <string name="beidou_count">北斗数：</string>
+    <string name="glonass_count">格洛纳斯卫星数：</string>
+    <string name="galileo_count">伽利略卫星数：</string>
+    <string name="tracking_satellites">跟踪卫星数：</string>
+    <string name="coordinates">坐标:</string>
+    <string name="longitude">经度：</string>
+    <string name="latitude">纬度：</string>
+    <string name="altitude">海拔：</string>
+    <string name="std_dev">标准差:</string>
+    <string name="longitude_deviation">经度偏差：</string>
+    <string name="latitude_deviation">纬度偏差：</string>
+    <string name="height_deviation">高度偏差：</string>
+    <string name="mobile_network_status1">移动网络状态：LTE状态：%1$s, NTRIP状态：%2$s, LTE卡检测：%3$s, LTE信号：%4$s</string>
+    <string name="report_info">差分解类型值：0, 是否FIX：否, <br/>
+GPS卫星数：0, 北斗数：0, 格洛纳斯卫星数：0, 伽利略卫星数：0, 跟踪卫星数：0 <br/>
+坐标：（经度：0.0，纬度：0.0, 海拔：0.0） <br/>
+标准差：(经度偏差:0.0, 纬度偏差:0.0 , 高度偏差:0.0)</string>
+
+
+    <string name="drone_device_info">无人机【id:%s, 名称:%s】</string>
+    <string name="drone_values">中继飞机: %b, 受控飞机: %b, 观察飞机: %b, 在线: %b</string>
+    <string name="remote_device_info">遥控器【id:%s, 名称:%s】</string>
+    <string name="remote_values">主遥控器: %b, 本地遥控器: %b</string>
+    <string name="re_author">重新授权</string>
+
+
 </resources>

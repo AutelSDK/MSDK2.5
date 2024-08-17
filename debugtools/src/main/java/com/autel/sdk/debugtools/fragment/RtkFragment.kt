@@ -89,113 +89,74 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
         initView()
         initData()
         SDKManager.get().getDeviceManager().addDroneListener(this)
-        _rtkReportBean.observe(viewLifecycleOwner) {
-            binding.rtkReportInfo.text = appendLogMessageRecord(it.toString())
-            var posTypeName = "未知解"
-            if (it != null) {
-                posTypeName = when (it.posType) {
-                    RTKPositionTypeEnum.UNKNOWN_POSITION -> "无解"
-                    RTKPositionTypeEnum.POSITION_LOCATION -> "位置由Fix Position指定"
-                    RTKPositionTypeEnum.UNSUPPORT -> "暂不支持"
-                    RTKPositionTypeEnum.DOPPLER -> "速度由即时多普勒信息导出"
-                    RTKPositionTypeEnum.SINGLE_POINT -> "单点定位"
-                    RTKPositionTypeEnum.PSEUDORANGE -> "伪距差分解"
-                    RTKPositionTypeEnum.SBAS -> "SBAS定位"
-                    RTKPositionTypeEnum.L1_FLOAT -> "L1浮点解"
-                    RTKPositionTypeEnum.IONOSPHERIC_FLOAT -> "消电离层浮点解"
-                    RTKPositionTypeEnum.NARROW_FLOAT -> "窄巷浮点解"
-                    RTKPositionTypeEnum.L1_LOCATION -> "L1固定解"
-                    RTKPositionTypeEnum.WIDE_LANE_LOCATION -> "宽巷固定解"
-                    RTKPositionTypeEnum.NARROW_LOCATION -> "窄巷固定解"
-                    RTKPositionTypeEnum.INERTIAL_NAVIGATION -> "纯惯导定位解"
-                    RTKPositionTypeEnum.INERTIAL_SINGLE -> "惯导与单点定位组合解"
-                    RTKPositionTypeEnum.INERTIAL_PSEUDORANGE -> "惯导与伪距差分组合解"
-                    RTKPositionTypeEnum.INERTIAL_CARRIER_FLOAT -> "惯导与载波相位差分浮点解组合解"
-                    RTKPositionTypeEnum.INERTIAL_CARRIER -> "惯导与载波相位差分固定解组合解"
-                    else -> "未知解"
+        _rtkReportBean.observe(viewLifecycleOwner) { rtkReportBean ->
+            binding.rtkReportInfo.text = appendLogMessageRecord(rtkReportBean.toString())
 
-                }
+            val posTypeName = when (rtkReportBean?.posType) {
+                RTKPositionTypeEnum.UNKNOWN_POSITION -> getString(R.string.unknown_solution)
+                RTKPositionTypeEnum.POSITION_LOCATION -> getString(R.string.position_specified_by_fix_position)
+                RTKPositionTypeEnum.UNSUPPORT -> getString(R.string.unsupported)
+                RTKPositionTypeEnum.DOPPLER -> getString(R.string.speed_derived_from_doppler)
+                RTKPositionTypeEnum.SINGLE_POINT -> getString(R.string.single_point_positioning)
+                RTKPositionTypeEnum.PSEUDORANGE -> getString(R.string.pseudorange_diff_solution)
+                RTKPositionTypeEnum.SBAS -> getString(R.string.sbas_positioning)
+                RTKPositionTypeEnum.L1_FLOAT -> getString(R.string.l1_float_solution)
+                RTKPositionTypeEnum.IONOSPHERIC_FLOAT -> getString(R.string.ionospheric_float_solution)
+                RTKPositionTypeEnum.NARROW_FLOAT -> getString(R.string.narrow_lane_float_solution)
+                RTKPositionTypeEnum.L1_LOCATION -> getString(R.string.l1_fixed_solution)
+                RTKPositionTypeEnum.WIDE_LANE_LOCATION -> getString(R.string.wide_lane_fixed_solution)
+                RTKPositionTypeEnum.NARROW_LOCATION -> getString(R.string.narrow_lane_fixed_solution)
+                RTKPositionTypeEnum.INERTIAL_NAVIGATION -> getString(R.string.inertial_navigation_solution)
+                RTKPositionTypeEnum.INERTIAL_SINGLE -> getString(R.string.inertial_single_point_combination_solution)
+                RTKPositionTypeEnum.INERTIAL_PSEUDORANGE -> getString(R.string.inertial_pseudorange_combination_solution)
+                RTKPositionTypeEnum.INERTIAL_CARRIER_FLOAT -> getString(R.string.inertial_carrier_phase_float_combination_solution)
+                RTKPositionTypeEnum.INERTIAL_CARRIER -> getString(R.string.inertial_carrier_phase_fixed_combination_solution)
+                else -> getString(R.string.unknown_solution)
             }
 
-            when (it?.fixSta) {
+            val fixStatusText = when (rtkReportBean?.fixSta) {
                 0 -> {
-                    tvRtkFix = "${
-                        when (it.posType) {
-                            RTKPositionTypeEnum.UNRECOGNIZED,
-                            RTKPositionTypeEnum.UNKNOWN_POSITION -> {
-                                "N/A"
-                            }
-                            RTKPositionTypeEnum.SINGLE_POINT -> {
-                                "SINGLE"
-                            }
-                            RTKPositionTypeEnum.PSEUDORANGE,
-                            RTKPositionTypeEnum.SBAS,
-                            RTKPositionTypeEnum.L1_FLOAT,
-                            RTKPositionTypeEnum.IONOSPHERIC_FLOAT,
-                            RTKPositionTypeEnum.NARROW_FLOAT,
-                            RTKPositionTypeEnum.INERTIAL_NAVIGATION,
-                            RTKPositionTypeEnum.INERTIAL_SINGLE,
-                            RTKPositionTypeEnum.INERTIAL_CARRIER_FLOAT,
-                            RTKPositionTypeEnum.INERTIAL_CARRIER -> {
-                                "FLOAT"
-                            }
-                            else -> {
-                                "FIX"
-                            }
-                        }
-                    } ,用时${(System.currentTimeMillis() - connectDroneTime) / 1000}s"
-                }
-                1 ->
-                    if (connectDroneTime != 0L) {
-                        tvRtkFix = "FIX,用时${
-                            (System.currentTimeMillis() - connectDroneTime) / 1000
-                        }s"
-                        connectDroneTime = 0L
+                    when (rtkReportBean.posType) {
+                        RTKPositionTypeEnum.UNRECOGNIZED,
+                        RTKPositionTypeEnum.UNKNOWN_POSITION -> getString(R.string.n_a)
+                        RTKPositionTypeEnum.SINGLE_POINT -> getString(R.string.single)
+                        RTKPositionTypeEnum.PSEUDORANGE,
+                        RTKPositionTypeEnum.SBAS,
+                        RTKPositionTypeEnum.L1_FLOAT,
+                        RTKPositionTypeEnum.IONOSPHERIC_FLOAT,
+                        RTKPositionTypeEnum.NARROW_FLOAT,
+                        RTKPositionTypeEnum.INERTIAL_NAVIGATION,
+                        RTKPositionTypeEnum.INERTIAL_SINGLE,
+                        RTKPositionTypeEnum.INERTIAL_CARRIER_FLOAT,
+                        RTKPositionTypeEnum.INERTIAL_CARRIER -> getString(R.string.float_name)
+                        else -> getString(R.string.fixed)
                     }
-                else -> {
-                    tvRtkFix = "N/A"
                 }
+                1 -> {
+                    if (connectDroneTime != 0L) {
+                        getString(R.string.fixed_with_time, (System.currentTimeMillis() - connectDroneTime) / 1000)
+                    } else {
+                        getString(R.string.n_a)
+                    }
+                }
+                else -> getString(R.string.n_a)
             }
-            binding.tvReportInfo.text = "差分解类型值：$posTypeName,$tvRtkFix,posType:${it?.posType?.value},是否FIX:${
-                if (it?.fixSta == 1) "是"
-                else "否"
-            },\n" +
-                    " GPS卫星数:${it?.gpsCnt},北斗数：${it?.beidouCnt ?: 0},格洛纳斯卫星数:${it?.glonassCnt ?: 0},伽利略卫星数：${
-                        it?.galileoCnt ?: 0
-                    },跟踪卫星数:${it?.svCnt ?: 0}\n" +
-                    "坐标:(经度：${
-                        getFloatNoMoreThanTwoDigits(
-                            (it?.lon ?: 0.0) / Math.pow(
-                                10.0,
-                                7.0
-                            )
-                        )
-                    }，纬度:${
-                        getFloatNoMoreThanTwoDigits(
-                            (it?.lat ?: 0.0) / Math.pow(
-                                10.0,
-                                7.0
-                            )
-                        )
-                    },海拔:${
-                        getFloatNoMoreThanTwoDigits(
-                            (it?.hgt ?: 0.0) / Math.pow(
-                                10.0,
-                                7.0
-                            )
-                        )
-                    })\n" +
-                    "标准差:(经度偏差:${getFloatNoMoreThanTwoDigits(((it?.lonSigma ?: 0.0f).toDouble()))}m,纬度偏差:${
-                        getFloatNoMoreThanTwoDigits(
-                            ((it?.latSigma ?: 0.0f).toDouble())
-                        )
-                    }m ,高度偏差:${getFloatNoMoreThanTwoDigits(((it?.hgtSigma ?: 0.0f).toDouble()))}m)${
-                        if (droneSystemStateLFNtfyBean != null) {
-                            "移动网络状态：${droneSystemStateLFNtfyBean?.lteStatus} ,Ntrip状态：${droneSystemStateLFNtfyBean?.ntripStatus} ,SIM状态：${droneSystemStateLFNtfyBean?.lteCardIsDetected} ,移动信号强度：${droneSystemStateLFNtfyBean?.lteSignal}"
-                        } else {
-                            "移动网络不可用"
-                        }
-                    }"
+
+            binding.tvReportInfo.text = "${getString(R.string.difference_type)}$posTypeName, " +
+                    "${getString(R.string.pos_type)}${rtkReportBean?.posType?.value}, " +
+                    "${getString(R.string.is_fix)}${if (rtkReportBean?.fixSta == 1) getString(R.string.yes) else getString(R.string.no)},\n" +
+                    "${getString(R.string.gps_count)}${rtkReportBean?.gpsCnt}, " +
+                    "${getString(R.string.beidou_count)}${rtkReportBean?.beidouCnt ?: 0}, " +
+                    "${getString(R.string.glonass_count)}${rtkReportBean?.glonassCnt ?: 0}, " +
+                    "${getString(R.string.galileo_count)}${rtkReportBean?.galileoCnt ?: 0}, " +
+                    "${getString(R.string.tracking_satellites)}${rtkReportBean?.svCnt ?: 0}\n" +
+                    "${getString(R.string.coordinates)}(${getString(R.string.longitude)}${getFloatNoMoreThanTwoDigits((rtkReportBean?.lon ?: 0.0) / Math.pow(10.0, 7.0))}，" +
+                    "${getString(R.string.latitude)}${getFloatNoMoreThanTwoDigits((rtkReportBean?.lat ?: 0.0) / Math.pow(10.0, 7.0))}, " +
+                    "${getString(R.string.altitude)}${getFloatNoMoreThanTwoDigits((rtkReportBean?.hgt ?: 0.0) / Math.pow(10.0, 7.0))})\n" +
+                    "${getString(R.string.std_dev)}(${getString(R.string.longitude_deviation)}${getFloatNoMoreThanTwoDigits((rtkReportBean?.lonSigma ?: 0.0f).toDouble())}m, " +
+                    "${getString(R.string.latitude_deviation)}${getFloatNoMoreThanTwoDigits((rtkReportBean?.latSigma ?: 0.0f).toDouble())}m, " +
+                    "${getString(R.string.height_deviation)}${getFloatNoMoreThanTwoDigits((rtkReportBean?.hgtSigma ?: 0.0f).toDouble())}m) " +
+                    "${if (droneSystemStateLFNtfyBean != null) getString(R.string.mobile_network_status, droneSystemStateLFNtfyBean?.lteStatus, droneSystemStateLFNtfyBean?.ntripStatus, droneSystemStateLFNtfyBean?.lteCardIsDetected, droneSystemStateLFNtfyBean?.lteSignal) else getString(R.string.mobile_network_unavailable)}"
             scrollToBottom()
         }
     }
@@ -439,10 +400,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
         binding.switchRtkEnable.isChecked =
             DeviceManager.getFirstDroneDevice()?.getRtkManager()?.isenableRTKLocation()
                 ?: false
-        binding.tvReportInfo.text = "差分解类型值：0,是否FIX：否,\n" +
-                " GPS卫星数0,北斗数：0,格洛纳斯卫星数：0,伽利略卫星数：0,跟踪卫星数：0\n" +
-                "坐标：（经度：0.0，纬度：0.0,海拔：0.0）\n" +
-                "标准差：(经度偏差:0.0,纬度偏差:0.0 ,高度偏差:0.0"
+        binding.tvReportInfo.text = getString(R.string.report_info)
 
 
 

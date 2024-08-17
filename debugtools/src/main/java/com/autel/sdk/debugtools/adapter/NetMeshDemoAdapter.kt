@@ -60,20 +60,28 @@ class NetMeshDemoAdapter : RecyclerView.Adapter<NetMeshDemoAdapter.ViewHolder>()
                 onItemClick?.invoke(device.deviceNumber())
             }
 
-            if(device is IAutelDroneDevice){
-
-                binding.tvIpName.text = "无人机【id:${ device.getDeviceNumber()}, name:${device.getDeviceInfoBean()?.deviceName}】"
-                binding.tvValue.text = "中继飞机:"+device.isCenter()+"， 受控飞机:"+device.isControlled()+"， Watch飞机:"+device.isWatched()+ "， 在线:"+device.isConnected();
-                binding.tvType.text ="";
-                 binding.tvControled.text = "";
-
-            } else if(device is IAutelRemoteDevice){
-                binding.tvIpName.text = "遥控器【id:${ device.getDeviceNumber()}, name:${device.getDeviceInfoBean()?.deviceName}】"
-                binding.tvValue.text = "主遥控器:"+device.getDeviceInfoBean()?.isMainRc + "， 本地遥控器:"+device.getDeviceInfoBean()?.isLocalRc;
-
-                binding.tvType.text = "";
-                binding.tvControled.text = "";
+            if (device is IAutelDroneDevice) {
+                val deviceNumber = device.getDeviceNumber()
+                val deviceName = device.getDeviceInfoBean()?.deviceName ?: ""
+                binding.tvIpName.text = binding.root.context.getString(R.string.drone_device_info, deviceNumber.toString(), deviceName)
+                binding.tvValue.text = binding.root.context.getString(R.string.drone_values,
+                    device.isCenter(),
+                    device.isControlled(),
+                    device.isWatched(),
+                    device.isConnected())
+                binding.tvType.text = ""
+                binding.tvControled.text = ""
+            } else if (device is IAutelRemoteDevice) {
+                val deviceNumber = device.getDeviceNumber()
+                val deviceName = device.getDeviceInfoBean()?.deviceName ?: ""
+                binding.tvIpName.text = binding.root.context.getString(R.string.remote_device_info, deviceNumber.toString(), deviceName)
+                binding.tvValue.text = binding.root.context.getString(R.string.remote_values,
+                    device.getDeviceInfoBean()?.isMainRc ?: false,
+                    device.getDeviceInfoBean()?.isLocalRc ?: false)
+                binding.tvType.text = ""
+                binding.tvControled.text = ""
             }
+
 
 
         }

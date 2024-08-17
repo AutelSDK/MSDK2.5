@@ -830,5 +830,65 @@
     <string name="setting_success">%1$s Set Successfully</string>
     <string name="setting_fail">%1$s Setting Failed: %2$s</string>
     <string name="start_mesh_fail">Mesh Start Failed: %1$s</string>
+    <string name="virtual_stick_hint">Comfort Mode: Full Stick (Horizontal Speed) Forward/Backward 10, Left/Right 10, (Vertical Speed) Up 5, Down 4. Yaw 90 degrees
+Standard Mode: Full Stick (Horizontal Speed) Forward/Backward 15, Left/Right 10, (Vertical Speed) Up 6, Down 6. Yaw 90 degrees
+Rage Mode: Full Stick (Horizontal Speed) Forward 23/Backward 18, Left/Right 20, (Vertical Speed) Up 6, Down 6. Yaw 120 degrees
+Low Speed Mode: Full Stick (Horizontal Speed) Forward 3/Backward 3, Left/Right 3, (Vertical Speed) Up 3, Down 3. Yaw 90 degrees</string>
+    <string name="send">Send</string>
+    <string name="unknown_solution">Unknown Solution</string>
+    <string name="position_specified_by_fix_position">Position Specified by Fix Position</string>
+    <string name="unsupported">Unsupported</string>
+    <string name="speed_derived_from_doppler">Speed Derived from Doppler Information</string>
+    <string name="single_point_positioning">Single Point Positioning</string>
+    <string name="pseudorange_diff_solution">Pseudorange Differential Solution</string>
+    <string name="sbas_positioning">SBAS Positioning</string>
+    <string name="l1_float_solution">L1 Float Solution</string>
+    <string name="ionospheric_float_solution">Ionospheric Float Solution</string>
+    <string name="narrow_lane_float_solution">Narrow Lane Float Solution</string>
+    <string name="l1_fixed_solution">L1 Fixed Solution</string>
+    <string name="wide_lane_fixed_solution">Wide Lane Fixed Solution</string>
+    <string name="narrow_lane_fixed_solution">Narrow Lane Fixed Solution</string>
+    <string name="inertial_navigation_solution">Inertial Navigation Solution</string>
+    <string name="inertial_single_point_combination_solution">Inertial  Single Point Combination Solution</string>
+    <string name="inertial_pseudorange_combination_solution">Inertial  Pseudorange Combination Solution</string>
+    <string name="inertial_carrier_phase_float_combination_solution">Inertial  Carrier Phase Float Combination Solution</string>
+    <string name="inertial_carrier_phase_fixed_combination_solution">Inertial  Carrier Phase Fixed Combination Solution</string>
+    <string name="n_a">N/A</string>
+    <string name="fixed">Fixed</string>
+    <string name="float_name">Float</string>
+    <string name="single">Single</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="mobile_network_status">Mobile network status: %s, Ntrip status: %s, SIM status: %s, Mobile signal strength: %s</string>
+    <string name="mobile_network_unavailable">Mobile network unavailable</string>
+    <string name="fixed_with_time">Fixed, time elapsed: %d s</string>
+
+    <string name="difference_type">Difference type value:</string>
+    <string name="pos_type">posType:</string>
+    <string name="is_fix">Is FIX:</string>
+    <string name="gps_count">GPS satellite count:</string>
+    <string name="beidou_count">BeiDou count:</string>
+    <string name="glonass_count">Glonass count:</string>
+    <string name="galileo_count">Galileo count:</string>
+    <string name="tracking_satellites">Tracking satellites:</string>
+    <string name="coordinates">Coordinates:</string>
+    <string name="longitude">Longitude:</string>
+    <string name="latitude">Latitude:</string>
+    <string name="altitude">Altitude:</string>
+    <string name="std_dev">Standard deviation:</string>
+    <string name="longitude_deviation">Longitude deviation:</string>
+    <string name="latitude_deviation">Latitude deviation:</string>
+    <string name="height_deviation">Height deviation:</string>
+    <string name="mobile_network_status1">Mobile network status: LTE status - %1$s, NTRIP status - %2$s, LTE card detected - %3$s, LTE signal - %4$s</string>
+    <string name="report_info">Differential correction type value: 0, FIX: No, <br/>
+GPS satellites: 0, BeiDou satellites: 0, GLONASS satellites: 0, Galileo satellites: 0, Tracked satellites: 0 <br/>
+Coordinates: (Longitude: 0.0, Latitude: 0.0, Altitude: 0.0) <br/>
+Standard deviation: (Longitude deviation: 0.0, Latitude deviation: 0.0, Height deviation: 0.0)</string>
+
+    <string name="drone_device_info">Drone [id:%s, name:%s]</string>
+    <string name="drone_values">Relay aircraft: %b, Controlled aircraft: %b, Watch aircraft: %b, Online: %b</string>
+    <string name="remote_device_info">Controller [id:%s, name:%s]</string>
+    <string name="remote_values">Primary controller: %b, Local controller: %b</string>
+    <string name="re_author">Re-authorize</string>
 
 </resources>

@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:gravity="center"
-                android:text="重新授权"
+                android:text="@string/re_author"
                 android:textColor="@android:color/white"
                 app:layout_constraintStart_toEndOf="@id/switch_rtk_enable"
                 app:layout_constraintTop_toTopOf="parent"
