@@ -24,42 +24,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="开始组网"/>
+            android:text="@string/start_mesh"/>
 
         <Button
             android:id="@+id/btn_net_mesh_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="完成组网"/>
+            android:text="@string/finish_mesh"/>
 
         <Button
             android:id="@+id/btn_net_mesh_disband"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="解散组网"/>
+            android:text="@string/diss_mesh"/>
 
         <Button
             android:id="@+id/btn_control_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="全控"/>
+            android:text="@string/all_control"/>
 
         <Button
             android:id="@+id/btn_change_watch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="码流切换"/>
+            android:text="@string/change_stream"/>
 
         <Button
             android:id="@+id/btn_change_center_drone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="中继切换"/>
+            android:text="@string/change_relay"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

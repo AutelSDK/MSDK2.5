@@ -809,4 +809,26 @@
     <string name="debug_topology_device_description">Topology devices API Debug</string>
     <string name="debug_item_virtual_stick_title">Virtual Stick</string>
     <string name="debug_item__virtual_stick_description">Virtual Stick Demo</string>
+    <string name="start_mesh">Start Mesh</string>
+    <string name="finish_mesh">Finish Mesh</string>
+    <string name="diss_mesh">Dissolve Mesh</string>
+    <string name="all_control">Full Control</string>
+    <string name="change_stream">Stream Switch</string>
+    <string name="change_relay">Relay Switch</string>
+    <string name="diss_succuss">Dissolved Successfully</string>
+    <string name="diss_fail">Dissolution Failed: %1$s</string>
+    <string name="finish_mesh_fail">Mesh Completion Failed: %1$s</string>
+    <string name="stream_craft">Stream Craft: %1$s</string>
+    <string name="control_mode">Control Mode: %1$s: %2$s</string>
+    <string name="mesh_timeout">Mesh Timed Out, Restarting</string>
+    <string name="relay_setting_success">Relay Setting Successful: %1$s</string>
+    <string name="relay_setting_fail">Relay Setting Failed: %1$s</string>
+    <string name="steam_setting_success">Stream Setting Successful: %1$s</string>
+    <string name="stream_setting_fail">Stream Setting Failed: %1$s</string>
+    <string name="group_control">Group Control (groupId=%1$s)</string>
+    <string name="single_congrol">Single Control (nodeId=%1$s)</string>
+    <string name="setting_success">%1$s Set Successfully</string>
+    <string name="setting_fail">%1$s Setting Failed: %2$s</string>
+    <string name="start_mesh_fail">Mesh Start Failed: %1$s</string>
+
 </resources>
