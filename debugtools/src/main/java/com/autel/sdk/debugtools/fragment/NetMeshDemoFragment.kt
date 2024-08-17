@@ -24,6 +24,7 @@ import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.netmesh.CreateDeviceNe
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.netmesh.DeviceNetworkInfo
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.netmesh.DeviceNetworkStatusType
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
+import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.adapter.NetMeshDemoAdapter
 import com.autel.sdk.debugtools.databinding.FragmentNetMeshDemoBinding
 
@@ -67,8 +68,8 @@ class NetMeshDemoFragment : AutelFragment(){
 
         binding.btnNetMeshComplete.setOnClickListener{
             getNetMeshManger().completeNetMeshMatching(object : CommonCallbacks.CompletionCallbackWithParam<Int>{
-                override fun onSuccess(t: Int?) { ToastUtils.showToast("完成组网") }
-                override fun onFailure(error: IAutelCode, msg: String?) { ToastUtils.showToast("完成组网失败:$msg") }
+                override fun onSuccess(t: Int?) { ToastUtils.showToast(getString(R.string.finish_mesh)) }
+                override fun onFailure(error: IAutelCode, msg: String?) { ToastUtils.showToast(getString(R.string.finish_mesh_fail, msg)) }
             })
         }
 
@@ -76,11 +77,11 @@ class NetMeshDemoFragment : AutelFragment(){
             var groupId: Long = netMeshResponse?.info?.groupId ?: 0
             getNetMeshManger().disbandNetMesh(groupId, object : CommonCallbacks.CompletionCallbackWithParam<Int>{
                 override fun onSuccess(t: Int?) {
-                    ToastUtils.showToast("解算成功")
+                    ToastUtils.showToast(getString(R.string.diss_succuss))
                 }
 
                 override fun onFailure(error: IAutelCode, msg: String?) {
-                    ToastUtils.showToast("解算失败:$msg")
+                    ToastUtils.showToast(getString(R.string.diss_fail, msg))
                 }
             })
         }
@@ -106,7 +107,7 @@ class NetMeshDemoFragment : AutelFragment(){
         DeviceManager.getMultiDeviceOperator().addWatchChangeListener(object: IWatchDroneListener{
             override fun onWatchChange(droneList: List<IAutelDroneDevice>) {
                 droneList.firstOrNull()?.let {
-                    ToastUtils.showToast("码流飞机:${it.deviceNumber()}")
+                    ToastUtils.showToast(getString(R.string.stream_craft, it.deviceNumber().toString()))
                 }
 
             }
@@ -114,7 +115,7 @@ class NetMeshDemoFragment : AutelFragment(){
 
         DeviceManager.getMultiDeviceOperator().addControlChangeListener(object : IControlDroneListener{
             override fun onControlChange(mode: ControlMode, droneList: List<IAutelDroneDevice>) {
-                ToastUtils.showToast("控制模式:${mode}： ${droneList.map { it.deviceNumber()}}")
+                ToastUtils.showToast(getString(R.string.control_mode, mode, droneList.map { it.deviceNumber() }))
                 updateData()
             }
         })
@@ -146,10 +147,10 @@ class NetMeshDemoFragment : AutelFragment(){
                     DeviceNetworkStatusType.SUCCESS->{
                     }
                     DeviceNetworkStatusType.DISMISS->{
-                        ToastUtils.showToast("组网解算")
+                        ToastUtils.showToast(getString(R.string.diss_mesh))
                     }
                     DeviceNetworkStatusType.TIMEOUT->{
-                        ToastUtils.showToast("组网超时，重新开始")
+                        ToastUtils.showToast(getString(R.string.mesh_timeout))
                         startNetMesh(true)
                     }
                     else -> {
@@ -166,8 +167,8 @@ class NetMeshDemoFragment : AutelFragment(){
      */
     private fun setCenterDrone(deviceId: Int){
         getNetMeshManger().setCenterNode(deviceId, object : CommonCallbacks.CompletionCallbackWithParam<Int>{
-            override fun onSuccess(t: Int?) { ToastUtils.showToast("中继设置成功：$deviceId") }
-            override fun onFailure(error: IAutelCode, msg: String?) { ToastUtils.showToast("中继设置失败：$msg") }
+            override fun onSuccess(t: Int?) { ToastUtils.showToast(getString(R.string.relay_setting_success, deviceId.toString())) }
+            override fun onFailure(error: IAutelCode, msg: String?) { ToastUtils.showToast(getString(R.string.relay_setting_fail, msg)) }
         })
     }
 
@@ -176,8 +177,8 @@ class NetMeshDemoFragment : AutelFragment(){
      */
     private fun setWatchDrone(deviceId: Int){
         getNetMeshManger().setWatchDevice(arrayListOf(deviceId), object: CommonCallbacks.CompletionCallbackWithParam<Int>{
-            override fun onSuccess(t: Int?) { ToastUtils.showToast("码流设置成功：$deviceId") }
-            override fun onFailure(error: IAutelCode, msg: String?) { ToastUtils.showToast("码流设置失败：$msg") }
+            override fun onSuccess(t: Int?) { ToastUtils.showToast(getString(R.string.steam_setting_success, deviceId.toString())) }
+            override fun onFailure(error: IAutelCode, msg: String?) { ToastUtils.showToast(getString(R.string.stream_setting_fail, msg)) }
         })
     }
 
@@ -188,20 +189,20 @@ class NetMeshDemoFragment : AutelFragment(){
     private fun setControlMode(mode: ControlMode, id:Int){
         var log: String = ""
         if(mode == ControlMode.ALL){ //全控：Id被忽略
-            log = "全控"
+            log = getString(R.string.all_control)
         } else if(mode == ControlMode.GROUP){
-            log = "群控(groupId=$id)"
+            log = getString(R.string.group_control, id.toString())
         } else if(mode == ControlMode.SINGLE){
-            log = "单控(nodeId=$id)"
+            log = getString(R.string.single_congrol, id.toString())
         }
 
         getNetGroupManger().switchControlMode(mode,id,object : CommonCallbacks.CompletionCallbackWithParam<Void>{
             override fun onSuccess(t: Void?) {
-                ToastUtils.showToast("$log 设置成功")
+                ToastUtils.showToast(getString(R.string.setting_success, log))
             }
 
             override fun onFailure(error: IAutelCode, msg: String?) {
-                ToastUtils.showToast("$log 设置失败：$msg")
+                ToastUtils.showToast(getString(R.string.setting_fail, log, msg))
             }
         })
     }
@@ -217,11 +218,11 @@ class NetMeshDemoFragment : AutelFragment(){
         getNetMeshManger().startNetMeshMatching(bean, MeshModeEnum.STANDARD, object: CommonCallbacks.CompletionCallbackWithParam<CreateDeviceNetworkResp>{
             override fun onSuccess(t: CreateDeviceNetworkResp?) {
                 netMeshResponse = t
-                ToastUtils.showToast("开始组网")
+                ToastUtils.showToast(getString(R.string.start_mesh))
             }
 
             override fun onFailure(error: IAutelCode, msg: String?) {
-                ToastUtils.showToast("开始组网失败:$msg")
+                ToastUtils.showToast(getString(R.string.start_mesh_fail, msg))
             }
         })
     }
