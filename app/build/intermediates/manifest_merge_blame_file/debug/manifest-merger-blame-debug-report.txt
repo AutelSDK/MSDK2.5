@@ -1,0 +1,170 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.autel.drone.demo"
+4    android:versionCode="10011"
+5    android:versionName="1.0.11" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="32" />
+9-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
+10
+11    <uses-feature
+11-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:6:5-8:36
+12        android:name="android.hardware.usb.accessory"
+12-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:7:9-54
+13        android:required="false" />
+13-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:8:9-33
+14
+15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+15-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:10:5-81
+15-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:10:22-78
+16    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+16-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:11:5-80
+16-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:11:22-77
+17    <uses-permission android:name="android.permission.INTERNET" />
+17-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:12:5-67
+17-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:12:22-64
+18    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+18-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-71
+18-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-68
+19    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+19-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-82
+19-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-79
+20    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+20-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:10:5-79
+20-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:10:22-76
+21    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
+21-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:11:5-13:47
+21-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:12:9-70
+22    <uses-permission android:name="android.permission.SET_TIME" />
+22-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:14:5-16:47
+22-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:15:9-51
+23    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+23-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:17:5-78
+23-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:17:22-75
+24    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+24-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:18:5-20:47
+24-->[autel-msdk2-release_V2.5.7.aar] C:\Users\R22449\.gradle\caches\transforms-3\8e49a6f920f47e797638098862913a20\transformed\jetified-autel-msdk2-release_V2.5.7\AndroidManifest.xml:19:9-57
+25
+26    <application
+26-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:14:5-38:19
+27        android:name="com.autel.drone.demo.DemoApplicationEx"
+27-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:15:9-62
+28        android:allowBackup="true"
+28-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:16:9-35
+29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+29-->[androidx.core:core:1.8.0] C:\Users\R22449\.gradle\caches\transforms-3\319818de8066db9dee1015fa48896948\transformed\core-1.8.0\AndroidManifest.xml:24:18-86
+30        android:debuggable="true"
+31        android:hardwareAccelerated="true"
+31-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:21:9-43
+32        android:icon="@mipmap/aircraft"
+32-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:18:9-40
+33        android:label="@string/_app_name"
+33-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:19:9-42
+34        android:requestLegacyExternalStorage="true"
+34-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:18-61
+35        android:supportsRtl="true"
+35-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:20:9-35
+36        android:theme="@style/Theme.AutelEnterprise.NoActionBar"
+36-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:22:9-65
+37        android:usesCleartextTraffic="true" >
+37-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:23:9-44
+38        <activity
+38-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:25:9-36:20
+39            android:name="com.autel.sdk.debugtools.activity.ExternalDebugToolsActivity"
+39-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:26:13-88
+40            android:configChanges="keyboardHidden|orientation"
+40-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:27:13-63
+41            android:exported="true"
+41-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:28:13-36
+42            android:hardwareAccelerated="true"
+42-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:29:13-47
+43            android:screenOrientation="landscape"
+43-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:30:13-50
+44            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+44-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:31:13-80
+45            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" >
+45-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:22:13-72
+46            <intent-filter>
+46-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:32:13-35:29
+47                <action android:name="android.intent.action.MAIN" />
+47-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:33:17-69
+47-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:33:25-66
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:34:17-77
+49-->D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:34:27-74
+50            </intent-filter>
+51            <intent-filter>
+51-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-25:29
+52                <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
+52-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:17-93
+52-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:25-90
+53            </intent-filter>
+54        </activity>
+55
+56        <receiver
+56-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:9-35:20
+57            android:name="com.autel.sdk.debugtools.upgrade.SDKUSBDiskReceiver"
+57-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:13-79
+58            android:exported="true" >
+58-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:30:13-36
+59            <intent-filter>
+59-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:31:13-34:29
+60                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+60-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:32:17-90
+60-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:32:25-87
+61                <action android:name="android.hardware.usb.action.USB_DEVICE_DETACHED" />
+61-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:17-90
+61-->[:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:25-87
+62            </intent-filter>
+63        </receiver>
+64
+65        <uses-library
+65-->[androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:25:9-27:40
+66            android:name="androidx.window.extensions"
+66-->[androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:26:13-54
+67            android:required="false" />
+67-->[androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:27:13-37
+68        <uses-library
+68-->[androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:28:9-30:40
+69            android:name="androidx.window.sidecar"
+69-->[androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:29:13-51
+70            android:required="false" />
+70-->[androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:30:13-37
+71
+72        <provider
+72-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+73            android:name="androidx.startup.InitializationProvider"
+73-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
+74            android:authorities="com.autel.drone.demo.androidx-startup"
+74-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
+75            android:exported="false" >
+75-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
+76            <meta-data
+76-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+77                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+77-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+78                android:value="androidx.startup" />
+78-->[androidx.emoji2:emoji2:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\f4d50966a1306d53c6cbc5f0c0893584\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+79            <meta-data
+79-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\caches\transforms-3\a0fc1150c7cd323ddd62eb2614456c85\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+80                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+80-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\caches\transforms-3\a0fc1150c7cd323ddd62eb2614456c85\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+81                android:value="androidx.startup" />
+81-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\caches\transforms-3\a0fc1150c7cd323ddd62eb2614456c85\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+82        </provider>
+83
+84        <service
+84-->[androidx.room:room-runtime:2.4.2] C:\Users\R22449\.gradle\caches\transforms-3\660e9bf878055b131f13eabfced0888d\transformed\room-runtime-2.4.2\AndroidManifest.xml:25:9-28:40
+85            android:name="androidx.room.MultiInstanceInvalidationService"
+85-->[androidx.room:room-runtime:2.4.2] C:\Users\R22449\.gradle\caches\transforms-3\660e9bf878055b131f13eabfced0888d\transformed\room-runtime-2.4.2\AndroidManifest.xml:26:13-74
+86            android:directBootAware="true"
+86-->[androidx.room:room-runtime:2.4.2] C:\Users\R22449\.gradle\caches\transforms-3\660e9bf878055b131f13eabfced0888d\transformed\room-runtime-2.4.2\AndroidManifest.xml:27:13-43
+87            android:exported="false" />
+87-->[androidx.room:room-runtime:2.4.2] C:\Users\R22449\.gradle\caches\transforms-3\660e9bf878055b131f13eabfced0888d\transformed\room-runtime-2.4.2\AndroidManifest.xml:28:13-37
+88    </application>
+89
+90</manifest>

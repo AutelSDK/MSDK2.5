@@ -16,6 +16,10 @@ import com.autel.module_player.player.AutelPlayerManager
 import com.autel.module_player.player.autelplayer.AutelPlayer
 import com.autel.module_player.player.autelplayer.AutelPlayerView
 import com.autel.drone.sdk.vmodelx.manager.RtmpServiceManager
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.CameraKey
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.ext.create
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.ext.set
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.enums.VideoCompressStandardEnum
 import com.autel.rtmp.publisher.IPublishListener
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragmentLivestreamBinding
@@ -236,6 +240,7 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
 
     private fun startPublish() {
         coroutineScope.launch {
+            CameraKey.KeyCameraTransferPayLoadType.create().set(VideoCompressStandardEnum.H264)
             RtmpServiceManager.getInstance().startPublishStream()
         }
         btn_start.text = getString(R.string.debug_stop)
