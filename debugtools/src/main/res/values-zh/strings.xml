@@ -786,25 +786,6 @@
     <string name="debug_topology_device_description">拓扑设备接口调试</string>
     <string name="debug_item_virtual_stick_title">虚拟摇杆</string>
     <string name="debug_item__virtual_stick_description">演示如何使用虚拟摇杆</string>
-    <string name="start_mesh">开始组网</string>
-    <string name="finish_mesh">完成组网</string>
-    <string name="diss_mesh">解散组网</string>
-    <string name="all_control">全控</string>
-    <string name="change_stream">码流切换</string>
-    <string name="change_relay">中继切换</string>
-    <string name="diss_succuss">解散成功</string>
-    <string name="diss_fail">解散失败:%1$s</string>
-    <string name="finish_mesh_fail">完成组网失败:%1$s</string>
-    <string name="stream_craft">码流飞机:%1$s</string>
-    <string name="control_mode">控制模式:%1$s： %2$s</string>
-    <string name="mesh_timeout">组网超时，重新开始</string>
-    <string name="relay_setting_success">中继设置成功：%1$s</string>
-    <string name="relay_setting_fail">中继设置失败：%1$s</string>
-    <string name="steam_setting_success">码流设置成功：%1$s</string>
-    <string name="stream_setting_fail">码流设置失败：%1$s</string>
-    <string name="group_control">群控(groupId=%1$s)</string>
-    <string name="single_congrol">单控(nodeId=%1$s)</string>
-    <string name="setting_success">%1$s 设置成功</string>
-    <string name="setting_fail">%1$s 设置失败：%2$s</string>
-    <string name="start_mesh_fail">开始组网失败:%1$s</string>
+
+    <string name="debug_flight_data_title">实时飞行数据:</string>
 </resources>

@@ -830,5 +830,6 @@
     <string name="setting_success">%1$s Set Successfully</string>
     <string name="setting_fail">%1$s Setting Failed: %2$s</string>
     <string name="start_mesh_fail">Mesh Start Failed: %1$s</string>
+    <string name="debug_flight_data_title">Real-time Flight Data:</string>
 
 </resources>
