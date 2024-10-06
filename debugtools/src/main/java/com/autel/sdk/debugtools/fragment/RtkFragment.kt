@@ -158,7 +158,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                                 "FIX"
                             }
                         }
-                    } ,用时${(System.currentTimeMillis() - connectDroneTime) / 1000}s"
+                    } ,duration ${(System.currentTimeMillis() - connectDroneTime) / 1000}s"
                 }
                 1 ->
                     if (connectDroneTime != 0L) {
@@ -432,10 +432,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
         binding.switchRtkEnable.isChecked =
             DeviceManager.getFirstDroneDevice()?.getRtkManager()?.isenableRTKLocation()
                 ?: false
-        binding.tvReportInfo.text = "差分解类型值：0,是否FIX：否,\n" +
-                " GPS卫星数0,北斗数：0,格洛纳斯卫星数：0,伽利略卫星数：0,跟踪卫星数：0\n" +
-                "坐标：（经度：0.0，纬度：0.0,海拔：0.0）\n" +
-                "标准差：(经度偏差:0.0,纬度偏差:0.0 ,高度偏差:0.0"
+        binding.tvReportInfo.text = getString(R.string.rtk_initial_status)
 
 
 

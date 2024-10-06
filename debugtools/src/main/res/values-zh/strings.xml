@@ -829,4 +829,5 @@
     <string name="rtk_mobile_network_unavailable">移动网络不可用</string>
     <string name="rtk_mobile_network_status">移动网络状态：%1$s ,Ntrip状态：%2$s ,SIM状态：%3$s ,移动信号强度：%4$s</string>
     <string name="rtk_unconnected">RTK未连接</string>
+    <string name="rtk_initial_status">差分解类型值：0,是否FIX：否,\n GPS卫星数0,北斗数：0,格洛纳斯卫星数：0,伽利略卫星数：0,跟踪卫星数：0\n坐标：（经度：0.0，纬度：0.0,海拔：0.0）\n标准差：(经度偏差:0.0,纬度偏差:0.0 ,高度偏差:0.0</string>
 </resources>
