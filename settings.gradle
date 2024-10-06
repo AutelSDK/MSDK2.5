@@ -1,4 +1,3 @@
-
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -14,6 +13,9 @@ dependencyResolutionManagement {
         mavenCentral()
         jcenter()
         maven { url "https://jitpack.io" }
+        flatDir {
+            dirs "${rootProject.projectDir}/libs", "${rootProject.projectDir}/debugtools/libs"
+        }
     }
 }
 

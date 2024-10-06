@@ -7,7 +7,7 @@ import android.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.autel.drone.sdk.vmodelx.module.networking.bean.DeviceInfoBean
 import com.autel.sdk.debugtools.databinding.ItemMeshDeviceInfoBinding
-
+import com.autel.sdk.debugtools.R
 
 /**
  * Created by lizhiping on 2023/3/14.
@@ -48,10 +48,11 @@ class MeshDeviceAdapter : RecyclerView.Adapter<MeshDeviceAdapter.ViewHolder>() {
                 }
             })
 
-            binding.tvIpName.text = "DeviceID:"+ data.sDeviceID+" IP:"+ data.ip;
-            binding.tvValue.text = "deviceType(类型):"+data.deviceType+" bizNodeType(可控):"+data.bizNodeType;
-            binding.tvType.text = "networkNodeType(中心结点)"+data.networkNodeType;
-            binding.tvControled.text = "bLocal(本地设备):"+data.isLocal+" active(当前飞机):"+data.active;
+            val context = binding.root.context
+            binding.tvIpName.text = context.getString(R.string.device_id_ip, data.sDeviceID, data.ip)
+            binding.tvValue.text = context.getString(R.string.device_type_biz_node_type, data.deviceType, data.bizNodeType)
+            binding.tvType.text = context.getString(R.string.network_node_type, data.networkNodeType)
+            binding.tvControled.text = context.getString(R.string.local_device_active, data.isLocal, data.active)
         }
     }
 }

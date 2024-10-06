@@ -46,36 +46,18 @@ class NetMeshDemoAdapter : RecyclerView.Adapter<NetMeshDemoAdapter.ViewHolder>()
         RecyclerView.ViewHolder(binding.root) {
 
         fun bindData(device: IBaseDevice, position: Int) {
-            /*binding.cbCheck.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
-                override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                    if(p1){
-                        deviceIdList?.add(data.iDeviceID)
-                    }else{
-                        deviceIdList?.remove(data.iDeviceID)
-                    }
-                }
-            })*/
-
-            binding.container.setOnClickListener {
-                onItemClick?.invoke(device.deviceNumber())
+            val context = binding.root.context
+            if(device is IAutelDroneDevice) {
+                binding.tvIpName.text = context.getString(R.string.drone_info, device.getDeviceNumber(), device.getDeviceInfoBean()?.deviceName)
+                binding.tvValue.text = context.getString(R.string.drone_status, device.isCenter(), device.isControlled(), device.isWatched(), device.isConnected())
+                binding.tvType.text = ""
+                binding.tvControled.text = ""
+            } else if(device is IAutelRemoteDevice) {
+                binding.tvIpName.text = context.getString(R.string.remote_info, device.getDeviceNumber(), device.getDeviceInfoBean()?.deviceName)
+                binding.tvValue.text = context.getString(R.string.remote_status, device.getDeviceInfoBean()?.isMainRc, device.getDeviceInfoBean()?.isLocalRc)
+                binding.tvType.text = ""
+                binding.tvControled.text = ""
             }
-
-            if(device is IAutelDroneDevice){
-
-                binding.tvIpName.text = "无人机【id:${ device.getDeviceNumber()}, name:${device.getDeviceInfoBean()?.deviceName}】"
-                binding.tvValue.text = "中继飞机:"+device.isCenter()+"， 受控飞机:"+device.isControlled()+"， Watch飞机:"+device.isWatched()+ "， 在线:"+device.isConnected();
-                binding.tvType.text ="";
-                 binding.tvControled.text = "";
-
-            } else if(device is IAutelRemoteDevice){
-                binding.tvIpName.text = "遥控器【id:${ device.getDeviceNumber()}, name:${device.getDeviceInfoBean()?.deviceName}】"
-                binding.tvValue.text = "主遥控器:"+device.getDeviceInfoBean()?.isMainRc + "， 本地遥控器:"+device.getDeviceInfoBean()?.isLocalRc;
-
-                binding.tvType.text = "";
-                binding.tvControled.text = "";
-            }
-
-
         }
     }
 }

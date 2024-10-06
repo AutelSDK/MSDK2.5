@@ -268,7 +268,7 @@
     <string name="debug_text_step_six_tips">Fold the front arms, nose up</string>
     <string name="debug_text_calibration_waiting">Calibrating… Please wait…</string>
 
-    <string name="debug_text_calibration_content">Keep away from metal or charged objects and keep the aircraft\n Off the ground %s\n\n· Do not turn off the aircraft power or starter motors</string>
+    <string name="debug_text_calibration_content">Keep away from metal or charged objects and keep the aircraft\n Off the ground %s\n\n· Do not turn off the aircraft power or starter motors</string>
     <string name="debug_text_step_first_content">Rotate the aircraft horizontally 360 degrees as shown</string>
     <string name="debug_text_step_seconde_content">Rotate the aircraft 360 degrees vertically as shown</string>
     <string name="debug_text_step_third_content">As shown in the picture, rotate the aircraft sideways by 360 degrees</string>
@@ -831,5 +831,47 @@
     <string name="setting_fail">%1$s Setting Failed: %2$s</string>
     <string name="start_mesh_fail">Mesh Start Failed: %1$s</string>
     <string name="debug_flight_data_title">Real-time Flight Data:</string>
+
+    <string name="device_id_ip">DeviceID: %1$s IP: %2$s</string>
+    <string name="device_type_biz_node_type">deviceType: %1$s bizNodeType: %2$s</string>
+    <string name="network_node_type">networkNodeType: %s</string>
+    <string name="local_device_active">bLocal: %1$b active: %2$b</string>
+
+    <string name="drone_info">Drone【id: %1$d, name: %2$s】</string>
+    <string name="drone_status">Relay aircraft: %1$b, Controlled aircraft: %2$b, Watch aircraft: %3$b, Online: %4$b</string>
+    <string name="remote_info">Remote Controller【id: %1$d, name: %2$s】</string>
+    <string name="remote_status">Main remote: %1$b, Local remote: %2$b</string>
+
+    <string name="rtk_unknown_solution">Unknown solution</string>
+    <string name="rtk_no_solution">No solution</string>
+    <string name="rtk_position_by_fix">Position specified by Fix Position</string>
+    <string name="rtk_not_supported">Not supported</string>
+    <string name="rtk_doppler_velocity">Velocity derived from instantaneous Doppler</string>
+    <string name="rtk_single_point">Single point positioning</string>
+    <string name="rtk_pseudorange">Pseudorange differential solution</string>
+    <string name="rtk_sbas">SBAS positioning</string>
+    <string name="rtk_l1_float">L1 float solution</string>
+    <string name="rtk_ionospheric_float">Ionosphere-free float solution</string>
+    <string name="rtk_narrow_float">Narrow-lane float solution</string>
+    <string name="rtk_l1_fixed">L1 fixed solution</string>
+    <string name="rtk_wide_lane_fixed">Wide-lane fixed solution</string>
+    <string name="rtk_narrow_fixed">Narrow-lane fixed solution</string>
+    <string name="rtk_inertial_nav">Pure inertial navigation solution</string>
+    <string name="rtk_inertial_single">Inertial and single point positioning combined solution</string>
+    <string name="rtk_inertial_pseudorange">Inertial and pseudorange differential combined solution</string>
+    <string name="rtk_inertial_float">Inertial and carrier phase differential float solution combined</string>
+    <string name="rtk_inertial_fixed">Inertial and carrier phase differential fixed solution combined</string>
+    <string name="rtk_single">SINGLE</string>
+    <string name="rtk_float">FLOAT</string>
+    <string name="rtk_fix">FIX</string>
+    <string name="rtk_na">N/A</string>
+    <string name="rtk_time_used">Time used: %1$ds</string>
+    <string name="rtk_yes">Yes</string>
+    <string name="rtk_no">No</string>
+    <string name="rtk_status_info">Differential solution type: %1$s, %2$s, posType: %3$d, Is FIX: %4$s,\n GPS satellites: %5$d, BeiDou: %6$d, GLONASS satellites: %7$d, Galileo satellites: %8$d, Tracked satellites: %9$d\nCoordinates: (Longitude: %10$s, Latitude: %11$s, Altitude: %12$s)\nStandard deviation: (Longitude deviation: %13$sm, Latitude deviation: %14$sm, Height deviation: %15$sm)</string>
+    <string name="rtk_mobile_network_unavailable">Mobile network unavailable</string>
+    <string name="rtk_mobile_network_status">Mobile network status: %1$s, Ntrip status: %2$s, SIM status: %3$s, Mobile signal strength: %4$s</string>
+    <string name="rtk_unconnected">RTK Unconnected</string>
+
 
 </resources>
