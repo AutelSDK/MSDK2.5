@@ -872,6 +872,7 @@
     <string name="rtk_mobile_network_unavailable">Mobile network unavailable</string>
     <string name="rtk_mobile_network_status">Mobile network status: %1$s, Ntrip status: %2$s, SIM status: %3$s, Mobile signal strength: %4$s</string>
     <string name="rtk_unconnected">RTK Unconnected</string>
+    <string name="rtk_initial_status">Differential solution type: 0, Is FIX: No,\n GPS satellites: 0, BeiDou: 0, GLONASS satellites: 0, Galileo satellites: 0, Tracked satellites: 0\nCoordinates: (Longitude: 0.0, Latitude: 0.0, Altitude: 0.0)\nStandard deviation: (Longitude deviation: 0.0, Latitude deviation: 0.0, Height deviation: 0.0</string>
 
 
 </resources>
