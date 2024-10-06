@@ -15,6 +15,7 @@ api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 api 'com.squareup.retrofit2:converter-moshi:2.9.0'
 api 'me.jessyan:retrofit-url-manager:1.4.0'
 implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.9.3'
+implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
 //SDKConstants path changed to path com.autel.sdk
 SDKConstants changes to path com.autel.drone.sdk.SDKConstants

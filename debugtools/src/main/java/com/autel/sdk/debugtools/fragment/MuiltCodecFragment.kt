@@ -122,6 +122,10 @@ class MuiltCodecFragment : AutelFragment() {
 
     private fun saveYuvToFile(buffer: ByteBuffer, width: Int, height: Int, stride: Int, sliceHeight: Int) {
 
+        if (!isAdded) {
+            Log.e("MuiltCodecFragment", "Fragment is not attached to a context.")
+            return
+        }
         val fileName = "frame_${System.currentTimeMillis()}.yuv"
         val file = File(requireContext().filesDir, fileName)
 
