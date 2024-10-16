@@ -48,7 +48,7 @@ configurations.all {
 dependencies {
 
     //implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    api(name: 'autel-msdk2-release_V2.5.8.3_with_webrtc', ext: 'aar')
+    api(name: 'autel-msdk2-release_V2.5.8.4_with_webrtc', ext: 'aar')
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
