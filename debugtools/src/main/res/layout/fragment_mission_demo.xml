@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/debug_light_gray2"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_waypoint_api"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:padding="@dimen/debug_dimen_dp_12"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_waypoint_debug_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debug_wappoint_api_test_title"
+            android:textColor="@color/debug_white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/upload_mission"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_waypoint_debug_title" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_15"
+            android:gravity="center"
+            android:text="@string/start_mission"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_upload"
+            app:layout_constraintStart_toEndOf="@+id/btn_upload" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_15"
+            android:gravity="center"
+            android:text="@string/pause_mission"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_upload"
+            app:layout_constraintStart_toEndOf="@+id/btn_start" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_resume"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_15"
+            android:gravity="center"
+            android:text="@string/resume_mission"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_upload"
+            app:layout_constraintStart_toEndOf="@+id/btn_pause" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_15"
+            android:gravity="center"
+            android:text="@string/exit_mission"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_upload"
+            app:layout_constraintStart_toEndOf="@+id/btn_resume" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:padding="@dimen/debug_dimen_dp_12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_waypoint_api">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_log_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="5dp"
+            android:textColor="@color/debug_color_white"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@+id/layout_waypoint_api" />
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_clear_log"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/debug_dimen_dp_32"
+        android:layout_marginBottom="@dimen/debug_dimen_dp_32"
+        android:text="@string/debug_clear_all"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
