@@ -1,3 +1,26 @@
+# MSDK
+
+### Changelog
+
+### Version V2.5.8.4_with_webrtc
+
+- **Release Notes**: Fixed issues where some users encountered errors due to missing WebRTC dependencies. Also resolved conflicts arising from existing WebRTC dependencies in applications.
+
+```js
+//need the below dependencies
+implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+api 'com.squareup.retrofit2:retrofit:2.9.0'
+api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+api 'com.squareup.retrofit2:converter-moshi:2.9.0'
+api 'me.jessyan:retrofit-url-manager:1.4.0'
+implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.9.3'
+implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+//SDKConstants path changed to path com.autel.sdk
+SDKConstants changes to path com.autel.drone.sdk.SDKConstants
+```
+
 # Overview
 The new version of the MSDK introduces networking capabilities, supporting the addition of multiple controllers (primary and secondary controllers), and multiple drones into a single network. After successful networking, there exists only one primary controller and one relay drone among all devices, while other controllers are secondary ones, and other drones are ordinary node drones.
 A group is a business construct based on networking, where drones that join the same group are considered part of a group, allowing for group control. Drones not in a group operate independently, with the choice of control modes (single control, full control, group control) to perform various operations on the drones.

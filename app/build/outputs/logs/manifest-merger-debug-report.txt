@@ -4,8 +4,7 @@ ADDED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:2:1-39:12
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:2:1-39:12
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:2:1-39:12
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:2:1-39:12
-MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-38:12
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:2:1-24:12
+MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-29:12
 MERGED from [androidx.databinding:viewbinding:7.2.2] C:\Users\R22449\.gradle\caches\transforms-3\00389a7267d1e4451c746bf1a5e51a3a\transformed\jetified-viewbinding-7.2.2\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.room:room-ktx:2.4.2] C:\Users\R22449\.gradle\caches\transforms-3\55410e8cfeb415e28bb980501f538140\transformed\jetified-room-ktx-2.4.2\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.navigation:navigation-fragment-ktx:2.5.3] C:\Users\R22449\.gradle\caches\transforms-3\3a7205c573574e400c3788f44f5ffa68\transformed\navigation-fragment-ktx-2.5.3\AndroidManifest.xml:17:1-24:12
@@ -68,6 +67,7 @@ MERGED from [androidx.documentfile:documentfile:1.0.0] C:\Users\R22449\.gradle\c
 MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\cf75896d21978a6e2d6dcd44588d889b\transformed\localbroadcastmanager-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.print:print:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\6f784ec98e20dba0ba6566870c016b4c\transformed\print-1.0.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\3796dee342b241c42166492d7a84105a\transformed\interpolator-1.0.0\AndroidManifest.xml:17:1-22:12
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:2:1-35:12
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\R22449\.gradle\caches\transforms-3\d94281720382a7a89a20af48d66752c9\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:17:1-24:12
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:2:1-39:12
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:2:1-39:12
@@ -114,8 +114,8 @@ MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediate
 		ADDED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:12:22-64
 application
 ADDED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml:14:5-38:19
-MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-36:19
-MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-36:19
+MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-27:19
+MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:5-27:19
 MERGED from [androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:24:5-31:19
 MERGED from [androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:24:5-31:19
 MERGED from [com.google.android.material:material:1.6.1] C:\Users\R22449\.gradle\caches\transforms-3\9d6778b007a14e0c6659deb3da7018f2\transformed\material-1.6.1\AndroidManifest.xml:24:5-20
@@ -136,6 +136,8 @@ MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\caches\transforms-3\a0fc1150c7cd323ddd62eb2614456c85\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:25:5-35:19
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\0a5c2ed9d631e2b67db8898669d2ce05\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\0a5c2ed9d631e2b67db8898669d2ce05\transformed\jetified-startup-runtime-1.0.0\AndroidManifest.xml:25:5-31:19
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:24:5-33:19
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:24:5-33:19
 	android:requestLegacyExternalStorage
 		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:15:18-61
 	android:appComponentFactory
@@ -192,8 +194,6 @@ INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
 MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:6:5-8:41
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:6:5-8:41
 MERGED from [androidx.databinding:viewbinding:7.2.2] C:\Users\R22449\.gradle\caches\transforms-3\00389a7267d1e4451c746bf1a5e51a3a\transformed\jetified-viewbinding-7.2.2\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.databinding:viewbinding:7.2.2] C:\Users\R22449\.gradle\caches\transforms-3\00389a7267d1e4451c746bf1a5e51a3a\transformed\jetified-viewbinding-7.2.2\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.room:room-ktx:2.4.2] C:\Users\R22449\.gradle\caches\transforms-3\55410e8cfeb415e28bb980501f538140\transformed\jetified-room-ktx-2.4.2\AndroidManifest.xml:20:5-22:41
@@ -318,6 +318,8 @@ MERGED from [androidx.print:print:1.0.0] C:\Users\R22449\.gradle\caches\transfor
 MERGED from [androidx.print:print:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\6f784ec98e20dba0ba6566870c016b4c\transformed\print-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\3796dee342b241c42166492d7a84105a\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.interpolator:interpolator:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\3796dee342b241c42166492d7a84105a\transformed\interpolator-1.0.0\AndroidManifest.xml:20:5-44
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:6:5-8:41
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:6:5-8:41
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\R22449\.gradle\caches\transforms-3\d94281720382a7a89a20af48d66752c9\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.annotation:annotation-experimental:1.1.0] C:\Users\R22449\.gradle\caches\transforms-3\d94281720382a7a89a20af48d66752c9\transformed\jetified-annotation-experimental-1.1.0\AndroidManifest.xml:20:5-22:41
 INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
@@ -332,14 +334,14 @@ INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
 		INJECTED from D:\selfdevelop\组网SDK\app\src\main\AndroidManifest.xml
 uses-permission#android.permission.RECORD_AUDIO
 ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-71
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:22:5-71
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:22:5-71
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:22:5-71
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:22:5-71
 	android:name
 		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-68
 uses-permission#android.permission.MANAGE_EXTERNAL_STORAGE
 ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-82
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:21:5-82
-MERGED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:21:5-82
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:21:5-82
+MERGED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:21:5-82
 	android:name
 		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-79
 intent-filter#action:name:android.hardware.usb.action.USB_ACCESSORY_ATTACHED
@@ -348,48 +350,6 @@ action#android.hardware.usb.action.USB_ACCESSORY_ATTACHED
 ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:17-93
 	android:name
 		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:24:25-90
-receiver#com.autel.sdk.debugtools.upgrade.SDKUSBDiskReceiver
-ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:28:9-35:20
-	android:exported
-		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:30:13-36
-	android:name
-		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:29:13-79
-intent-filter#action:name:android.hardware.usb.action.USB_DEVICE_ATTACHED+action:name:android.hardware.usb.action.USB_DEVICE_DETACHED
-ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:31:13-34:29
-action#android.hardware.usb.action.USB_DEVICE_ATTACHED
-ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:32:17-90
-	android:name
-		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:32:25-87
-action#android.hardware.usb.action.USB_DEVICE_DETACHED
-ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:17-90
-	android:name
-		ADDED from [:debugtools] D:\selfdevelop\组网SDK\debugtools\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:25-87
-uses-permission#android.permission.ACCESS_NETWORK_STATE
-ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:10:5-79
-	android:name
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:10:22-76
-uses-permission#android.permission.READ_PRIVILEGED_PHONE_STATE
-ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:11:5-13:47
-	tools:ignore
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:13:9-44
-	android:name
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:12:9-70
-uses-permission#android.permission.SET_TIME
-ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:14:5-16:47
-	tools:ignore
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:16:9-44
-	android:name
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:15:9-51
-uses-permission#com.android.alarm.permission.SET_ALARM
-ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:17:5-78
-	android:name
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:17:22-75
-uses-permission#android.permission.WRITE_SETTINGS
-ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:18:5-20:47
-	tools:ignore
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:20:9-44
-	android:name
-		ADDED from [autel-msdk2-release_V2.5.2.aar] C:\Users\R22449\.gradle\caches\transforms-3\8f3326249ef60371098785c1056d0bbc\transformed\jetified-autel-msdk2-release_V2.5.2\AndroidManifest.xml:19:9-57
 uses-library#androidx.window.extensions
 ADDED from [androidx.window:window:1.0.0] C:\Users\R22449\.gradle\caches\transforms-3\5c5a64d7ef6a801756a2cba72c9fcae9\transformed\jetified-window-1.0.0\AndroidManifest.xml:25:9-27:40
 	android:required
@@ -436,3 +396,29 @@ ADDED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\
 		ADDED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\caches\transforms-3\a0fc1150c7cd323ddd62eb2614456c85\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
 	android:name
 		ADDED from [androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\R22449\.gradle\caches\transforms-3\a0fc1150c7cd323ddd62eb2614456c85\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:10:5-79
+	android:name
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:10:22-76
+uses-permission#android.permission.READ_PRIVILEGED_PHONE_STATE
+ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:11:5-13:47
+	tools:ignore
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:13:9-44
+	android:name
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:12:9-70
+uses-permission#android.permission.SET_TIME
+ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:14:5-16:47
+	tools:ignore
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:16:9-44
+	android:name
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:15:9-51
+uses-permission#com.android.alarm.permission.SET_ALARM
+ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:17:5-78
+	android:name
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:17:22-75
+uses-permission#android.permission.WRITE_SETTINGS
+ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:18:5-20:47
+	tools:ignore
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:20:9-44
+	android:name
+		ADDED from [:autel-msdk2-release_V2.5.100:] C:\Users\R22449\.gradle\caches\transforms-3\dcc0809952145a66c9d30b5908833f0e\transformed\jetified-autel-msdk2-release_V2.5.100\AndroidManifest.xml:19:9-57

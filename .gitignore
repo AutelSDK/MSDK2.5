@@ -4,3 +4,41 @@
 /AutelBuild/
 .idea
 .idea/
+
+# 忽略 build 目录下的所有文件
+app/build/**
+**/build/**
+
+# 特别是忽略这些生成的文件和目录
+**/build/generated/**
+**/build/intermediates/**
+
+# 中间构建文件
+*.classes.jar
+app/build/intermediates/external_file_lib_dex_archives/debug/
+app/build/intermediates/project_dex_archive/debug/
+
+# Debug工具相关文件
+debugtools/src/main/res/layout/fragment_rtk.xml
+debugtools/src/main/res/layout/view_title_bar.xml
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/GB28181Fragment.kt
+debugtools/src/main/res/layout/item_net_mesh_demo.xml
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/KeyItemActionListener.java
+debugtools/src/main/java/com/autel/sdk/debugtools/KeyValueDialogUtil.java
+debugtools/src/main/java/com/autel/sdk/debugtools/KeyItemHelper.kt
+debugtools/src/main/res/values/styles.xml
+debugtools/src/main/java/com/autel/sdk/debugtools/KeyItemDataUtil.java
+debugtools/src/main/java/com/autel/sdk/debugtools/KeyItemAdapter.java
+debugtools/src/main/java/com/autel/sdk/debugtools/KeyItem.java
+debugtools/src/main/res/navigation/nav_external.xml
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/MainFragment.kt
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/MediaFilesFragment.kt
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/MainFragmentListAdapter.kt
+debugtools/src/main/res/layout/fragment_midea_files.xml
+debugtools/src/main/res/layout/fragment_virtual_stick.xml
+debugtools/src/main/res/layout/frag_perception_page.xml
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/MissionDemoFragment.kt
+debugtools/build/generated/
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/NetMeshDemoFragment.kt
+debugtools/src/main/java/com/autel/sdk/debugtools/fragment/RtkFragment.kt
+debugtools/src/main/res/values-zh/strings.xml
