@@ -11,12 +11,11 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.autel.drone.sdk.SDKConstants
 import com.autel.drone.sdk.log.SDKLog
-import com.autel.drone.sdk.vmodelx.constants.SDKUtils
 import com.autel.drone.sdk.vmodelx.manager.RtspServerManager
-import com.autel.module_player.player.AutelPlayerManager
-import com.autel.module_player.player.autelplayer.AutelPlayer
-import com.autel.module_player.player.autelplayer.AutelPlayerView
-import com.autel.rtspserver.IRtspServerCallBack
+import com.autel.player.player.AutelPlayerManager
+import com.autel.player.player.autelplayer.AutelPlayer
+import com.autel.player.player.autelplayer.AutelPlayerView
+import com.autel.publisher.rtsp.IRtspServerCallBack
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.WiFiUtils
 import com.autel.sdk.debugtools.databinding.FragmentRtspserverBinding
@@ -148,7 +147,8 @@ class RtspServerFragment : AutelFragment()  {
         }
 
 
-        RtspServerManager.getInstance().setRtspServerCallback(object :IRtspServerCallBack{
+        RtspServerManager.getInstance().setRtspServerCallback(object :
+            IRtspServerCallBack {
             override fun onStartPush(streamid: Int) {
                 SDKLog.d("RtspServer"," onStartPush...")
             }

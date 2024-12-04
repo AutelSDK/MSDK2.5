@@ -48,17 +48,26 @@ configurations.all {
 dependencies {
 
     //implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    //implementation fileTree("libs\\expose-release.aar")
-    def libsDir = file('libs')
-    def aarFiles = libsDir.listFiles({ File dir, String name -> name.endsWith('.aar') } as FilenameFilter)
+    api(name: 'autel-msdk2-release_V2.5.100', ext: 'aar')
 
-    // 根据aar文件名中的版本号进行排序
-    def sortedAarFiles = aarFiles.sort { File file1, File file2 ->
-        compareVersions(getVersionFromAarFileName(file1.name), getVersionFromAarFileName(file2.name))
-    }
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+    api 'com.squareup.retrofit2:retrofit:2.9.0'
+    api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    api 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    api 'com.squareup.retrofit2:converter-moshi:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp-dnsoverhttps:4.9.3'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-    // 只添加最大版本的aar文件作为依赖
-    implementation files(sortedAarFiles.last())
+//    def libsDir = file('libs')
+//    def aarFiles = libsDir.listFiles({ File dir, String name -> name.endsWith('.aar') } as FilenameFilter)
+//
+//    // 根据aar文件名中的版本号进行排序
+//    def sortedAarFiles = aarFiles.sort { File file1, File file2 ->
+//        compareVersions(getVersionFromAarFileName(file1.name), getVersionFromAarFileName(file2.name))
+//    }
+//
+//    // 只添加最大版本的aar文件作为依赖
+//   implementation files(sortedAarFiles.last())
 
     implementation rootProject.ext.deps.external.android.core_ktx
     implementation rootProject.ext.deps.external.android.appcompat
@@ -79,6 +88,7 @@ dependencies {
     androidTestImplementation rootProject.ext.deps.external.test.ext_junit
     androidTestImplementation rootProject.ext.deps.external.test.espresso
     implementation('com.tencent:mmkv-static:1.2.8')
+    //implementation rootProject.ext.deps.external.webrtc_sdk
 }
 
 def getVersionFromAarFileName(fileName) {

@@ -26,6 +26,8 @@ import java.util.Objects;
  */
 public class KeyBaseStructure<P, R> {
 
+    public int retryCount = 3;
+
     private static final String TAG = KeyBaseStructure.class.getSimpleName();
 
     /**
@@ -143,11 +145,12 @@ public class KeyBaseStructure<P, R> {
         if (getKeyManager(key) == null) {
             ToastUtils.INSTANCE.showToast(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_keymanager_null));
         } else {
-            getKeyManager(key).getValue(key, getCallback, 3);
+            getKeyManager(key).getValue(key, getCallback, retryCount);
         }
     }
 
     protected IKeyManager getKeyManager(AutelKey key) {
+
         if (SDKUtils.INSTANCE.isRemoteControlMode(key.mComponentIndex)) {
             if (DeviceManager.Companion.getDeviceManager().getFirstRemoteDevice() != null) {
                 return DeviceManager.Companion.getDeviceManager().getFirstRemoteDevice().getKeyManager();
@@ -157,6 +160,18 @@ public class KeyBaseStructure<P, R> {
         } else if (SDKUtils.INSTANCE.isRCHiddenMode(key.mComponentIndex)) {
             if (DeviceManager.Companion.getDeviceManager().getFirstRCHiddenDevice() != null) {
                 return DeviceManager.Companion.getDeviceManager().getFirstRCHiddenDevice().getKeyManager();
+            } else {
+                return null;
+            }
+        } else if(SDKUtils.INSTANCE.isRcAtService(key.mComponentIndex)){
+            if (DeviceManager.Companion.getDeviceManager().getFirstRemoteDevice() != null) {
+                return DeviceManager.Companion.getDeviceManager().getFirstRemoteDevice().getATKeyManager();
+            } else {
+                return null;
+            }
+        } else if(SDKUtils.INSTANCE.isUpgrade(key.mComponentIndex)){
+            if (DeviceManager.Companion.getDeviceManager().getFirstRemoteDevice() != null) {
+                return DeviceManager.Companion.getDeviceManager().getFirstDroneDevice().getUpgradeKeyManager();
             } else {
                 return null;
             }
@@ -182,7 +197,7 @@ public class KeyBaseStructure<P, R> {
         if (getKeyManager(keyList.get(0)) == null) {
             ToastUtils.INSTANCE.showToast(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_keymanager_null));
         } else {
-            getKeyManager(keyList.get(0)).getValueList(keyList, getCallback, 3);
+            getKeyManager(keyList.get(0)).getValueList(keyList, getCallback, retryCount);
         }
     }
 
@@ -197,7 +212,7 @@ public class KeyBaseStructure<P, R> {
         if (getKeyManager(key) == null) {
             ToastUtils.INSTANCE.showToast(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_keymanager_null));
         } else {
-            getKeyManager(key).setValue(key, param, setCallback, 3);
+            getKeyManager(key).setValue(key, param, setCallback, retryCount);
         }
     }
 
@@ -272,7 +287,7 @@ public class KeyBaseStructure<P, R> {
         if (getKeyManager(key) == null) {
             ToastUtils.INSTANCE.showToast(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_keymanager_null));
         } else {
-            getKeyManager(key).performAction(key, null, actonCallback, 3, "0");
+            getKeyManager(key).performAction(key, null, actonCallback, retryCount, "0");
         }
     }
 
@@ -288,7 +303,7 @@ public class KeyBaseStructure<P, R> {
         if (getKeyManager(key) == null) {
             ToastUtils.INSTANCE.showToast(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_keymanager_null));
         } else {
-            getKeyManager(key).performAction(key, param, actonCallback,3, "0");
+            getKeyManager(key).performAction(key, param, actonCallback,retryCount, "0");
         }
     }
 

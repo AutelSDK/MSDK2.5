@@ -133,7 +133,7 @@ enum class ChannelType( name: String) {
 
     CHANNEL_TYPE_NEST("NEST"),
 
-    CHANNEL_TYPE_MESH("MESH"),
+    CHANNEL_TYPE_MESH("NetMesh"),
 
     SYSTEM_MANAGER("SYSTEM_MANAGER"),
 
@@ -182,6 +182,11 @@ enum class ChannelType( name: String) {
      * Payload_Key
      */
     PAYLOAD_KEY("PAYLOAD_KEY"),
+
+    /**
+     * Payload_Key
+     */
+    A_MESH("AMesh"),
 
     /**
      * 龙鱼飞控

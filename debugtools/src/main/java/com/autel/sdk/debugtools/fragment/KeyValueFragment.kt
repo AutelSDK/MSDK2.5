@@ -93,7 +93,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
     private val dragonFishFCKeyList: MutableList<KeyItem<*, *>> = ArrayList()
     private val dragonFishCmdList: MutableList<KeyItem<*, *>> = ArrayList()
     private val dragonWifiStationCmdList: MutableList<KeyItem<*, *>> = ArrayList()
-
+    private val aMeshKeyList: MutableList<KeyItem<*, *>> = ArrayList()
 
     private var keyValueSharedPreferences: SharedPreferences? = null
     private val selectMode = false
@@ -199,7 +199,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
     private val itemClickCallback: KeyItemActionListener<KeyItem<*, *>?> = object :
         KeyItemActionListener<KeyItem<*, *>?> {
 
-        override fun actionChange(keyItem: KeyItem<*, *>?) {
+        override fun actionChange(msgType: MsgType, keyItem: KeyItem<*, *>?) {
             if (keyItem == null) {
                 return
             }
@@ -220,7 +220,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
      * key操作结果回调
      */
     private val keyItemOperateCallBack: KeyItemActionListener<Any> =
-        KeyItemActionListener<Any> { t -> //  processListenLogic();
+        KeyItemActionListener<Any> { _, t -> //  processListenLogic();
             t?.let {
                 binding.layoutKey.tvResult.text = appendLogMessageRecord(t.toString())
                 scrollToBottom()
@@ -261,7 +261,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
      * 推送结果回调
      */
     private val pushCallback: KeyItemActionListener<String> =
-        KeyItemActionListener<String> { t -> //  processListenLogic();
+        KeyItemActionListener<String> { _, t -> //  processListenLogic();
             Log.i("tv_result", " pushCallback")
             binding.layoutKey.tvResult.text = appendLogMessageRecord(t)
             scrollToBottom()
@@ -294,7 +294,21 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
         resetSelected()
         keyValueSharedPreferences?.edit()?.putLong(keyItem.toString(), keyItem.count)?.apply()
         keyItem.isItemSelected = true
-
+        /*if (currentKeyItem!!.canListen() && currentKeyItem!!.isListening) {
+            val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Un-Listen"
+            } else {
+                binding.layoutKey.btListen.text = "取消监听"
+            }
+        } else {
+            val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Listen"
+            } else {
+                binding.layoutKey.btListen.text = "监听"
+            }
+        }*/
         if (currentKeyItem!!.canListen() && currentKeyItem!!.isListening) {
             binding.layoutKey.btListen.text = getString(R.string.debug_un_listen)
         } else {
@@ -315,12 +329,32 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
      */
     private fun processListenLogic() {
         if (currentKeyItem == null) {
-
+            /*val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Listen"
+            } else {
+                binding.layoutKey.btListen.text = "监听"
+            }*/
             binding.layoutKey.btListen.text = getString(R.string.debug_listen)
             binding.layoutKey.tvName.text = ""
             return
         }
 
+        /*if (currentKeyItem!!.listenHolder == null) {
+            val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Listen"
+            } else {
+                binding.layoutKey.btListen.text = "监听"
+            }
+        } else {
+            val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Un-Listen"
+            } else {
+                binding.layoutKey.btListen.text = "取消监听"
+            }
+        }*/
         if (currentKeyItem!!.listenHolder == null) {
             binding.layoutKey.btListen.text = getString(R.string.debug_listen)
         } else {
@@ -539,6 +573,12 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                 currentKeyItemList.addAll(payLoadKeyList)
             }
 
+            ChannelType.A_MESH -> {
+                tips = getString(R.string.debug_mesh)
+                KeyItemDataUtil.initAMeshKeyKeyList(aMeshKeyList)
+                currentKeyItemList.addAll(aMeshKeyList)
+            }
+
             ChannelType.DF_FLIGHT_CONTROL_KEY -> {
                 tips = getString(R.string.debug_df_flight_control)
                 KeyItemDataUtil.initDFFlightControlKeyList(dragonFishFCKeyList)
@@ -586,6 +626,24 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                 msgBatchTestContainer.visibility = View.VISIBLE
                 binding.tvBatchTest.text = getString(R.string.debug_batch_test)
                 isBatchTestSwitchOn = true
+//                val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+//                if (isEnglish) {
+//                    binding.tvBatchTest.text = getString(R.string.batch_test)
+//                    isBatchTestSwitchOn = true
+//                    btGet.text = "GET"
+//                    btSet.text = "SET"
+//                    btListen.text = "LISTEN"
+//                    btAction.text = "ACTION"
+//                    btFrequencyReport.text = "REPORT"
+//                } else {
+//                    binding.tvBatchTest.text = getString(R.string.batch_test)
+//                    isBatchTestSwitchOn = true
+//                    btGet.text = "获取"
+//                    btSet.text = "设置"
+//                    btListen.text = "监听"
+//                    btAction.text = "动作"
+//                    btFrequencyReport.text = "定频上报"
+//                }
             } else {
                 msgTestContainer.visibility = View.VISIBLE
                 msgBatchTestContainer.visibility = View.GONE
@@ -595,6 +653,36 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
         }
     }
 
+    /*private fun updateOperateText() {
+        val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+        with(binding.layoutKey) {
+            if (isEnglish) {
+                btGet.text = "GET"
+                btSet.text = "SET"
+                btListen.text = "LISTEN"
+                btAction.text = "ACTION"
+                btFrequencyReport.text = "REPORT"
+                btSetAll.text = getString(R.string.debug_set_all)
+                btGetAll.text = getString(R.string.debug_get_all)
+                btActionAll.text = getString(R.string.debug_action_all)
+                btSetGetAll.text = getString(R.string.debug_set_get_all)
+                paramTest.text = "PARAM_TEST"
+                btListenAll.text = getString(R.string.debug_listen_all)
+            } else {
+                btGet.text = "获取"
+                btSet.text = "设置"
+                btListen.text = "监听"
+                btAction.text = "动作"
+                btFrequencyReport.text = "定频上报"
+                btSetAll.text = "设置全部"
+                btGetAll.text = "获取全部"
+                btActionAll.text = "动作全部"
+                btSetGetAll.text = "设置并获取全部"
+                paramTest.text = "数据解析验证"
+                btListenAll.text = "监听全部"
+            }
+        }
+    }*/
 
     /**
      * 清空search框
@@ -703,7 +791,6 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
 //                    })
 //                }
 //                override fun onFailure(code: IAutelCode, msg: String?) {
-//                    TODO("Not yet implemented")
 //                }
 //            })
         }
@@ -744,10 +831,10 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
             }
         }
         falseList.forEach {
-            keyItemOperateCallBack.actionChange(it)
+            keyItemOperateCallBack.actionChange(MsgType.MSG_INFO, it)
         }
         trueList.forEach {
-            keyItemOperateCallBack.actionChange(it)
+            keyItemOperateCallBack.actionChange(MsgType.MSG_INFO, it)
         }
     }
 
@@ -791,6 +878,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
             ChannelType.CHANNEL_TYPE_WIFI,
             ChannelType.HARDWARE_DATA_SECURITY,
             ChannelType.PAYLOAD_KEY,
+            ChannelType.A_MESH,
             ChannelType.CHANNEL_TYPE_RTC,
             ChannelType.DF_FLIGHT_CONTROL_KEY,
             ChannelType.DF_COMMON_CMD_KEY,
@@ -800,7 +888,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
         KeyValueDialogUtil.showChannelFilterListWindow(
             binding.tvOperateTitle,
             showChannelList
-        ) { channelType ->
+        ) { _, channelType ->
             currentChannelType = channelType
             currentKeyItem = null
             processChannelInfo()
@@ -869,7 +957,24 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
         currentKeyItem!!.setPushCallBack(pushCallback)
         currentKeyItem!!.setKeyOperateCallBack(keyItemOperateCallBack)
         val listenHolder = currentKeyItem!!.listenHolder
+        /*if (listenHolder == null) {
+            currentKeyItem!!.listen(this)
+            val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Un-Listen"
+            } else {
+                binding.layoutKey.btListen.text = "不听"
+            }
 
+        } else if (listenHolder is KeyValueFragment) {
+            currentKeyItem!!.cancelListen(this)
+            val isEnglish = getBooleanValue(MmkvConstants.IS_ENGLISH, false)
+            if (isEnglish) {
+                binding.layoutKey.btListen.text = "Listen"
+            } else {
+                binding.layoutKey.btListen.text = "听"
+            }
+        }*/
         if (listenHolder == null) {
             currentKeyItem!!.listen(this)
             binding.layoutKey.btListen.text=  getString(R.string.debug_un_listen)
@@ -906,7 +1011,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                 keyItem.subItemMap as Map<String?, List<EnumItem>>,
                 object :
                     KeyItemActionListener<String?> {
-                    override fun actionChange(paramJsonStr: String?) {
+                    override fun actionChange(msgType: MsgType,paramJsonStr: String?) {
                         if (Util.isBlank(paramJsonStr)) {
                             return
                         }
@@ -919,7 +1024,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                 keyItem,
                 object :
                     KeyItemActionListener<String?> {
-                    override fun actionChange(s: String?) {
+                    override fun actionChange(msgType: MsgType, s: String?) {
                         if (Util.isBlank(s)) {
                             return
                         }
@@ -945,7 +1050,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                 currentKeyItem?.subItemMap as Map<String?, List<EnumItem>>,
                 object :
                     KeyItemActionListener<String?> {
-                    override fun actionChange(paramJsonStr: String?) {
+                    override fun actionChange(msgType: MsgType, paramJsonStr: String?) {
                         if (Util.isBlank(paramJsonStr)) {
                             return
                         }
@@ -958,7 +1063,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
             KeyValueDialogUtil.showInputDialog(
                 activity,
                 currentKeyItem
-            ) { s -> currentKeyItem!!.doAction(s) }
+            ) { _,s -> currentKeyItem!!.doAction(s) }
         }
     }
 
@@ -1015,7 +1120,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                     currentKeyItem?.subItemMap as Map<String?, List<EnumItem>>,
                     object :
                         KeyItemActionListener<String?> {
-                        override fun actionChange(paramJsonStr: String?) {
+                        override fun actionChange(msgType: MsgType, paramJsonStr: String?) {
                             if (Util.isBlank(paramJsonStr)) {
                                 return
                             }
@@ -1028,7 +1133,7 @@ class KeyValueFragment : AutelFragment(), View.OnClickListener {
                 KeyValueDialogUtil.showInputDialog(
                     activity,
                     currentKeyItem
-                ) { s -> currentKeyItem!!.doReport(s) }
+                ) { _, s -> currentKeyItem!!.doReport(s) }
             }
         }
     }
