@@ -81,9 +81,9 @@ object KeyItemHelper {
                     list,
                     clazz,
                     object : KeyItemActionListener<List<String>?> {
-                        override fun actionChange(t: List<String>?) {
+                        override fun actionChange(msgType:MsgType, t: List<String>?) {
                             updateClassData(param, dataMap)
-                            callBack.actionChange(param.toString())
+                            callBack.actionChange(msgType, param.toString())
                         }
                     })
             } else {
@@ -93,12 +93,12 @@ object KeyItemHelper {
                     getSimpleNameList(nameList),
                     anchor.context.getString(R.string.debug_select_item_for_setting),
                     object : KeyItemActionListener<String> {
-                        override fun actionChange(msg: String?) {
+                        override fun actionChange(msgType: MsgType,msg: String?) {
                             if (anchor.context.getString(R.string.debug_common_text_confirm)
                                     .equals(msg!!, ignoreCase = true)
                             ) {
                                 updateClassData(param, dataMap)
-                                callBack.actionChange(param.toString())
+                                callBack.actionChange(msgType, param.toString())
                             } else {
                                 val clazz = getClassWithName(msg, nameList) as Class<Enum<*>>?
                                 val list = dataMap[clazz!!.canonicalName]!!
@@ -106,7 +106,9 @@ object KeyItemHelper {
                                     anchor.context,
                                     list,
                                     clazz
-                                ) { updateClassData(param, dataMap) }
+                                ) { _,_->
+                                    updateClassData(param, dataMap)
+                                }
                             }
                         }
                     })
@@ -258,18 +260,18 @@ object KeyItemHelper {
                 StrList,
                 selectedIndex,
                 object : KeyItemActionListener<List<String>?> {
-                    override fun actionChange(values: List<String>?) {
+                    override fun actionChange(msgType:MsgType,values: List<String>?) {
                         updatedSelectedInfo(simpleItemList, values!!)
-                        callBack.actionChange(values)
+                        callBack.actionChange(msgType,values)
                     }
                 })
         } else {
             KeyValueDialogUtil.showMultiChoiceDialog(
                 context,
                 StrList,
-            ) { values ->
+            ) { msgType, values ->
                 updatedSelectedInfo(simpleItemList, values!!)
-                callBack.actionChange(values)
+                callBack.actionChange(msgType, values)
             }
         }
     }

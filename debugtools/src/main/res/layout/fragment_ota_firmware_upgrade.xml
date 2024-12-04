@@ -6,124 +6,173 @@
     android:background="@color/debug_gray"
     android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/start_upgrade"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="50dp"
-        android:text="start upgrade"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/upgrade_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="150dp"
-        android:text="upgrade state: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/check"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="175dp"
-        android:layout_marginTop="50dp"
-        android:text="check"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/downLoad"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="325dp"
-        android:layout_marginTop="50dp"
-        android:text="downLoad"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <Button
-        android:id="@+id/cancel"
-        android:layout_width="150dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="485dp"
-        android:layout_marginTop="50dp"
-        android:text="Cancel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_upgrade_online"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:orientation="horizontal"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:padding="@dimen/debug_dimen_dp_12"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_upgrade_online_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debug_online_upgrade_title"
+            android:textColor="@color/debug_white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/debug_dimen_dp_15"
+            android:text="check upgrade"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_upgrade_online_title"
+            tools:ignore="HardcodedText" />
+
+
+        <Button
+            android:id="@+id/downLoad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_32"
+            android:text="downLoad"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/check"
+            app:layout_constraintStart_toEndOf="@+id/check"
+            tools:ignore="HardcodedText" />
+
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_32"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/check"
+            app:layout_constraintStart_toEndOf="@+id/downLoad"
+            tools:ignore="HardcodedText" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_upgrade_offline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:padding="@dimen/debug_dimen_dp_12"
+        app:layout_constraintTop_toBottomOf="@+id/layout_upgrade_online">
+
+        <TextView
+            android:id="@+id/tv_upgrade_offline_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debug_online_upgrade_title"
+            android:textColor="@color/debug_white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_enter_upgade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/debug_dimen_dp_15"
             android:text="Enter Upgrade Mode"
-            tools:ignore="MissingConstraints" />
+            android:textAllCaps="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_upgrade_offline_title"
+            tools:ignore="HardcodedText,MissingConstraints" />
 
         <Button
             android:id="@+id/btn_exit_upgade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/debug_dimen_dp_32"
             android:text="Exit Upgrade Mode"
-            tools:ignore="MissingConstraints" />
-
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_enter_upgade"
+            app:layout_constraintStart_toEndOf="@+id/btn_enter_upgade"
+            tools:ignore="HardcodedText,MissingConstraints" />
 
         <Button
-            android:id="@+id/btn_single_upgrade"
+            android:id="@+id/btn_drone_upgrade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="notify single upgrade"
-            tools:ignore="MissingConstraints" />
-
-        <EditText
-            android:id="@+id/noteId_txt"
-            android:hint="Input nodeId"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content">
-        </EditText>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginStart="@dimen/debug_dimen_dp_32"
+            android:text="Drone upgrade"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_enter_upgade"
+            app:layout_constraintStart_toEndOf="@+id/btn_exit_upgade"
+            tools:ignore="HardcodedText,MissingConstraints" />
 
         <Button
             android:id="@+id/btn_remote_enter_upgade"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upgrade remoter"
-            tools:ignore="MissingConstraints" />
+            android:layout_marginStart="@dimen/debug_dimen_dp_32"
+            android:text="Remoter upgrade"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_enter_upgade"
+            app:layout_constraintStart_toEndOf="@+id/btn_drone_upgrade"
+            tools:ignore="HardcodedText,MissingConstraints" />
 
-        <Button
-            android:id="@+id/btn_test_Drone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test send drone message"
-            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/speed_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/debug_dimen_dp_15"
+            android:singleLine="true"
             android:textColor="#f00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            app:layout_constraintTop_toBottomOf="@+id/btn_enter_upgade"
+            tools:text="Speed" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:padding="@dimen/debug_dimen_dp_12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_upgrade_offline">
 
+        <TextView
+            android:id="@+id/tv_log_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/debug_gray_light"
+            android:textSize="14sp"
+            tools:text="log" />
+    </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_clear_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/debug_dimen_dp_32"
+        android:layout_marginBottom="@dimen/debug_dimen_dp_32"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:paddingStart="@dimen/debug_dimen_dp_12"
+        android:paddingTop="@dimen/debug_dimen_dp_6"
+        android:paddingEnd="@dimen/debug_dimen_dp_12"
+        android:paddingBottom="@dimen/debug_dimen_dp_6"
+        android:text="@string/debug_clear_all"
+        android:textColor="@color/debug_gray_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

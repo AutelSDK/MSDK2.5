@@ -7,11 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.autel.drone.sdk.SDKConstants
-import com.autel.module_player.MediaInfo
-import com.autel.module_player.player.AutelPlayerManager
-import com.autel.module_player.player.IVideoStreamListener
-import com.autel.module_player.player.autelplayer.AutelPlayer
-import com.autel.module_player.player.autelplayer.AutelPlayerView
+import com.autel.drone.sdk.libbase.error.IAutelCode
+import com.autel.drone.sdk.vmodelx.manager.DeviceManager
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.AirLinkKey
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.base.KeyTools
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.alink.enums.VideoTransMissionModeEnum
+import com.autel.player.MediaInfo
+import com.autel.player.player.AutelPlayerManager
+import com.autel.player.player.IVideoStreamListener
+import com.autel.player.player.autelplayer.AutelPlayer
+import com.autel.player.player.autelplayer.AutelPlayerView
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragMuiltStreamBinding
 import java.io.File
@@ -34,12 +40,11 @@ class MuiltCodecFragment : AutelFragment() {
     private var mAutelPlayer2: AutelPlayer? = null
     var codecView2: AutelPlayerView? = null
     private var isFrameSaved = false
-
     private lateinit var uiBinding: FragMuiltStreamBinding
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         uiBinding = FragMuiltStreamBinding.inflate(inflater, container, false)
 
@@ -49,28 +54,29 @@ class MuiltCodecFragment : AutelFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        DeviceManager.getDeviceManager().getFirstDroneDevice()?.getKeyManager()?.setValue(
+            KeyTools.createKey(AirLinkKey.KeyALinkTransmissionMode),
+            VideoTransMissionModeEnum.HIGH_QUALITY, object : CommonCallbacks.CompletionCallback {
+                override fun onSuccess() {
+                }
 
+                override fun onFailure(error: IAutelCode, msg: String?) {
+                    //ToastUtils.showToast(msg?:getString(R.string.debug_setup_failed))
+                }
+            }
+        )
         left_view = uiBinding.root.findViewById(R.id.layout_left_view)
         codecView = createAutelCodecView()
         with(left_view) { this?.addView(codecView) }
 
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
+
         mAutelPlayer?.setVideoInfoListener(object : IVideoStreamListener {
             override fun onVideoSizeChanged(playerId: Int, width: Int, height: Int) {
-
+                isFrameSaved = false;
             }
 
-            /**
-             * video info call back with some info about video playing
-             *
-             * @param playerId id number for streaming
-             * @param x    x co-ordinates for video
-             * @param y    y co-ordinates for video
-             * @param w    width of video
-             * @param h    height of video
-             */
             override fun onVideoInfoCallback(playerId: Int, x: Int, y: Int, w: Int, h: Int) {
-
             }
 
             override fun onFrameYuv(yuv: ByteBuffer?, mediaInfo: MediaInfo?) {
@@ -84,8 +90,8 @@ class MuiltCodecFragment : AutelFragment() {
                 }
             }
 
-            override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
 
+            override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
             }
 
         })
@@ -108,41 +114,8 @@ class MuiltCodecFragment : AutelFragment() {
         mAutelPlayer2!!.startPlayer()
     }
 
-    /**
-     * create code view for autel media player 1
-     */
-    private fun createAutelCodecView(): AutelPlayerView? {
-        val codecView = AutelPlayerView(activity)
-        val params = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        codecView.layoutParams = params
-        return codecView
-    }
 
-    private fun saveYuvToFile(buffer: ByteBuffer, width: Int, height: Int, stride: Int, sliceHeight: Int) {
-
-        if (!isAdded) {
-            Log.e("MuiltCodecFragment", "Fragment is not attached to a context.")
-            return
-        }
-        val fileName = "frame_${System.currentTimeMillis()}.yuv"
-        val file = File(requireContext().filesDir, fileName)
-
-        try {
-            FileOutputStream(file).use { fos ->
-                var b = removeNV12Padding(buffer, width, height, stride, sliceHeight)
-                val data = ByteArray(b.remaining())
-                b.get(data)
-                fos.write(data)
-            }
-            println("File saved at: ${file.absolutePath}")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun removeNV12Padding(originalBuffer: ByteBuffer, width: Int, height: Int, stride: Int, sliceHeight:Int): ByteBuffer {
+    fun removeNV12Padding(originalBuffer: ByteBuffer, width: Int, height: Int, stride: Int, sliceHeight:Int): ByteBuffer {
         val ySize = width * height
         val uvSize = ySize / 2
         val totalSize = ySize + uvSize
@@ -175,6 +148,36 @@ class MuiltCodecFragment : AutelFragment() {
 
         resultBuffer.rewind()
         return resultBuffer
+    }
+
+    private fun saveYuvToFile(buffer: ByteBuffer, width: Int, height: Int, stride: Int, sliceHeight: Int) {
+
+        val fileName = "frame_${System.currentTimeMillis()}.yuv"
+        val file = File(requireContext().filesDir, fileName)
+
+        try {
+            FileOutputStream(file).use { fos ->
+                var b = removeNV12Padding(buffer, width, height, stride, sliceHeight)
+                val data = ByteArray(b.remaining())
+                b.get(data)
+                fos.write(data)
+            }
+            println("File saved at: ${file.absolutePath}")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    /**
+     * create code view for autel media player 1
+     */
+    private fun createAutelCodecView(): AutelPlayerView? {
+        val codecView = AutelPlayerView(activity)
+        val params = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        codecView.layoutParams = params
+        return codecView
     }
 
     /**

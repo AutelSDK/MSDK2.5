@@ -223,6 +223,10 @@ public class KeyItemDataUtil {
         initList(keyList, PayloadKey.class);
     }
 
+    public static void initAMeshKeyKeyList(List<KeyItem<?, ?>> keyList) {
+        initList(keyList, NetMeshKey.class);
+    }
+
     public static void initDFFlightControlKeyList(List<KeyItem<?, ?>> keyList) {
         initList(keyList, DFFlightControlKey.class);
     }
@@ -289,6 +293,33 @@ public class KeyItemDataUtil {
             }
 
         }
+    }
+
+
+    public static List<KeyItem<?, ?>> getKeyItemList(Class<?> clazz) {
+        List<KeyItem<?, ?>> keylist = new ArrayList();
+        Field[] fields = getAllFields(clazz);
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                Object fieldValue = field.get(null);
+                Class<?> fieldClass = field.getType();
+                String keyName = field.getName();
+
+                if (fieldClass.equals(AutelKeyInfo.class) || fieldClass.equals(AutelActionKeyInfo.class)) {
+                    AutelKeyInfo<?> keyInfo = (AutelKeyInfo<?>) fieldValue;
+                    KeyItem<?, ?> item = new KeyItem(keyInfo);
+                    genericItem(item, keyInfo, keyName);
+                    if (keylist != null) {
+                        keylist.add(item);
+                    }
+                }
+            } catch (Exception e) {
+                SDKLog.e(TAG, Objects.requireNonNull(e.getMessage()));
+            }
+
+        }
+        return keylist;
     }
 
     /**

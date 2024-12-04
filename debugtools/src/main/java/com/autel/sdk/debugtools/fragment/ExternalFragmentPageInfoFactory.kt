@@ -63,14 +63,6 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
 
             items.add(
                 FragmentPageInfoItem(
-                    R.id.rtspserver_page,
-                    R.string.debug_item_rtspserver_title,
-                    R.string.debug_item_rtspserver_title_description
-                )
-            )
-
-            items.add(
-                FragmentPageInfoItem(
                     R.id.gb28181_page,
                     R.string.debug_item_gb28181_title,
                     R.string.debug_item_gb28181_title_description
@@ -103,11 +95,45 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
                 )
             )
 
+
+
             items.add(
                 FragmentPageInfoItem(
                     R.id.ota_page,
                     R.string.debug_device_ota,
                     R.string.debug_device_ota_description
+                )
+            )
+
+            items.add(
+                FragmentPageInfoItem(
+                    R.id.mission_demo_page,
+                    R.string.mission_demo,
+                    R.string.mission_demo_description
+                )
+            )
+
+
+            items.add(
+                FragmentPageInfoItem(
+                    R.id.perception_page,
+                    R.string.debug_perception_page,
+                    R.string.debug_perception_page_description
+                )
+            )
+            items.add(
+                FragmentPageInfoItem(
+                    R.id.lte_page,
+                    R.string.debug_lte_page,
+                    R.string.debug_lte_page_description
+                )
+            )
+
+            items.add(
+                FragmentPageInfoItem(
+                    R.id.alarm_page,
+                    R.string.debug_alarm_page,
+                    R.string.debug_alarm_page_description
                 )
             )
         }

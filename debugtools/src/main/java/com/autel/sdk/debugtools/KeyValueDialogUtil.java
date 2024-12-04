@@ -48,7 +48,7 @@ public class KeyValueDialogUtil {
         final String[] items = data.toArray(new String[data.size()]);
         builder.setSingleChoiceItems(items, selectedIndex, (dialog1, which) -> {
             if (callBack != null) {
-                callBack.actionChange(Arrays.asList(items[which]));
+                callBack.actionChange(MsgType.MSG_INFO, Arrays.asList(items[which]));
                 dialog1.dismiss();
             }
         });
@@ -73,7 +73,7 @@ public class KeyValueDialogUtil {
             }
 
         });
-        builder.setPositiveButton(R.string.debug_common_text_confirm, (dialog12, which) -> callBack.actionChange(values));
+        builder.setPositiveButton(R.string.debug_common_text_confirm, (dialog12, which) -> callBack.actionChange(MsgType.MSG_INFO,values));
         builder.setCancelable(true);
         dialog = builder.create();
         dialog.show();
@@ -114,10 +114,10 @@ public class KeyValueDialogUtil {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.item_textview, data);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener((parent, view, position, id) -> callback.actionChange(data.get(position)));
+        listView.setOnItemClickListener((parent, view, position, id) -> callback.actionChange(MsgType.MSG_INFO, data.get(position)));
         rootView.findViewById(R.id.button).setOnClickListener(v -> {
             window.dismiss();
-            callback.actionChange(context.getString(R.string.debug_common_text_confirm));
+            callback.actionChange(MsgType.MSG_INFO, context.getString(R.string.debug_common_text_confirm));
         });
     }
 
@@ -163,7 +163,7 @@ public class KeyValueDialogUtil {
         input.setMovementMethod(ScrollingMovementMethod.getInstance());
         dialogView.findViewById(R.id.confirm).setOnClickListener(v -> {
             if (callback != null) {
-                callback.actionChange(input.getText().toString().trim());
+                callback.actionChange(MsgType.MSG_INFO,input.getText().toString().trim());
             }
             dialog.dismiss();
         });
@@ -241,7 +241,7 @@ public class KeyValueDialogUtil {
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((parent, view, position, id) -> {
             if (callback != null) {
-                callback.actionChange(data.get(position));
+                callback.actionChange(MsgType.MSG_INFO,data.get(position));
             }
             if (window != null) {
                 window.dismiss();

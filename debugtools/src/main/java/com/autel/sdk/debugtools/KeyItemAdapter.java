@@ -13,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.autel.drone.sdk.store.SDKStorage;
-import com.autel.drone.sdk.vmodelx.constants.MmkvConstants;
-import com.autel.drone.sdk.vmodelx.utils.ChineseConstants;
 import com.autel.sdk.debugtools.fragment.KeyItemActionListener;
 
 import java.util.ArrayList;
@@ -85,7 +82,7 @@ public class KeyItemAdapter extends RecyclerView.Adapter<KeyItemAdapter.ComViewH
         }
         textView.setOnClickListener(v -> {
             if (callback != null) {
-                callback.actionChange(keyItem);
+                callback.actionChange(MsgType.MSG_INFO, keyItem);
             }
         });
     }

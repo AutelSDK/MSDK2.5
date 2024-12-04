@@ -24,4 +24,5 @@
     <color name="debug_color_white_40">#66FFFFFF</color>
     <color name="debug_color_4f">#4F4F4F</color>
     <color name="debug_color_transparent">#00ffffff</color>
+    <color name="debug_color_orange">#FFA500</color>
 </resources>

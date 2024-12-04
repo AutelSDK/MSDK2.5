@@ -1,66 +1,48 @@
 package com.autel.sdk.debugtools.fragment
 
-import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.autel.drone.sdk.libbase.error.IAutelCode
 import com.autel.drone.sdk.log.SDKLog
-import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.interfaces.IUpgradeManager
-import com.autel.drone.sdk.vmodelx.interfaces.OTAFirmwareUpgradeProcessStateListener
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
-import com.autel.drone.sdk.vmodelx.manager.OTAFirmwareUpgradeManager
 import com.autel.drone.sdk.vmodelx.manager.OTAUpgradeManger
 import com.autel.drone.sdk.vmodelx.manager.UpgradeManager
-import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
-import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.NetMeshKey
-import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.UpgradeServiceKey
-import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.base.KeyTools
-import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.netmesh.NotifyDeviceToUpgradeBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.upgrade.bean.UpgradeResultBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.upgrade.enums.UpgradeClientTypeEnum
-import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.upgrade.enums.UpgradeStateEnum
 import com.autel.drone.sdk.vmodelx.manager.upgrade.UpgradeErrorStateEnum
+import com.autel.drone.sdk.vmodelx.manager.upgrade.UpgradeFlowEnum
 import com.autel.drone.sdk.vmodelx.manager.upgrade.UpgradeListener
 import com.autel.drone.sdk.vmodelx.module.fileservice.FileTransmitListener
-import com.autel.drone.sdk.vmodelx.module.upgrade.bean.OTAUpgradeModel
 import com.autel.drone.sdk.vmodelx.module.upgrade.bean.ota.CheckResponseBean
-import com.autel.drone.sdk.vmodelx.module.upgrade.bean.ota.ObservableMap
-import com.autel.drone.sdk.vmodelx.module.upgrade.enums.OTAUpgradeProgressState
-import com.autel.drone.sdk.vmodelx.utils.MicroFtpUtil
 import com.autel.drone.sdk.vmodelx.utils.S3DownloadInterceptor
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import com.autel.sdk.debugtools.databinding.FragmentOtaFirmwareUpgradeBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileInputStream
-import java.security.MessageDigest
 import java.util.Locale
 
 /**
  * A simple [Fragment] subclass.
- * Use the [OTAFirmwareUpgradeFragment.newInstance] factory method to
+ * Use the [OTAFirmwareUpgradeFragment] factory method to
  * create an instance of this fragment.
  */
-class OTAFirmwareUpgradeFragment : AutelFragment(), OTAFirmwareUpgradeProcessStateListener {
+@SuppressLint("SetTextI18n")
+class OTAFirmwareUpgradeFragment : AutelFragment() {
 
-    private val storagePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-    private val requestCode = 1
+    companion object {
+        private const val TAG = "OTA Test"
+    }
 
     private lateinit var binding: FragmentOtaFirmwareUpgradeBinding
-
-    private var map = ObservableMap<String, CheckResponseBean.Data>()
+    private var map: HashMap<String, CheckResponseBean.Data>? = null
 
     private var s3DownloadInterceptor: S3DownloadInterceptor? = null
 
-    val mHandler = Handler(Looper.getMainLooper())
+    private val logList: MutableList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,291 +54,255 @@ class OTAFirmwareUpgradeFragment : AutelFragment(), OTAFirmwareUpgradeProcessSta
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         binding = FragmentOtaFirmwareUpgradeBinding.inflate(inflater)
+        initUpgradeListener()
         initView()
-
-        /* OTAUpgradeManger.getInstance().registerRemoterAutoUpgradeListener(object : RemoterAutoUpgradeWrapper.RemoterAutoUpgradeListener{
-             override fun onUpgradeProgress(progress: Int) {
-                 SDKLog.i("OTA-", "onUpgradeStateChange $progress")
-             }
-
-             override fun onUpgradeResult(resultBean: UpgradeResultBean) {
-                 SDKLog.i("OTA-", "onUpgradeResult $resultBean")
-             }
-         })*/
-
-        SDKLog.i("OTAFirmwareUpgradeFragment", "path=${MicroFtpUtil.getDroneFilePath(SDKManager.get().sContext, "APPLE")}")
         return binding.root
     }
 
-    companion object {
-        private const val TAG = "OTA Test"
-    }
-
-
-    private fun downloadTest(){
-        val path = "https://autel-cc-media.obs.cn-south-1.myhuaweicloud.com/ota/2024-07-15-7081313544470528.uav?AccessKeyId=TJDEDEFZZAH7WEQNJ7RR&Expires=1721273599&Signature=RQW52ixw%2BDygmQw89X5LabxVRDw%3D"
-        OTAUpgradeManger.getInstance().downloadFile(path, 0, object:FileTransmitListener<File>{
-            override fun onSuccess(result: File?) {
-                SDKLog.i("OTAFirmwareUpgradeFragment", "checkProduct: $result")
-            }
-
-            override fun onProgress(sendLength: Long, totalLength: Long, speed: Long) {
-                SDKLog.i("OTAFirmwareUpgradeFragment", "sendLength: $sendLength")
-            }
-
-            override fun onFailed(code: IAutelCode?, msg: String?) {
-                SDKLog.i("OTAFirmwareUpgradeFragment", "onFailed: $code")
-            }
-        })
-    }
-
-    private fun initView() {
-        OTAFirmwareUpgradeManager.getInstance().addListener(this)
-        binding.check.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.Main.immediate) {
-                try {
-                    map = OTAFirmwareUpgradeManager.getInstance().checkProduct()
-                    SDKLog.i("OTAFirmwareUpgradeFragment", "checkProduct: $map")
-                } catch (e: Exception) {
-                    SDKLog.i("OTAFirmwareUpgradeFragment", "checkProduct fair: ${e.message}")
+    private fun initUpgradeListener() {
+        OTAUpgradeManger.getInstance()
+            .addUpgradeVersionListener(object : OTAUpgradeManger.UpgradeVersionListener {
+                override fun onEnterUpgradeMode(success: Boolean) {
+                    showLog("onEnterUpgradeMode success=$success")
+                    ToastUtils.showToast("Enter Upgrade Mode success =$success")
                 }
 
-            }
+                override fun onExitUpgradeMode(success: Boolean) {
+                    showLog("onExitUpgradeMode success=$success")
+                    ToastUtils.showToast("Exit Upgrade Mode success =$success")
+                }
+
+                override fun onDeviceUpgrade(beanMap: HashMap<String, CheckResponseBean.Data>) {
+                    showLog("onDeviceUpgrade=${beanMap.size}, $beanMap")
+                    map = beanMap
+                }
+            })
+    }
+
+
+    private fun initView() {
+        binding.check.setOnClickListener {
+            //Check sever has new firmware,only for internal use.
+            OTAUpgradeManger.getInstance().detectDeviceUpdateInfo()
+            showLog(">>click check")
+            ToastUtils.showToast("start to check upgrade info(several minutes).")
         }
 
         binding.downLoad.setOnClickListener {
-
-            val modex = map.get("ModelX")
-            modex?.let {
-                if (it.isNeed_upgrade) {
-                    s3DownloadInterceptor = OTAFirmwareUpgradeManager.getInstance().downLoadProductFile(it.pkg_url, object :
-                        FileTransmitListener<File> {
+            showLog(">>click downLoad")
+            val remoteDeviceId =
+                DeviceManager.getDeviceManager().getLocalRemoteDevice().deviceNumber()
+            val remoterBean = map?.get(remoteDeviceId.toString())
+            if (remoterBean != null && remoterBean.isNeed_upgrade) {
+                s3DownloadInterceptor = OTAUpgradeManger.getInstance()
+                    .downloadFile(remoterBean.pkg_url, 0, object : FileTransmitListener<File> {
                         override fun onSuccess(result: File?) {
-                            SDKLog.d("OTAFirmwareUpgradeFragment", "downLoad success: ")
+                            showLog("downloadFile onSuccess $result")
                         }
 
                         override fun onProgress(sendLength: Long, totalLength: Long, speed: Long) {
-
-                            SDKLog.d("OTAFirmwareUpgradeFragment", "downLoad size: $sendLength")
+                            showLog("downloadFile onProgress $speed")
                         }
 
-                        override fun onFailed(code: IAutelCode, message: String?) {
-                            SDKLog.d("OTAFirmwareUpgradeFragment", "downLoad failed: $message")
+                        override fun onFailed(code: IAutelCode?, msg: String?) {
+                            showLog("downloadFile onFailed $code, $msg", isError = true)
+
                         }
                     })
-                }
+                return@setOnClickListener
+            } else {
+                ToastUtils.showToast("Remoter no need to upgrade")
             }
 
+            DeviceManager.getDeviceManager().getDroneDevices().forEach {
+                val deviceId = it.deviceNumber()
+                val bean = map?.get(deviceId.toString())
+                if (bean != null && bean.isNeed_upgrade) {
+                    s3DownloadInterceptor = OTAUpgradeManger.getInstance()
+                        .downloadFile(bean.pkg_url, 0, object : FileTransmitListener<File> {
+                            override fun onSuccess(result: File?) {
+                                showLog("downloadFile onSuccess $result")
+                            }
+
+                            override fun onProgress(
+                                sendLength: Long,
+                                totalLength: Long,
+                                speed: Long
+                            ) {
+                                showLog("downloadFile onProgress $speed")
+                            }
+
+                            override fun onFailed(code: IAutelCode?, msg: String?) {
+                                showLog("downloadFile onFailed $code, $msg", isError = true)
+                            }
+                        })
+                    return@setOnClickListener
+                } else {
+                    ToastUtils.showToast("Drone no need to upgrade(${it.toSampleString()})")
+                }
+            }
         }
 
         binding.cancel.setOnClickListener {
+            showLog(">>click cancel")
             s3DownloadInterceptor?.cancel()
         }
 
-        binding.startUpgrade.setOnClickListener {
-            /*var filePath = SDKManager.get().sContext?.getExternalFilesDir(null)?.absolutePath
-            val gndFilePath = filePath + "/RC79.Autel-V1.5.0.9-20230708165411.uav"
-            val skyFilePath = filePath + "/ModelX-V1.5.0.75-20230706142034.autel"
-            var gndFile =  File(gndFilePath)
-            var skyFile =  File(skyFilePath)
-            lifecycleScope.launch(Dispatchers.Main.immediate) {
-                try {
-                    val gndMode = OTAUpgradeModel(UpgradeClientTypeEnum.CLIENT_TYPE_GND,gndFile)
-                    val skyMode = OTAUpgradeModel(UpgradeClientTypeEnum.CLIENT_TYPE_SKY,skyFile)
-                    val list = arrayOf(skyMode, gndMode);
-                    OTAFirmwareUpgradeManager.getInstance().startFirmwareUpgrade(list)
-                }catch (e: Exception) {
-                    SDKLog.i("OTAFirmwareUpgradeFragment","upgrade fair: ${e.message}")
-                }
-            }*/
-
-            testDroneNew()
-
+        binding.btnRemoteEnterUpgade.setOnClickListener {
+            showLog(">>click btnRemoteEnterUpgade")
+            testRemoterUpgrade()
         }
 
-        binding.btnRemoteEnterUpgade.setOnClickListener {
-            testRemoteNew()
+        binding.btnDroneUpgrade.setOnClickListener {
+            showLog(">>click btnDroneUpgrade")
+            testDroneUpgrade()
         }
 
         binding.btnEnterUpgade.setOnClickListener {
+            showLog(">>click btnEnterUpgade")
             OTAUpgradeManger.getInstance().switchUpgradeMode(true)
         }
         binding.btnExitUpgade.setOnClickListener {
+            showLog(">>click btnExitUpgade")
             OTAUpgradeManger.getInstance().switchUpgradeMode(false)
         }
 
-        binding.btnTestDrone.setOnClickListener {
-            ToastUtils.showToast("Drones=${DeviceManager.getDeviceManager().getDroneDevices().size}")
-            val upgradeKeyManager = DeviceManager.getDeviceManager().getDroneDevices().firstOrNull()?.getUpgradeKeyManager()
-            if(upgradeKeyManager==  null){
-                ToastUtils.showToast("keymanager null")
-                return@setOnClickListener
-            }
-
-            ToastUtils.showToast("keymanager send success")
-            upgradeKeyManager?.performAction(
-                    KeyTools.createKey(UpgradeServiceKey.KeyUpgradeStateQuery), null,
-                    object : CommonCallbacks.CompletionCallbackWithParam<UpgradeStateEnum> {
-                        override fun onSuccess(t: UpgradeStateEnum?) {
-                            ToastUtils.showToast("success")
-                        }
-
-                        override fun onFailure(error: IAutelCode, msg: String?) {
-                            ToastUtils.showToast("onFailure =$error")
-                        }
-                    }, retryCount = 0
-                )
-        }
-
-        binding.btnSingleUpgrade.setOnClickListener {
-            val key = KeyTools.createKey(NetMeshKey.keySetDeviceToUpgrade)
-            val atKeyManager = DeviceManager.getDeviceManager().getLocalRemoteDevice().getATKeyManager()
-
-            var nodeId = -1
-            try {
-                nodeId = binding.noteIdTxt.text.toString().toInt()
-            } catch (e: Exception) {
-                ToastUtils.showToast("keyNotifyDeviceToUpgrade input nodeId error")
-                val deviceId = DeviceManager.getFirstDroneDevice()?.deviceNumber()
-                nodeId = DeviceManager.getDeviceManager().getDroneDeviceById(deviceId!!)?.getNodeId() ?: -1
-            }
-
-            if (nodeId < 0) {
-                ToastUtils.showToast("keyNotifyDeviceToUpgrade nodeId is null")
-                return@setOnClickListener
-            }
-            val bean = NotifyDeviceToUpgradeBean(nodeId)
-            atKeyManager.performAction(key, bean, object : CommonCallbacks.CompletionCallbackWithParam<Void> {
-                override fun onSuccess(t: Void?) {
-                    ToastUtils.showToast("keyNotifyDeviceToUpgrade success")
-                }
-
-                override fun onFailure(error: IAutelCode, msg: String?) {
-                    ToastUtils.showToast("keyNotifyDeviceToUpgrade onFailure")
-                }
-            })
+        binding.tvClearLogo.setOnClickListener {
+            binding.tvLogInfo.text = ""
+            logList.clear()
         }
     }
 
     /**
-     * 升级飞机
+     * upgrade drone firmware, we must upgrade drone first
      */
-   private fun testDroneNew(){
+    private fun testDroneUpgrade() {
         val droneFilePath = "/mnt/media_rw/sdcard1/ModelX-V1.8.0.178-20240521025146.Encrypt.uav"
-
         val deviceId = DeviceManager.getFirstDroneDevice()?.deviceNumber() ?: return
-        val skyUpgradeManager: IUpgradeManager = UpgradeManager(deviceId).init(UpgradeClientTypeEnum.CLIENT_TYPE_SKY)
-        skyUpgradeManager.registerUpgradeListener(object : UpgradeListener {
-            override fun onUpgradeStateChange(deviceId: Int, state: UpgradeErrorStateEnum) {
-                SDKLog.i("OTA-", "onUpgradeStateChange $state")
+        var skyUpgradeManager: IUpgradeManager? =
+            UpgradeManager(deviceId).init(UpgradeClientTypeEnum.CLIENT_TYPE_SKY)
+
+        skyUpgradeManager?.registerUpgradeListener(object : UpgradeListener {
+
+            override fun onUpgradeFlowChange(deviceId: Int, flowState: UpgradeFlowEnum) {
+                showLog("onUpgradeFlowChange $flowState")
             }
 
-            override fun onUploadPackageProgress(deviceId: Int, totalLength: Long, sendLenght: Long, progress: Int, speed: Long) {
-                SDKLog.i("OTA-", "onUploadPackageProgress $progress")
-                var speedText: String = if (speed < 1000) {
+            override fun onUpgradeStateChange(deviceId: Int, state: UpgradeErrorStateEnum) {
+                showLog("onUpgradeStateChange $state")
+                skyUpgradeManager?.unInit()
+                skyUpgradeManager = null
+            }
+
+            override fun onUploadPackageProgress(
+                deviceId: Int,
+                totalLength: Long,
+                sendLength: Long,
+                progress: Int,
+                speed: Long
+            ) {
+                val speedText: String = if (speed < 1000) {
                     String.format(Locale.ENGLISH, "%.2f KB/s ", speed / 1024f)
                 } else {
                     String.format(Locale.ENGLISH, "%.2f MB/s ", speed / 1024f / 1024f)
                 }
-                binding.speedText.text = "   $progress%,  $speedText"
+                binding.speedText.text = "progress=$progress%,  speed=$speedText"
+                showLog("onUploadPackageProgress $progress, speed=$speedText")
             }
 
             override fun onUpgradeProgress(deviceId: Int, progress: Int) {
-                SDKLog.i("OTA-", "onUpgradeProgress $progress")
+                showLog("onUpgradeProgress $progress")
                 binding.speedText.text = "   onUpgradeProgress $progress%"
             }
 
             override fun onUpgradeResult(deviceId: Int, resultBean: UpgradeResultBean) {
-                SDKLog.i("OTA-", "onUpgradeResult $resultBean")
+                showLog("onUpgradeResult $resultBean")
+                skyUpgradeManager?.unInit()
+                skyUpgradeManager = null
             }
-
         })
-        skyUpgradeManager.startUpgradeFlow(File(droneFilePath), null)
-
+        skyUpgradeManager?.startUpgradeFlow(File(droneFilePath), null)
     }
 
     /**
-     * 升级遥控器
+     * Upgrade remoter firmware
      */
-
-    private fun testRemoteNew(){
+    private fun testRemoterUpgrade() {
         val gndFilePath = "/mnt/media_rw/sdcard1/RC79.Autel-V1.8.0.177-20240521003729.Encrypt.uav"
-        val gndUpgradeManager :IUpgradeManager = UpgradeManager(0).init(UpgradeClientTypeEnum.CLIENT_TYPE_GND)
-        gndUpgradeManager.registerUpgradeListener(object : UpgradeListener{
+        val deviceId = DeviceManager.getDeviceManager().getLocalRemoteDevice().deviceNumber()
+        var gndUpgradeManager: IUpgradeManager? =
+            UpgradeManager(deviceId).init(UpgradeClientTypeEnum.CLIENT_TYPE_GND)
 
-            override fun onUpgradeStateChange(deviceId: Int, state: UpgradeErrorStateEnum) {
-                SDKLog.i("OTA-", "onUpgradeStateChange $state")
+        gndUpgradeManager?.registerUpgradeListener(object : UpgradeListener {
+
+            override fun onUpgradeFlowChange(deviceId: Int, flowState: UpgradeFlowEnum) {
+                showLog("onUpgradeFlowChange $flowState")
             }
 
-            override fun onUploadPackageProgress(deviceId: Int, totalLength: Long, sendLenght: Long, progress: Int, speed: Long) {
-                SDKLog.i("OTA-", "onUploadPackageProgress $progress")
-                var speedText: String = if (speed < 1000) {
-                    String.format(Locale.ENGLISH, "%.2f KB/s ", speed / 1024f)
-                } else {
-                    String.format(Locale.ENGLISH, "%.2f MB/s ", speed / 1024f / 1024f)
-                }
-                binding.speedText.text = "   $progress%,  $speedText"
+            override fun onUpgradeStateChange(deviceId: Int, state: UpgradeErrorStateEnum) {
+                showLog("onUpgradeStateChange $state")
+                gndUpgradeManager?.unInit()
+                gndUpgradeManager = null
+            }
+
+            override fun onUploadPackageProgress(
+                deviceId: Int,
+                totalLength: Long,
+                sendLength: Long,
+                progress: Int,
+                speed: Long
+            ) {
+                showLog("onUploadPackageProgress $progress")
             }
 
             override fun onUpgradeProgress(deviceId: Int, progress: Int) {
-                SDKLog.i("OTA-", "onUpgradeProgress $progress")
-
-                binding.speedText.text = "   onUpgradeProgress $progress%"
+                showLog("onUpgradeProgress $progress")
+                binding.speedText.text = "onUpgradeProgress $progress%"
             }
 
             override fun onUpgradeResult(deviceId: Int, resultBean: UpgradeResultBean) {
-                SDKLog.i("OTA-", "onUpgradeResult $resultBean")
+                showLog("onUpgradeResult $resultBean")
+                gndUpgradeManager?.unInit()
+                gndUpgradeManager = null
             }
-
         })
-        gndUpgradeManager.startUpgradeFlow(File(gndFilePath), null)
-
+        gndUpgradeManager?.startUpgradeFlow(File(gndFilePath), null)
     }
 
-    override fun onOTAFirmwareUpgradeProcessState(
-        model: OTAUpgradeModel,
-        status: OTAUpgradeProgressState
-    ) {
 
-        lifecycleScope.launch(Dispatchers.Main) {
-            val typeEnum = model.clientType
-            if (status == OTAUpgradeProgressState.UPGRADING || status == OTAUpgradeProgressState.UPLOADING) {
-                binding.upgradeState.text =
-                    "upgrade state: " + (if (typeEnum == UpgradeClientTypeEnum.CLIENT_TYPE_GND) "gnd  " else "sky ") + "state: ${status.name}" + " progress: ${status.progress}"
-            } else if (status == OTAUpgradeProgressState.OPERATION_FAILED) {
-                binding.upgradeState.text =
-                    "upgrade state: " + (if (typeEnum == UpgradeClientTypeEnum.CLIENT_TYPE_GND) "gnd  " else "sky  ") + "upgrade fair" + " error: ${status.errorMessage?.message}"
-            } else if (status == OTAUpgradeProgressState.UPGRADE_SUCCESS) {
-                binding.upgradeState.text = "upgrade state: success"
-            } else {
-                binding.upgradeState.text =
-                    "upgrade state: " + (if (typeEnum == UpgradeClientTypeEnum.CLIENT_TYPE_GND) "gnd  " else "sky  ") + "state: ${status.name}"
+    private fun downloadTest() {
+        val path =
+            "https://autel-cc-media.obs.cn-south-1.myhuaweicloud.com/ota/2024-07-15-7081313544470528.uav?AccessKeyId=TJDEDEFZZAH7WEQNJ7RR&Expires=1721273599&Signature=RQW52ixw%2BDygmQw89X5LabxVRDw%3D"
+        OTAUpgradeManger.getInstance().downloadFile(path, 0, object : FileTransmitListener<File> {
+            override fun onSuccess(result: File?) {
+                showLog("downloadTest: $result")
             }
-        }
+
+            override fun onProgress(sendLength: Long, totalLength: Long, speed: Long) {
+                showLog("downloadTest: $sendLength")
+            }
+
+            override fun onFailed(code: IAutelCode?, msg: String?) {
+                showLog("downloadTest onFailed: $code $msg")
+            }
+        })
     }
 
-    fun calculateMD5(file: File): String {
-        val md5Digest = MessageDigest.getInstance("MD5")
-        val inputStream = FileInputStream(file)
-        val buffer = ByteArray(8192)
-        var bytesRead: Int
+    private fun showLog(log: String, isError: Boolean = false) {
+        logList.add(log)
 
-        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-            md5Digest.update(buffer, 0, bytesRead)
+        if (isError) {
+            SDKLog.e(TAG, log)
+        } else {
+            SDKLog.i(TAG, log)
         }
 
-        inputStream.close()
-
-        val md5Bytes = md5Digest.digest()
-        val md5String = StringBuilder()
-
-        for (byte in md5Bytes) {
-            md5String.append(String.format("%02x", byte))
+        val stringBuffer = StringBuffer()
+        logList.forEach {
+            stringBuffer.append(it).append("\n")
         }
 
-        return md5String.toString()
+        binding.tvLogInfo.text = stringBuffer.toString()
     }
-
 }

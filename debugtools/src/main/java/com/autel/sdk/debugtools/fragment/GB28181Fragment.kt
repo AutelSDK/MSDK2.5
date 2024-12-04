@@ -1,6 +1,9 @@
 package com.autel.sdk.debugtools.fragment
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,22 +11,32 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import com.autel.drone.sdk.SDKConstants
-import com.autel.drone.sdk.log.SDKLog
-import com.autel.drone.sdk.vmodelx.constants.SDKUtils
-import com.autel.drone.sdk.vmodelx.manager.DeviceManager
-import com.autel.drone.sdk.vmodelx.manager.GB28181ServiceManager
-import com.autel.drone.sdk.vmodelx.manager.OTAUpgradeManger
-import com.autel.gb28181.IGB28181PublishListener
-import com.autel.module_player.player.AutelPlayerManager
-import com.autel.module_player.player.autelplayer.AutelPlayer
-import com.autel.module_player.player.autelplayer.AutelPlayerView
+import com.autel.drone.sdk.vmodelx.utils.ToastUtils
+import com.autel.player.player.AutelPlayerManager
+import com.autel.player.player.autelplayer.AutelPlayer
+import com.autel.player.player.autelplayer.AutelPlayerView
+import com.autel.publisher.IPublishListener
+import com.autel.publisher.PublishErrorCode
+import com.autel.publisher.PublishParam
+import com.autel.publisher.gb28181.ConfigInfo
+import com.autel.publisher.gb28181.GB28181PublisherNew
+import com.autel.publisher.gb28181.GBChannel
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.WiFiUtils
 import com.autel.sdk.debugtools.databinding.FragmentGb28181PublisherBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.TimeZone
+import kotlin.collections.HashMap
+import kotlin.collections.hashMapOf
+import kotlin.collections.set
+
 
 class GB28181Fragment : AutelFragment()  {
     var TAG = "GB28181Fragment"
@@ -46,6 +59,8 @@ class GB28181Fragment : AutelFragment()  {
     private var mPublishFlag: Boolean = false
 
     private var iCurrentPort:Int = SDKConstants.STREAM_CHANNEL_16110 //可见光
+
+    private var mPublisher = GB28181PublisherNew();
 
     private val coroutineScope = CoroutineScope(Dispatchers.Default)
 
@@ -85,10 +100,9 @@ class GB28181Fragment : AutelFragment()  {
 
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer2);
 
-        mAutelPlayer!!.startPlayer()
-        mAutelPlayer2!!.startPlayer()
-
         initView();
+        initListener()
+        initData()
 
     }
 
@@ -129,162 +143,148 @@ class GB28181Fragment : AutelFragment()  {
             }
         }
 
-//        GB28181Params.setSIPServerIPAddress("121.36.245.130");//SIP服务器地址
-//        GB28181Params.setRemoteSIPServerPort(5060);//SIP服务器端口
-//        GB28181Params.setLocalSIPIPAddress("10.10.49.221");//本机地址
-//        GB28181Params.setRemoteSIPServerID("34020000002000000001"); // SIP服务器ID
-//        GB28181Params.setRemoteSIPServerSerial("3402000000");// SIP服务器域
-//        GB28181Params.setLocalSIPPort(7060);//本机端口
-//        GB28181Params.setUserName("admin");//SIP用户名
-//        GB28181Params.setPassword("12345678");//密码
-//        GB28181Params.setLocalSIPDeviceId("34020000001110000006");//本机SIP设备ID
-//        GB28181Params.setLocalSIPMediaId("34020000001310000001");//本机SIP媒体ID
+        uiBinding.btnSwitch.setOnClickListener {
+            coroutineScope.launch {
+                if(iCurrentPort == SDKConstants.STREAM_CHANNEL_16110){
+                    ToastUtils.showToast(" 切换到红外摄像头端口")
 
-        var strIP = WiFiUtils.getIPAddress()
-        if(!strIP.equals("0.0.0.0")) {
-//            GB28181ServiceManager.getInstance().initGB28181Params(iCurrentPort,
-//                "10.250.13.67",
-//                5060,
-//                "34020000002000000001",
-//                "340200000",
-//                strIP,
-//                7060,
-//                "34020000001110000006",
-//                "12345678",
-//                "34020000001110000006",
-//                "34020000001310000001"
-//            );
-//                        GB28181ServiceManager.getInstance().initGB28181Params(iCurrentPort,
-//                "47.111.155.82",
-//                32003,
-//                "44010200492000000001",
-//                "4401020049",
-//                strIP,
-//                7060,
-//                "admin",
-//                "admin123",
-//                "34020000001311109900",
-//                "34020000001311109900"
-//            );
+                    iCurrentPort = SDKConstants.STREAM_CHANNEL_16115
+                    mPublisher.switchStreamSource(iCurrentPort, true)
+                } else {
+                    ToastUtils.showToast(" 切换到广角摄像头端口")
 
-            GB28181ServiceManager.getInstance().initGB28181Params(iCurrentPort,
-                "10.250.13.233",
-                15080,
-                "34020000002000000001",
-                "340200000",
-                strIP,
-                7060,
-                "34020000001320000003",
-                "12345678",
-                "34020000001320000003",
-                "34020000001320000003",
-                DeviceManager.getFirstDroneDevice()?.getDroneType()?.value ?: ""
-            );
+                    iCurrentPort = SDKConstants.STREAM_CHANNEL_16110
+                    mPublisher.switchStreamSource(iCurrentPort, true)
+                }
+            }
         }
 
-        GB28181ServiceManager.getInstance().setGB28181PublishListener(object:IGB28181PublishListener{
-            override fun onGB28181StartRegist() {
-                SDKLog.i("GB28181Fragment","onGB28181StartRegist")
+        //CameraKey.KeyCameraTransferPayLoadType.create().set(VideoCompressStandardEnum.H264)
+        var strIP = WiFiUtils.getIPAddress()
+        var url = ConfigInfo.Builder().setDeviceName("GB28181Test")
+            .setDeviceModel("ModelX")
+            .setDeviceId("34010000001311152900")
+            .setServerIp("124.71.57.212")
+            .setServerId("41010500002000000001")
+            .setServerPort(8116)
+            .setLocalPort(5065).setLocalIp(strIP)
+            .setUserName("34010000001311152900")
+            .setPasswd("Autel123").setChannels(hashMapOf(
+                "44010200492000000001" to GBChannel("Zoom", "44010200492000000001", SDKConstants.STREAM_CHANNEL_16110),
+                "44010200492000000002" to GBChannel("infrared", "44010200492000000002", SDKConstants.STREAM_CHANNEL_16115)
+            )).build().toString();
+
+        var param = PublishParam.Builder().setUrl(url).setTimeout(10).build()
+        Log.d(TAG, "initView: " + url)
+        if (mPublisher.configure(param) != 0) {
+            ToastUtils.showToast("配置失败")
+        }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun initData() {
+        val devicePosition = HashMap<String, String>()
+        devicePosition["Longitude"] = "123.12"
+        devicePosition["Latitude"] = "123.12"
+
+        val calendar = Calendar.getInstance()
+        val timeZone = TimeZone.getTimeZone("UTC")
+        calendar.timeZone = timeZone
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        dateFormat.timeZone = timeZone
+        devicePosition["Time"] = dateFormat.format(calendar.time)
+
+        mPublisher.setDevicePosition(devicePosition)
+    }
+
+    private fun initListener() {
+        mPublisher.setOnPublishListener(object :
+            IPublishListener {
+            override fun onConnecting() {
+                Log.i(TAG, "onConnecting");
+                ToastUtils.showToast("正在注册设备...")
             }
 
-            override fun onGB28181StartUnRegist() {
-                SDKLog.i("GB28181Fragment","onGB28181StartUnRegist")
+            override fun onConnected() {
+                Log.i(TAG, "onConnected");
+                ToastUtils.showToast("成功注册到服务器！！！")
             }
 
-            override fun onGB28181RegistSucc() {
-                SDKLog.i("GB28181Fragment","onGB28181RegistSucc")
+            override fun onConnectedFailed(code: PublishErrorCode) {
+                Log.e(TAG, "onConnectedFailed:$code");
+                ToastUtils.showToast("注册设备失败！！！")
             }
 
-            override fun onGB28181RegistFailed() {
-                SDKLog.i("GB28181Fragment","onGB28181RegistFailed")
+            override fun onStartPublish() {
+                Log.i(TAG, "onStartPublish");
+                ToastUtils.showToast("开始推流")
             }
 
-            override fun onGB28181UnRegistSucc() {
-                SDKLog.i("GB28181Fragment","onGB28181UnRegistSucc")
+            override fun onStopPublish() {
+                Log.i(TAG, "onStopPublish");
+                ToastUtils.showToast("停止推流")
             }
 
-            override fun onGB28181UnRegistFalied() {
-                SDKLog.i("GB28181Fragment","onGB28181UnRegistFalied")
+            override fun onFpsStatistic(fps: Int, channelName: String) {
+                Log.d(TAG, "onFpsStatistic: $channelName")
             }
 
-            override fun onGB28181StartAuth() {
-                SDKLog.i("GB28181Fragment","onGB28181StartAuth")
+            override fun onVideoBitrate(value: Int, channelName: String) {
             }
 
-            override fun onGB28181AuthSucc() {
-                SDKLog.i("GB28181Fragment","onGB28181AuthSucc")
+            override fun onAudioBitrate(value: Int) {
             }
 
-            override fun onGB28181AuthFalied() {
-                SDKLog.i("GB28181Fragment","onGB28181AuthFalied")
+            override fun onPublishSuccess() {
+                Log.i(TAG, "onPublishSuccess");
+                ToastUtils.showToast("推流成功")
             }
 
-            override fun onGB28181CatalogInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181CatalogInfo")
+            override fun onPublishFailed(errorCode: PublishErrorCode) {
+                Log.i(TAG, "onPublishFailed");
+                ToastUtils.showToast("推流失败")
             }
 
-            override fun onGB28181DeviceInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181DeviceInfo")
+            override fun onPublishFailed(channelName: String, errorCode: PublishErrorCode) {
+                Log.d(TAG, "onPublishFailed: $errorCode $channelName")
+                ToastUtils.showToast("推流失败:$channelName")
             }
 
-            override fun onGB28181DeviceStatusInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181DeviceStatusInfo")
-            }
-
-            override fun onGB28181DeviceControlInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181DeviceControlInfo")
-            }
-
-            override fun onGB28181MediaInviteInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181MediaInviteInfo")
-            }
-
-            override fun onGB28181MediaAckInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181MediaAckInfo")
-            }
-
-            override fun onGB28181MediaByeInfo() {
-                SDKLog.i("GB28181Fragment","onGB28181MediaByeInfo")
-            }
-
-
-            override fun onGB28181KeepAlive() {
-                SDKLog.i("GB28181Fragment","onGB28181KeepAlive")
-            }
-
-            override fun onGB28181MetaData() {
-                SDKLog.i("GB28181Fragment","onGB28181MetaData")
-            }
-
-            override fun onGB28181VideoFps(fps: Float) {
-                SDKLog.i("GB28181Fragment","onGB28181VideoFps")
-            }
-
-            override fun onGB28181VideoRate(videoRate: Float) {
-                SDKLog.i("GB28181Fragment","onGB28181VideoRate")
+            override fun onReconnect() {
+                Log.i(TAG, "onReconnect");
+                ToastUtils.showToast("正在重连...")
             }
         })
     }
 
     private fun stopPublish() {
         coroutineScope.launch {
-            GB28181ServiceManager.getInstance().stopPublishStream()
+            mPublisher.stop()
         }
 
-        btn_start.text = getString(R.string.debug_start)
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                btn_start.text = getString(R.string.debug_start)
+            }
+        }
     }
 
     private fun startPublish() {
         coroutineScope.launch {
-            GB28181ServiceManager.getInstance().startPublishStream()
+            mPublisher.start()
         }
-        btn_start.text = getString(R.string.debug_stop)
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                btn_start.text = getString(R.string.debug_stop)
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         coroutineScope.launch {
-            GB28181ServiceManager.getInstance().releasePublishStream()
+            mPublisher.release()
         }
 
 

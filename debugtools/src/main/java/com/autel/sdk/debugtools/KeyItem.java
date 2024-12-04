@@ -94,7 +94,7 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
             sb.append(" value:").append(value);
 
             if (pushCallBack != null) {
-                pushCallBack.actionChange(sb.toString());
+                pushCallBack.actionChange(MsgType.MSG_SUCCESS, sb.toString());
             }
         }
 
@@ -111,7 +111,7 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
             sb.append(" newValue:").append(newValue);
 
             if (pushCallBack != null) {
-                pushCallBack.actionChange(sb.toString());
+                pushCallBack.actionChange(MsgType.MSG_SUCCESS, sb.toString());
             }
         }
     };
@@ -255,37 +255,37 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
             }
             switch (type) {
                 case GET:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
+                    keyOperateCallBack.actionChange(MsgType.MSG_INFO, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
                             + "：【GET】 【" + keyInfo.keyName + "】 "
                             + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter)
                             + param);
                     break;
                 case SET:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
+                    keyOperateCallBack.actionChange(MsgType.MSG_INFO, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
                             + "：【SET】 【" + keyInfo.keyName + "】 "
                             + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter)
                             + param);
                     break;
                 case ACTION:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
+                    keyOperateCallBack.actionChange(MsgType.MSG_INFO, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
                             + "：【ACTION】 【" + keyInfo.keyName + "】 "
                             + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter)
                             + param);
                     break;
                 case LISTEN:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
+                    keyOperateCallBack.actionChange(MsgType.MSG_INFO, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
                             + "：【LISTEN】 【" + keyInfo.keyName + "】 "
                             + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter)
                             + param);
                     break;
                 case UN_LISTEN:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
+                    keyOperateCallBack.actionChange(MsgType.MSG_INFO, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
                             + "：【UN_LISTEN】 【" + keyInfo.keyName + "】 "
                             + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter)
                             + param);
                     break;
                 case REPORT:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
+                    keyOperateCallBack.actionChange(MsgType.MSG_INFO, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_send)
                             + "：【REPORT】 【" + keyInfo.keyName + "】 "
                             + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter)
                             + param);
@@ -301,25 +301,25 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
             }
             switch (type) {
                 case GET:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_SUCCESS, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【GET】 【" + keyInfo.keyName + "】 " +
                             SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_success)
                             + "：" + result);
                     break;
                 case SET:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_SUCCESS, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【SET】 【" + keyInfo.keyName + "】 " +
                             SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_success)
                             + "：" + result);
                     break;
                 case ACTION:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_SUCCESS, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【ACTION】 【" + keyInfo.keyName + "】 " +
                             SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_success)
                             + "：" + result);
                     break;
                 case LISTEN:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_SUCCESS, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【LISTEN】 【" + keyInfo.keyName + "】 " +
                             SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_success)
                             + "：" + result);
@@ -338,19 +338,19 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
 
             switch (type) {
                 case GET:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_ERROR, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【GET】 【" + keyInfo.keyName + "】" + errString);
                     break;
                 case SET:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_ERROR, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【SET】 【" + keyInfo.keyName + "】 " + errString);
                     break;
                 case ACTION:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_ERROR, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【ACTION】 【" + keyInfo.keyName + "】 " + errString);
                     break;
                 case LISTEN:
-                    keyOperateCallBack.actionChange(SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
+                    keyOperateCallBack.actionChange(MsgType.MSG_ERROR, SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_take_over)
                             + "：【LISTEN】 【" + keyInfo.keyName + "】 " + errString);
                     break;
             }
@@ -503,7 +503,7 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
             String msg = "【SET】【" + getName() + "】【" + keyInfo.keyName + "】 "
                     + SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_please_set_parameters_first);
             if (keyOperateCallBack != null) {
-                keyOperateCallBack.actionChange(msg);
+                keyOperateCallBack.actionChange(MsgType.MSG_INFO,msg);
             }
             ToastUtils.INSTANCE.showToast(msg);
             return null;
@@ -515,7 +515,7 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
                     + jsonStr +
                     SDKManager.get().getSContext().getString(com.autel.sdk.debugtools.R.string.debug_parameter);
             if (keyOperateCallBack != null) {
-                keyOperateCallBack.actionChange(msg);
+                keyOperateCallBack.actionChange(MsgType.MSG_INFO,msg);
             }
             ToastUtils.INSTANCE.showToast(msg);
             return null;
@@ -597,6 +597,10 @@ public class KeyItem<P, R> extends KeyBaseStructure implements Comparable<KeyIte
 
     public void  setStop(Boolean stop) {
         keyInfo.getTypeConverter().setStop(stop);
+    }
+
+    public void setRetryCount(int retryCount) {
+        this.retryCount = retryCount;
     }
 
 }

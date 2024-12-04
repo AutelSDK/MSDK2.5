@@ -10,67 +10,169 @@
     <LinearLayout
         android:id="@+id/setting_content"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:padding="@dimen/debug_dimen_dp_12"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center_vertical"
-        android:background="#ffffff"
         tools:ignore="MissingConstraints"
         android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="A-Mesh Link"
+            android:textColor="@color/debug_color_white"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/btn_net_mesh_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/start_mesh"/>
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Start Mesh"/>
 
         <Button
             android:id="@+id/btn_net_mesh_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/finish_mesh"/>
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Finish Mesh"/>
 
         <Button
             android:id="@+id/btn_net_mesh_disband"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/diss_mesh"/>
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Disband Mesh"
+            tools:ignore="DuplicateIds" />
 
         <Button
             android:id="@+id/btn_control_mode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/all_control"/>
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Control All"/>
 
         <Button
             android:id="@+id/btn_change_watch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/change_stream"/>
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Watch Drone"/>
 
         <Button
             android:id="@+id/btn_change_center_drone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="@string/change_relay"/>
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Switch Relay"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/single_setting_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:padding="@dimen/debug_dimen_dp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/setting_content"
+        android:gravity="center_vertical"
+        tools:ignore="MissingConstraints"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Single Link"
+            android:textColor="@color/debug_color_white"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/btn_net_single_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textAllCaps="false"
+            android:text="Start Match"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/info_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:padding="@dimen/debug_dimen_dp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/single_setting_content"
+        android:gravity="center_vertical"
+        tools:ignore="MissingConstraints"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/controlText"
+            android:layout_width="wrap_content"
+            android:gravity="start"
+            android:layout_height="wrap_content"
+            android:textColor="@color/debug_color_white"
+            android:textSize="12sp"/>
+        <TextView
+            android:id="@+id/controlDrone"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="start"
+            android:layout_height="wrap_content"
+            android:textColor="@color/debug_color_white"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/watchDrone"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="start"
+            android:layout_height="wrap_content"
+            android:textColor="@color/debug_color_white"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/modernMode"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="4dp"
+            android:gravity="start"
+            android:layout_height="wrap_content"
+            android:textColor="@color/debug_color_white"
+            android:textSize="12sp"/>
+
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="95dp"
+        android:layout_margin="@dimen/debug_dimen_dp_12"
+        android:background="#000"
+        android:layout_marginTop="30dp"
+        android:paddingBottom="6dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/info_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

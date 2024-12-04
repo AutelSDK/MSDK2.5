@@ -62,6 +62,7 @@ class MainFragment : AutelFragment() {
                     itemList.addAll(info.items)
                     addDestination(info.vavGraphId)
                 }
+                adapter.fragmentList = itemList.toList()
                 adapter.submitList(itemList.toList())
             }
         }
@@ -74,10 +75,17 @@ class MainFragment : AutelFragment() {
         }
     }
 
-    private fun adapterOnItemClick(item: FragmentPageInfoItem) {
-        view?.let {
-            Navigation.findNavController(it)
-                .navigate(item.id, bundleOf(MAIN_FRAGMENT_PAGE_TITLE to item.title))
+    private fun adapterOnItemClick(item: Any) {
+        if (item is FragmentPageInfoItem) {
+            view?.let {
+                Navigation.findNavController(it)
+                    .navigate(item.id, bundleOf(MAIN_FRAGMENT_PAGE_TITLE to item.title))
+            }
+        } else if (item is FragmentPageInfoItem.InnerFragmentPageInfoItem) {
+            view?.let {
+                Navigation.findNavController(it)
+                    .navigate(item.id, bundleOf(MAIN_FRAGMENT_PAGE_TITLE to item.title))
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package com.autel.sdk.debugtools.fragment;
 
 
+import com.autel.sdk.debugtools.MsgType;
+
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -11,6 +13,6 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface KeyItemActionListener<T> {
 
-    void actionChange(@Nullable T t);
+    void actionChange(MsgType msgType, @Nullable T t);
 }
 

@@ -1,57 +1,65 @@
 package com.autel.sdk.debugtools.fragment
-
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Environment
-import android.text.method.ScrollingMovementMethod
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.autel.drone.sdk.http.BaseRequest
-import com.autel.drone.sdk.libbase.error.AutelStatusCode
 import com.autel.drone.sdk.libbase.error.IAutelCode
-import com.autel.drone.sdk.vmodelx.interfaces.file.FileListener
-import com.autel.drone.sdk.vmodelx.manager.AlbumManager
+import com.autel.drone.sdk.log.SDKLog
+import com.autel.drone.sdk.vmodelx.interfaces.IAlbumManager
+import com.autel.drone.sdk.vmodelx.manager.DeviceManager
+import com.autel.drone.sdk.vmodelx.manager.SpeedModeManager
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.bean.AlbumFolderResultBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.bean.AlbumResultBean
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.bean.AutelAlbumBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.bean.AutelMediaBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.enums.MediaTypeEnum
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.enums.OrderTypeEnum
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.enums.StorageTypeEnum
-import com.autel.drone.sdk.vmodelx.module.fileservice.AutelDroneFile
-import com.autel.drone.sdk.vmodelx.module.fileservice.AutelFileUtil
-import com.autel.drone.sdk.vmodelx.module.fileservice.FileTransmitListener
-import com.autel.drone.sdk.vmodelx.module.fileservice.FolderQueryListener
-import com.autel.drone.sdk.vmodelx.module.fileservice.QueryFileListBean
-import com.autel.drone.sdk.vmodelx.utils.MicroFtpUtil
-import com.autel.drone.sdk.vmodelx.utils.S3DownloadInterceptor
-import com.autel.sdk.debugtools.KeyValueDialogUtil
+import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragmentMideaFilesBinding
-import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.io.*
-import java.text.SimpleDateFormat
-import java.util.*
+import java.io.File
+
 
 /**
  * all media files status generate with drone
  * Copyright: Autel Robotics
  * @author huangsihua on 2022/12/17.
  */
+@SuppressLint("SetTextI18n")
 class MediaFilesFragment : AutelFragment() {
 
     companion object {
         private const val TAG = "MediaFilesFragment"
-        private const val LISTEN_RECORD_MAX_LENGTH = 6000
+
+        val MediaTypes = listOf(MediaTypeEnum.MEDIA_ALL, MediaTypeEnum.MEDIA_PHOTO, MediaTypeEnum.MEDIA_VIDEO)
+        val StorageType = listOf(StorageTypeEnum.EMMC, StorageTypeEnum.SD)
+        val OrderType = listOf(OrderTypeEnum.NORMAL, OrderTypeEnum.REVERSE)
     }
 
     private lateinit var binding: FragmentMideaFilesBinding
+
+    private var mediaTypeEnum = MediaTypeEnum.MEDIA_ALL
+    private var storageType = StorageTypeEnum.EMMC
+    private var orderType = OrderTypeEnum.NORMAL
+    private val pageCount = 30   //MAX 500
+
+    private val handler = Handler(Looper.getMainLooper())
+
+    private val mediaList = mutableListOf<AutelMediaBean>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,444 +73,256 @@ class MediaFilesFragment : AutelFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initSpinnerOption(binding.sMediaType, MediaTypes.map { it.name })
+        initSpinnerOption(binding.sStorageType, StorageType.map { it.name })
+        initSpinnerOption(binding.sOrderType, OrderType.map { it.name })
+        updateSelection()
+    }
+
+    /**
+     * Get album service interface.
+     */
+    private fun getAlbumManager(): IAlbumManager? {
+        if (!DeviceManager.getDeviceManager().isSingleControl()) {
+            ToastUtils.showToast("It is suggested to switch to the single-control mode to improve the access speed.")
+        }
+        return DeviceManager.getDeviceManager().getFirstDroneDevice()?.getAlbumManager()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        changeHighSpeedMode()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        changeNormalSpeedMode()
+    }
+
+    /**
+     * Change to high download speed mode.
+     */
+    private fun changeHighSpeedMode() {
+        DeviceManager.getDeviceManager().getFirstDroneDevice()?.let {
+            SpeedModeManager.changeToHighDownload(it, 1) {}
+        }
+    }
+
+    /**
+     * Change to normal speed mode, Otherwise, the quality of the image transmission screen will be reduced.
+     */
+    private fun changeNormalSpeedMode() {
+        DeviceManager.getDeviceManager().getFirstDroneDevice()?.let {
+            SpeedModeManager.changeToNormalSpeed(it, 2) {
+            }
+        }
+    }
+
+    private fun initSpinnerOption(spinner: Spinner, data: List<String>) {
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, data)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                when (spinner) {
+                    binding.sMediaType ->  mediaTypeEnum = MediaTypes[position]
+                    binding.sStorageType -> storageType = StorageType[position]
+                    binding.sOrderType -> orderType = OrderType[position]
+                }
+                updateSelection()
+            }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+    private fun updateSelection(){
+        binding.mediaTypeTxt.text = "MediaType:$mediaTypeEnum"
+        binding.storageTxt.text = "StorageType:$storageType"
+        binding.orderTxt.text = "OrderType:$orderType"
     }
 
     private fun initView() {
-        binding.tvResult.movementMethod = ScrollingMovementMethod.getInstance()
-
-        binding.tvUpload.setOnClickListener {//上传文件
-            Log.e(TAG, "点击了上传文件")
-            binding.tvUpload.isClickable = false
-            binding.tvResult.text = "start upload"
-            lifecycleScope.launch(Dispatchers.IO) {
-                var path = copyToSdcard()
-                delay(500)
-                with(Dispatchers.Main) {
-                    var file = File(path)
-                    if (!file.exists()) {
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            Toast.makeText(
-                                context,
-                                getString(R.string.debug_file_does_not_exist),
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            binding.tvUpload.isClickable = true
-                        }
-                        return@launch
-                    }
-
-                    MicroFtpUtil.uploadMissionFile(file, object :
-                        FileTransmitListener<String> {
-                        override fun onSuccess(result: String?) {
-                            Log.e(TAG, "onSuccess")
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                result.also { binding.tvResult.text = "$it, upload success" }
-                                binding.tvUpload.isClickable = true
-                            }
-                        }
-
-                        override fun onProgress(sendLength: Long, totalLength: Long, speed: Long) {
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                (String.format(
-                                    getString(R.string.debug_current_upload_size_bytes),
-                                    sendLength
-                                )).also { binding.tvResult.text = it }
-                                binding.tvUpload.isClickable = true
-                            }
-                        }
-
-
-                        override fun onFailed(statusCodeNew: IAutelCode?, msg: String) {
-                            Log.e(TAG, "onFailed $statusCodeNew")
-                            lifecycleScope.launch(Dispatchers.Main) {
-                                statusCodeNew.also { binding.tvResult.text = it.toString() }
-                                binding.tvUpload.isClickable = true
-                            }
-                        }
-                    })
-                }
-            }
-        }
-        binding.tvDownload.setOnClickListener {
-            Log.e(TAG, "点击了下载文件")
-            "".also { binding.tvResult.text = it }
-            var desPath = "/sdcard/fise/1665107840"
-            var sourcePath = "/mission/1665107840"
-            AutelFileUtil.download(sourcePath, desPath, object :
-                FileListener<File> {
-                override fun onSuccess(result: File) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        (result.name + " " + result.absolutePath).also {
-                            binding.tvResult.text = it
-                        }
-                    }
-                }
-
-                override fun onProgress(sendLength: Long, totalLength: Long) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        (String.format(
-                            getString(R.string.debug_schedule),
-                            sendLength
-                        )).also { binding.tvResult.text = it }
-                    }
-                }
-
-                override fun onFailed(msg: String) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        msg.also { binding.tvResult.text = it }
-                    }
-                }
-            })
-        }
-        binding.tvQuery.setOnClickListener {
-            Log.e(TAG, "点击了查询文件")
-            "".also { binding.tvResult.text = it }
-            var sourcePath = "/mission/1665107840"
-            AutelFileUtil.queryFile(sourcePath, object : FolderQueryListener {
-
-                override fun onResponse(beans: QueryFileListBean?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        ("size= ${beans?.list?.size}").also { binding.tvResult.text = it }
-                    }
-                }
-
-                override fun onFail(code: Int) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        ("" + code).also { binding.tvResult.text = it }
-                    }
-                }
-            })
-        }
-        binding.tvDelete.setOnClickListener {
-            Log.e(TAG, "点击了删除文件")
-            val path = "/mission/1665107840"
-            "".also { binding.tvResult.text = it }
-            AutelFileUtil.deleteFile(path, object :
-                CommonCallbacks.CompletionCallbackWithParam<AutelDroneFile> {
-                override fun onSuccess(t: AutelDroneFile?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        binding.tvResult.text = getString(R.string.debug_result_code) + t?.message
-                    }
-                }
-
-                override fun onFailure(error: IAutelCode, msg: String?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        val acode: AutelStatusCode = error as AutelStatusCode;
-                        ("" + acode.code + " " + acode.msg).also { binding.tvResult.text = it }
-                    }
-                }
-            })
-        }
-        binding.btnClearlog.setOnClickListener {
-            binding.tvResult.text = ""
-            logMessage.delete(0, logMessage.length)
-        }
-
         binding.tvGetMediaList.setOnClickListener {
-            val str = Gson().toJson(
-                AlbumRequest(
-                    MediaTypeEnum.MEDIA_ALL,
-                    StorageTypeEnum.EMMC, "", 0, 10, OrderTypeEnum.NORMAL
-                )
-            )
-            KeyValueDialogUtil.showInputDialog(
-                requireActivity(), getString(R.string.debug_set_request_parameters), str, "", false
-            ) {
-                binding.tvResult.text = appendLogMessageRecord(it)
-                requestMediaFileList(Gson().fromJson(it, AlbumRequest::class.java))
-            }
+            binding.tvGetMediaList.isEnabled =false
+            getMediaList()
         }
 
         binding.tvGetAlbumFolderList.setOnClickListener {
-            val str = Gson().toJson(
-                AlbumFolderRequest(StorageTypeEnum.EMMC, OrderTypeEnum.NORMAL)
-            )
-            KeyValueDialogUtil.showInputDialog(
-                requireActivity(), getString(R.string.debug_set_request_parameters), str, "", false
-            ) {
-                binding.tvResult.text = appendLogMessageRecord(it)
-                requestMediaFolderList(Gson().fromJson(it, AlbumFolderRequest::class.java))
-            }
+            binding.tvGetAlbumFolderList.isEnabled = false
+            getMediaFolderList()
         }
 
         binding.tvAlbumFileDel.setOnClickListener {
-            val str = Gson().toJson(
-                DelRequest(0)
-            )
-            KeyValueDialogUtil.showInputDialog(
-                requireActivity(), getString(R.string.debug_set_request_parameters), str, "", false
-            ) {
-                binding.tvResult.text = appendLogMessageRecord(it)
-                requestDelAlbumFile(Gson().fromJson(it, DelRequest::class.java))
+            if(mediaList.isEmpty()){
+                ToastUtils.showToast("Please get media file list first!")
+                return@setOnClickListener
             }
+            binding.tvAlbumFileDel.isEnabled= false
+            mediaList.firstOrNull()?.let { delMediaFile(it)}
         }
+
         binding.tvAlbumFileDownload.setOnClickListener {
-            val str = Gson().toJson(
-                FileRequest("")
-            )
-            KeyValueDialogUtil.showInputDialog(
-                requireActivity(), getString(R.string.debug_set_request_parameters), str, "", false
-            ) {
-                binding.tvResult.text = appendLogMessageRecord(it)
-                requestDownloadAlbumFile(Gson().fromJson(it, FileRequest::class.java))
+            if(mediaList.isEmpty()){
+                ToastUtils.showToast("Please get media file list first!")
+                return@setOnClickListener
             }
+            binding.tvAlbumFileDownload.isEnabled = false
+            mediaList.firstOrNull()?.let { downloadFile(it)}
         }
 
         binding.tvAlbumFileCancelDownload.setOnClickListener {
-            val str = Gson().toJson(
-                FileRequest("")
-            )
-            KeyValueDialogUtil.showInputDialog(
-                requireActivity(), getString(R.string.debug_set_request_parameters), str, "", false
-            ) {
-                binding.tvResult.text = appendLogMessageRecord(it)
-                requestCancelDownload()
-            }
+            cancelDownload()
         }
-        binding.tvHealthCheck.setOnClickListener {
-            binding.tvResult.text =
-                appendLogMessageRecord(getString(R.string.debug_health_check_request))
-            /*MicroFtpUtil.healthCheck(object : CommonCallbacks.CompletionCallbackWithParam<String> {
-                override fun onSuccess(t: String?) {
-                    activity?.runOnUiThread {
-                        binding.tvResult.text = appendLogMessageRecord(t)
-                    }
-                }
+    }
 
+    private fun getMediaList() {
+        getAlbumManager()?.getMediaFileList(mediaTypeEnum, storageType,
+            "",   //empty for all file, or specify folder
+            0, pageCount, orderType, object : CommonCallbacks.CompletionCallbackWithParam<AlbumResultBean> {
                 override fun onFailure(error: IAutelCode, msg: String?) {
-                    val str =
-                        getString(R.string.debug_code) + error.code + ", " + getString(R.string.debug_message) + msg
-                    activity?.runOnUiThread {
-                        binding.tvResult.text = appendLogMessageRecord(str)
-                    }
-                }
-            })*/
-        }
-
-    }
-
-    val pos = 1
-    var baseRequest: BaseRequest? = null
-    var s3DownloadInterceptor: S3DownloadInterceptor? = null
-
-    private fun requestCancelDownload() {
-        baseRequest?.let { AlbumManager.getAlbumManager().cancelDownload(it) }
-        s3DownloadInterceptor?.let { it.cancel() }
-    }
-
-    private fun requestDownloadAlbumFile(request: FileRequest) {
-        if (!fileList.isNullOrEmpty() && fileList!!.isNotEmpty()) {
-            var sourceFile = fileList!![pos].getOriginPath()
-
-            var destFile = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-
-            var saveFile = destFile!!.absolutePath + "/" + fileList!![pos].name
-
-            Log.e(TAG, "sourceFile $sourceFile")
-            Log.e(TAG, "destFile $saveFile")
-
-            s3DownloadInterceptor = AlbumManager.getAlbumManager().downloadMediaFileNew(
-                sourceFile,
-                saveFile,
-                object : CommonCallbacks.DownLoadCallbackWithProgress<Double> {
-
-                    override fun onSuccess(file: File?) {
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            binding.tvResult.text =
-                                getString(R.string.debug_success) + " ${file!!.absolutePath}"
-                        }
-                    }
-
-                    override fun onProgressUpdate(progress: Double, speed: Double) {
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            if (isAdded) {
-                                binding.tvResult.text = getString(R.string.debug_progress) + progress + ", " + getString(R.string.debug_speed) + speed
-                            }
-                        }
-                    }
-
-                    override fun onFailure(error: IAutelCode) {
-                        lifecycleScope.launch(Dispatchers.Main) {
-                            val acode: AutelStatusCode = error as AutelStatusCode;
-                            ("" + acode.code + " " + acode.msg).also { binding.tvResult.text = it }
-                        }
-                        Log.e(TAG, "onFailure ${error.code}, ${error.toString()}")
-                    }
-                })
-        }
-    }
-
-    private fun requestDelAlbumFile(request: DelRequest) {
-        Log.e(TAG, "requestDelAlbumFile ${request.index}")
-        AlbumManager.getAlbumManager()
-            .deleteMediaFile(request.index, object : CommonCallbacks.CompletionCallback {
-                override fun onSuccess() {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        binding.tvResult.text = getString(R.string.debug_success)
+                    handler.post {
+                        binding.tvGetMediaList.isEnabled = true
+                        binding.tvResult.text = "getMediaList fail: $error, $msg"
                     }
                 }
 
-                override fun onFailure(error: IAutelCode, msg: String?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        val acode: AutelStatusCode = error as AutelStatusCode;
-                        ("" + acode.code + " " + acode.msg).also { binding.tvResult.text = it }
-                    }
-                }
-            })
-    }
-
-    var fileList: List<AutelMediaBean>? = mutableListOf()
-
-
-    private fun requestMediaFileList(request: AlbumRequest) {
-        binding.tvResult.text = appendLogMessageRecord(getString(R.string.debug_ask))
-        AlbumManager.getAlbumManager().getMediaFileList(request.type,
-            request.storageType,
-            request.albumName,
-            request.offset,
-            request.count,
-            request.order,
-            object : CommonCallbacks.CompletionCallbackWithParam<AlbumResultBean> {
                 override fun onSuccess(t: AlbumResultBean?) {
-                    fileList = t!!.pathlist
-                    Log.d(TAG, "totalCnt=${t.totalCnt}")
-                    Log.d(TAG, "fileList size=${fileList?.size}")
-                    fileList?.forEach {
-                        Log.d(
-                            TAG,
-                            "${it.mediaType}, size=${it.size}, index(id)=${it.index} ,name=${it.name}"
-                        )
-
-                        if ("Package".equals(it.name)) {
-                            Log.e(TAG, "Package ====Thumbnail${it.getThumbnailPath()}")
-                            Log.e(TAG, "Package ====size =${it.filelist.size}")
-                            it.filelist.forEach {
-                                Log.d(
-                                    TAG,
-                                    "${it.mediaType}, size=${it.size}, index(id)=${it.index} ,name=${it.name}"
-                                )
-                                if (it.mediaType != 0) {
-                                    Log.i(TAG, "Thumbnail=${it.getThumbnailPath()}")
-                                    Log.i(TAG, "OriginPath=${it.getOriginPath()}")
-                                    Log.i(TAG, "PreviewPath= ${it.getPreviewPath()}")
-                                    Log.i(TAG, "ScreennailPath=${it.getScreennailPath()}")
-                                } else {
-                                    Log.i(TAG, "OriginPath =${it.getOriginPath()}")
-                                }
-                            }
-                            Log.e(TAG, "Package === =end")
-                        } else {
-                            if (it.mediaType != 0) {
-                                Log.d(TAG, "Thumbnail=${it.getThumbnailPath()}")
-                                Log.d(TAG, "OriginPath=${it.getOriginPath()}")
-                                Log.d(TAG, "PreviewPath= ${it.getPreviewPath()}")
-                                Log.d(TAG, "ScreennailPath=${it.getScreennailPath()}")
-                            } else {
-                                Log.d(TAG, "OriginPath =${it.getOriginPath()}")
-                            }
+                    handler.post {
+                        binding.tvGetMediaList.isEnabled = true
+                        binding.tvResult.text = "getMediaList success: list size = ${t?.pathlist?.size}"
+                        t?.let {
+                            val list = it.pathlist ?: emptyList()
+                            val adapter = ImageAdapter(list)
+                            mediaList.clear()
+                            mediaList.addAll(list)
+                            binding.listView.setLayoutManager(LinearLayoutManager(requireContext()))
+                            binding.listView.adapter = adapter
                         }
                     }
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        binding.tvResult.text = appendLogMessageRecord(t?.toString())
-                    }
-                }
-
-                override fun onFailure(error: IAutelCode, msg: String?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        val str =
-                            getString(R.string.debug_code) + error.code + ", " + getString(R.string.debug_message) + msg
-                        binding.tvResult.text = appendLogMessageRecord(str)
-                    }
                 }
             })
     }
 
-    private fun requestMediaFolderList(request: AlbumFolderRequest) {
-        binding.tvResult.text = appendLogMessageRecord(getString(R.string.debug_ask))
-        AlbumManager.getAlbumManager().getMediaFolderList(request.storageType, request.sortType,
-            object : CommonCallbacks.CompletionCallbackWithParam<AlbumFolderResultBean> {
+    /**
+     * Get media folder list, maybe don't have folder.
+     */
+    private fun getMediaFolderList() {
+        getAlbumManager()?.getMediaFolderList(
+            storageType,
+            orderType,
+            object :CommonCallbacks.CompletionCallbackWithParam<AlbumFolderResultBean>{
+                override fun onFailure(error: IAutelCode, msg: String?) {
+                    handler.post {
+                        binding.tvGetAlbumFolderList.isEnabled = true
+                        binding.tvResult.text = "getMediaFolderList fail: $error, $msg"
+                    }
+                }
+
                 override fun onSuccess(t: AlbumFolderResultBean?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        var result = t?.let { t.folderList }
-                        binding.tvResult.text = appendLogMessageRecord(result.toString())
-                    }
-                }
-
-                override fun onFailure(error: IAutelCode, msg: String?) {
-                    lifecycleScope.launch(Dispatchers.Main) {
-                        val str =
-                            getString(R.string.debug_code) + error.code + ", " + getString(R.string.debug_message) + msg
-                        binding.tvResult.text = appendLogMessageRecord(str)
+                    handler.post {
+                        binding.tvGetAlbumFolderList.isEnabled = true
+                        binding.tvResult.text = "getMediaFolderList success: result = $t"
+                        t?.let {
+                            SDKLog.i(TAG, "getMediaFolderList $it")
+                            val adapter = ImageAdapter(it.folderList ?: emptyList())
+                            binding.listView.setLayoutManager(LinearLayoutManager(requireContext()));
+                            binding.listView.adapter = adapter
+                        }
                     }
                 }
             })
-
     }
 
+    private fun delMediaFile(mediaBean: AutelMediaBean){
+        val fileId = mediaBean.index
+        getAlbumManager()?.deleteMediaFile(fileId,object :CommonCallbacks.CompletionCallback{
 
-    private val logMessage = StringBuilder()
-    private fun appendLogMessageRecord(appendStr: String?): String {
-        val curTime = SimpleDateFormat("HH:mm:ss").format(Date())
-        logMessage.append(curTime)
-            .append(":")
-            .append(appendStr)
-            .append("\n")
-
-        //长度限制
-        var result = logMessage.toString()
-        if (result.length > LISTEN_RECORD_MAX_LENGTH) {
-            result = result.substring(result.length - LISTEN_RECORD_MAX_LENGTH)
-        }
-        return result
-    }
-
-    data class AlbumRequest(
-        var type: MediaTypeEnum,
-        var storageType: StorageTypeEnum,
-        var albumName: String? = " ",
-        var offset: Int,
-        var count: Int,
-        var order: OrderTypeEnum
-    )
-
-    data class AlbumFolderRequest(
-        var storageType: StorageTypeEnum,
-        var sortType: OrderTypeEnum
-    )
-
-    data class DelRequest(
-        var index: Int,
-    )
-
-    data class FileRequest(
-        var fileName: String,
-    )
-
-
-    private fun copyToSdcard(): String {
-        val sourceFilePath = "1698822367"
-        val targetDir = "${context?.filesDir}/mission_test/"
-        val dir = File(targetDir)
-        if (!dir.exists()) {
-            dir.mkdirs()
-        }
-
-        val targetFilePath = targetDir + "1698822367"
-
-        try {
-            val inputStream: InputStream = requireActivity().assets.open(sourceFilePath)
-            val outputStream: OutputStream = FileOutputStream(targetFilePath)
-            val buffer = ByteArray(1024)
-            var length: Int
-            while (inputStream.read(buffer).also { length = it } > 0) {
-                outputStream.write(buffer, 0, length)
+            override fun onFailure(code: IAutelCode, msg: String?) {
+                handler.post {
+                    binding.tvAlbumFileDel.isEnabled= true
+                    binding.tvResult.text = "delMediaFile fail: $code, $msg"
+                }
             }
-            inputStream.close()
-            outputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return targetFilePath
+
+            override fun onSuccess() {
+                handler.post {
+                    binding.tvAlbumFileDel.isEnabled= true
+                    binding.tvResult.text = "delMediaFile success : $mediaBean"
+                }
+            }
+        })
     }
 
+    private var downloadRequest:BaseRequest? = null
+    private fun downloadFile(mediaBean: AutelMediaBean){
+        val destFile = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath + File.separator +  mediaBean.name
+        val sourceFile  = mediaBean.getOriginPath()
+        downloadRequest = getAlbumManager()?.downloadMediaFile(sourceFile, destFile, object:CommonCallbacks.DownLoadCallbackWithProgress<Double>{
+            override fun onFailure(error: IAutelCode) {
+                handler.post {
+                    binding.tvAlbumFileDownload.isEnabled = true
+                    binding.tvResult.text = "download file fail: $error"
+                }
+            }
+
+            override fun onSuccess(file: File?) {
+                handler.post {
+                    binding.tvAlbumFileDownload.isEnabled = true
+                    binding.tvResult.text = "download success : ${file?.absolutePath}"
+                }
+            }
+
+            override fun onProgressUpdate(progress: Double, speed: Double) {
+                handler.post {
+                    binding.tvResult.text = "download success process=$progress, speed=$progress"
+                }
+            }
+
+        })
+    }
+
+    private fun cancelDownload(){
+        downloadRequest?.let { getAlbumManager()?.cancelDownload(it) }
+    }
+}
+
+@SuppressLint("DefaultLocale", "SetTextI18n")
+class ImageAdapter(private val mediaList: List<Any>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.album_media_list_item, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val mediaBean = mediaList[position]
+        //Glide.with(this).load(R.drawable.your_image).into(imageView);
+        //holder.imageView.setImageURI(Uri.parse(mediaBean.getThumbnailPath()))
+        if(mediaBean is AutelMediaBean) {
+            holder.name.text = mediaBean.name
+            holder.url.text = mediaBean.getOriginPath()
+            holder.url1.text = mediaBean.getPreviewPath()
+            holder.url2.text = mediaBean.getScreennailPath()
+            mediaBean.size?.let {
+                val size = String.format("%.2f", it.toDouble().div(1024).div(1024))
+                holder.sizeView.text = "$size M"
+            }
+        } else if(mediaBean is AutelAlbumBean){
+            holder.name.text = mediaBean.name
+            holder.url.text = mediaBean.thumbnail
+            holder.sizeView.text =  mediaBean.count.toString()
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return mediaList.size
+    }
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var imageView: ImageView = itemView.findViewById(R.id.imageView)
+        var name: TextView = itemView.findViewById(R.id.textViewName)
+        var url: TextView = itemView.findViewById(R.id.textViewAddress)
+        var url1: TextView = itemView.findViewById(R.id.textViewAddress1)
+        var url2: TextView = itemView.findViewById(R.id.textViewAddress2)
+        var sizeView: TextView = itemView.findViewById(R.id.textViewSize)
+    }
 }

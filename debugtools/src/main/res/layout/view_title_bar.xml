@@ -66,7 +66,7 @@
 
     <TextView
         android:id="@+id/title_text_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:autoSizeMaxTextSize="20dp"
         android:autoSizeMinTextSize="14dp"
@@ -76,7 +76,7 @@
         android:textColor="@color/debug_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.autel.sdk.debugtools.view.spinnerview.DebugSpinnerView

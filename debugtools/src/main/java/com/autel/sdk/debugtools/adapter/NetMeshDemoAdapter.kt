@@ -1,20 +1,17 @@
 package com.autel.sdk.debugtools.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-
 import androidx.recyclerview.widget.RecyclerView
-import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelRemoteDevice
-import com.autel.drone.sdk.vmodelx.interfaces.IBaseDevice
-import com.autel.sdk.debugtools.R
-import com.autel.drone.sdk.vmodelx.manager.DeviceManager
+import com.autel.drone.sdk.vmodelx.module.networking.bean.DeviceInfoBean
 import com.autel.sdk.debugtools.databinding.ItemNetMeshDemoBinding
 
 
 class NetMeshDemoAdapter : RecyclerView.Adapter<NetMeshDemoAdapter.ViewHolder>() {
-    var dataList: MutableList<IBaseDevice>? = null
+    var dataList: MutableList<Any>? = null
     var deviceIdList: MutableList<Int>? = mutableListOf()
 
 
@@ -45,18 +42,64 @@ class NetMeshDemoAdapter : RecyclerView.Adapter<NetMeshDemoAdapter.ViewHolder>()
     inner class ViewHolder(val binding: ItemNetMeshDemoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bindData(device: IBaseDevice, position: Int) {
-            val context = binding.root.context
-            if(device is IAutelDroneDevice) {
-                binding.tvIpName.text = context.getString(R.string.drone_info, device.getDeviceNumber(), device.getDeviceInfoBean()?.deviceName)
-                binding.tvValue.text = context.getString(R.string.drone_status, device.isCenter(), device.isControlled(), device.isWatched(), device.isConnected())
-                binding.tvType.text = ""
-                binding.tvControled.text = ""
-            } else if(device is IAutelRemoteDevice) {
-                binding.tvIpName.text = context.getString(R.string.remote_info, device.getDeviceNumber(), device.getDeviceInfoBean()?.deviceName)
-                binding.tvValue.text = context.getString(R.string.remote_status, device.getDeviceInfoBean()?.isMainRc, device.getDeviceInfoBean()?.isLocalRc)
-                binding.tvType.text = ""
-                binding.tvControled.text = ""
+        @SuppressLint("SetTextI18n")
+        fun bindData(device: Any, position: Int) {
+            /*binding.cbCheck.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener{
+                override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                    if(p1){
+                        deviceIdList?.add(data.iDeviceID)
+                    }else{
+                        deviceIdList?.remove(data.iDeviceID)
+                    }
+                }
+            })*/
+
+            binding.container.setOnClickListener {
+                val deviceId = when (device) {
+                    is IAutelDroneDevice -> {
+                        device.getDeviceNumber()
+                    }
+
+                    is IAutelRemoteDevice -> {
+                        device.getDeviceNumber()
+                    }
+
+                    is DeviceInfoBean -> {
+                        device.iDeviceID
+                    }
+
+                    else -> {
+                        0
+                    }
+                }
+                onItemClick?.invoke(deviceId)
+            }
+
+            when (device) {
+                is IAutelDroneDevice -> {
+                    binding.tvIpName.text = "Drone【id:${ device.getDeviceNumber()}, name:${device.getDeviceInfoBean()?.deviceName}】"
+                    binding.tvValue.text = "Relay : ${device.isCenter()}, Controlled : ${device.isControlled()}, Watched : ${device.isWatched()}, Online : ${device.isConnected()}"
+
+                    binding.tvType.text ="";
+                    binding.tvControled.text = "";
+
+                }
+
+                is IAutelRemoteDevice -> {
+                    binding.tvIpName.text = "Remoter【id:${ device.getDeviceNumber()}, name : ${device.getDeviceInfoBean()?.deviceName}】"
+                    binding.tvValue.text = "Main RC : ${device.getDeviceInfoBean()?.isMainRc}, Local RC : ${device.getDeviceInfoBean()?.isLocalRc}"
+
+                    binding.tvType.text = ""
+                    binding.tvControled.text = ""
+                }
+
+                is DeviceInfoBean -> {
+                    binding.tvIpName.text = "Remoter【id:${ device.iDeviceID}, name : ${device.deviceName}】"
+                    binding.tvValue.text = "Main RC : ${device.isMainRc}, Local RC : ${device.isLocalRc}"
+
+                    binding.tvType.text = ""
+                    binding.tvControled.text = ""
+                }
             }
         }
     }

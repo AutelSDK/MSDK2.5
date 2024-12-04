@@ -18,20 +18,14 @@
     <string name="debug_item_multi_video_decoding_title">Multi-Video Decoding</string>
     <string name="debug_item_multi_video_decoding_description">Demonstrate how to use the Multi-Video Decoding function</string>
 
+    <string name="debug_item_audio_video_center_title">Audio Video Center</string>
+    <string name="debug_item_audio_video_center_title_description">Provides various audio and video capabilities</string>
+
     <string name="debug_item_livestreaming_title">LiveStreaming</string>
     <string name="debug_item_livestreaming_title_description">Demonstrate how to use the LiveStream</string>
 
-    <string name="debug_item_rtspclient_title">RtspClient</string>
-    <string name="debug_item_rtspclient_title_description">Demonstrate how to use the RtspClient</string>
-
-    <string name="debug_item_rtspserver_title">RtspServer</string>
-    <string name="debug_item_rtspserver_title_description">Demonstrate how to use the RtspServer</string>
-
     <string name="debug_item_gb28181_title">GB28181Publisher</string>
     <string name="debug_item_gb28181_title_description">Demonstrate how to use the GB28181Publisher</string>
-
-    <string name="debug_item_video_convert">ConvertVideo</string>
-    <string name="debug_item_video_convert_description">Demonstrate how to use the ConvertVideo</string>
 
     <string name="debug_item_multi_device_title">Multi-Device</string>
     <string name="debug_item_multi_device_title_description">Demonstrate how to use the MultiDevice</string>
@@ -146,7 +140,7 @@
     <string name="debug_remote_id">RemoteId</string>
     <string name="debug_system_manager">SystemManager</string>
     <string name="debug_nest">Nest</string>
-    <string name="debug_mesh">Mesh</string>
+    <string name="debug_mesh">AMesh</string>
     <string name="debug_mission_manager">MISSION MANAGER</string>
     <string name="debug_accessories_proxy">ACCESSORIES PROXY</string>
     <string name="debug_cloud_api">CLOUD API </string>
@@ -268,7 +262,7 @@
     <string name="debug_text_step_six_tips">Fold the front arms, nose up</string>
     <string name="debug_text_calibration_waiting">Calibrating… Please wait…</string>
 
-    <string name="debug_text_calibration_content">Keep away from metal or charged objects and keep the aircraft\n Off the ground %s\n\n· Do not turn off the aircraft power or starter motors</string>
+    <string name="debug_text_calibration_content">Keep away from metal or charged objects and keep the aircraft\n Off the ground %s\n\n· Do not turn off the aircraft power or starter motors</string>
     <string name="debug_text_step_first_content">Rotate the aircraft horizontally 360 degrees as shown</string>
     <string name="debug_text_step_seconde_content">Rotate the aircraft 360 degrees vertically as shown</string>
     <string name="debug_text_step_third_content">As shown in the picture, rotate the aircraft sideways by 360 degrees</string>
@@ -809,28 +803,7 @@
     <string name="debug_topology_device_description">Topology devices API Debug</string>
     <string name="debug_item_virtual_stick_title">Virtual Stick</string>
     <string name="debug_item__virtual_stick_description">Virtual Stick Demo</string>
-    <string name="start_mesh">Start Mesh</string>
-    <string name="finish_mesh">Finish Mesh</string>
-    <string name="diss_mesh">Dissolve Mesh</string>
-    <string name="all_control">Full Control</string>
-    <string name="change_stream">Stream Switch</string>
-    <string name="change_relay">Relay Switch</string>
-    <string name="diss_succuss">Dissolved Successfully</string>
-    <string name="diss_fail">Dissolution Failed: %1$s</string>
-    <string name="finish_mesh_fail">Mesh Completion Failed: %1$s</string>
-    <string name="stream_craft">Stream Craft: %1$s</string>
-    <string name="control_mode">Control Mode: %1$s: %2$s</string>
-    <string name="mesh_timeout">Mesh Timed Out, Restarting</string>
-    <string name="relay_setting_success">Relay Setting Successful: %1$s</string>
-    <string name="relay_setting_fail">Relay Setting Failed: %1$s</string>
-    <string name="steam_setting_success">Stream Setting Successful: %1$s</string>
-    <string name="stream_setting_fail">Stream Setting Failed: %1$s</string>
-    <string name="group_control">Group Control (groupId=%1$s)</string>
-    <string name="single_congrol">Single Control (nodeId=%1$s)</string>
-    <string name="setting_success">%1$s Set Successfully</string>
-    <string name="setting_fail">%1$s Setting Failed: %2$s</string>
-    <string name="start_mesh_fail">Mesh Start Failed: %1$s</string>
-    <string name="debug_flight_data_title">Real-time Flight Data:</string>
+
 
     <string name="device_id_ip">DeviceID: %1$s IP: %2$s</string>
     <string name="device_type_biz_node_type">deviceType: %1$s bizNodeType: %2$s</string>
@@ -841,7 +814,6 @@
     <string name="drone_status">Relay aircraft: %1$b, Controlled aircraft: %2$b, Watch aircraft: %3$b, Online: %4$b</string>
     <string name="remote_info">Remote Controller【id: %1$d, name: %2$s】</string>
     <string name="remote_status">Main remote: %1$b, Local remote: %2$b</string>
-
     <string name="rtk_unknown_solution">Unknown solution</string>
     <string name="rtk_no_solution">No solution</string>
     <string name="rtk_position_by_fix">Position specified by Fix Position</string>
@@ -874,5 +846,73 @@
     <string name="rtk_unconnected">RTK Unconnected</string>
     <string name="rtk_initial_status">Differential solution type: 0, Is FIX: No,\n GPS satellites: 0, BeiDou: 0, GLONASS satellites: 0, Galileo satellites: 0, Tracked satellites: 0\nCoordinates: (Longitude: 0.0, Latitude: 0.0, Altitude: 0.0)\nStandard deviation: (Longitude deviation: 0.0, Latitude deviation: 0.0, Height deviation: 0.0</string>
 
+    <string name="debug_item_fly_zone_title">Fly Zone</string>
+    <string name="debug_item_fly_zone_description">Fly Zone Demo</string>
+    <string name="debug_frequency_band_page">Frequency Band</string>
+    <string name="debug_frequency_band_page_description">Frequency Band API Debug</string>
+    <string name="debug_flight_data_title">Real-time Flight Data:</string>
+
+    <string name="upload_mission">upload mission</string>
+    <string name="start_mission">start mission</string>
+    <string name="pause_mission">pause mission</string>
+    <string name="resume_mission">resume mission</string>
+    <string name="exit_mission">exit mission</string>
+    <string name="mission_demo">WaypointMissionManager Demo</string>
+    <string name="mission_demo_description">Demonstration of Route Task Interface Process</string>
+    <string name="mission_record">Mission Record</string>
+    <string name="mission_record_description">Demonstrate mission record -m</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="enter_record">Enter record mode</string>
+    <string name="exit_record">Exit record mode</string>
+    <string name="debug_test_key">Key Test</string>
+    <string name="debug_test_key_description">Auto test all key</string>
+    <!--Perception-->
+    <string name="debug_perception_page">Perception</string>
+    <string name="debug_perception_page_description">Perception API Debug</string>
+    <string name="common_text_avoidance_behavior">Obstacle Avoidance System</string>
+    <string name="common_text_avoidance_behavior_desc">When obstacles are detected within the flight range, the aircraft will automatically apply the OA (Obstacle Avoidance) system to ensure safety.</string>
+    <string name="common_text_avoidance_behavior_close">Off</string>
+    <string name="common_text_avoidance_behavior_brake">Brake</string>
+    <string name="common_text_avoidance_behavior_rounded">Bypass</string>
+    <string name="common_text_safety_distance">Safety Distance (%s-%s)</string>
+    <string name="common_text_alarm_distance">Warning Distance (%s-%s)</string>
+
+    <string name="debug_preview_info_page">SDK Info.</string>
+    <string name="debug_preview_info_description">Show current sdk information</string>
+
+    <string name="debug_lte_page">LTE</string>
+    <string name="debug_lte_page_description">LTE API Debug</string>
+
+    <!--Alarm-->
+    <string name="debug_alarm_page">Alarm</string>
+    <string name="debug_alarm_page_description">Alarm API Debug</string>
+
+
+    <!--rtk center-->
+    <string name="debug_rtk_center_page">RTK Center</string>
+    <string name="debug_rtk_center_page_description">RTK Center API Debug</string>
+
+    <string name="debug_open_radar">Open Radar</string>
+    <string name="debug_close_radar">Close Radar</string>
+    <string name="debug_online_upgrade_title">Online upgrade check</string>
+    <string name="debug_wappoint_api_test_title">Debugging of route task management interface</string>
+    <string name="debug_lte_api_title">LTE Debug</string>
+
+    <string name="debug_rtkcenter_title">RTKCenter API debug</string>
+    <string name="debug_rtk_module_enable">RTK Enable</string>
+    <string name="debug_qianxun_rtk">Qianxun RTK</string>
+    <string name="debug_rtk_fix_state">%1s:%2s</string>
+    <string name="debug_gps_satellites_total">Tracking Satellite:%s</string>
+    <string name="debug_satellites_desc">GPS Satellites:%1s Beidou Satellite:%2s \nGlonass Satellite:%3s Galileo Satellite:%4s</string>
+    <string name="debug_rtk_location_desc">Coordinate position: [longitude:%1s; latitude:%2s; altitude:%3s]</string>
+    <string name="debug_rtk_accuracy_deviation">Standard deviation: [longitude:% 1s; latitude:% 2s; altitude:% 3s]</string>
+    <string name="debug_rtk_result_Desc">Differential decomposition type description:% 1s; Is FIX:% 2s</string>
+
+    <string name="netmesh_disband">Network disbanded</string>
+    <string name="netmesh_timeout">Network timeout, restarting</string>
+    <string name="center_set_success">Relay set successfully: %d</string>
+    <string name="center_set_failed">Relay set failed: %s</string>
+    <string name="stream_set_success">Stream set successfully: %d</string>
+    <string name="stream_set_failed">Stream set failed: %s</string>
 
 </resources>

@@ -19,8 +19,14 @@
     <string name="debug_item_multi_video_decoding_title">多视频解码</string>
     <string name="debug_item_multi_video_decoding_description">演示如何使用多视频解码功能</string>
 
-    <string name="debug_item_livestreaming_title">推流</string>
-    <string name="debug_item_livestreaming_title_description">演示如何使用 LiveStream</string>
+    <string name="debug_item_audio_video_center_title">媒体中心</string>
+    <string name="debug_item_audio_video_center_title_description">提供各种音视频能力</string>
+
+    <string name="debug_item_livestreaming_title">RTMP推流</string>
+    <string name="debug_item_livestreaming_title_description">演示如何使用 RTMP推流</string>
+
+    <string name="debug_item_gb28181_title">GB28181推流</string>
+    <string name="debug_item_gb28181_title_description">演示如何使用 GB28181推流</string>
 
     <string name="debug_item_multi_device_title">多设备</string>
     <string name="debug_item_multi_device_title_description">演示如何使用 MultiDevice</string>
@@ -666,7 +672,7 @@
     <string name="debug_key_list_dronesystemstatushfntfy">飞机通用参数上报（5hz）</string>
     <string name="debug_key_list_dronesystemstatuslfntfy">飞机通用参数上报（2hz）</string>
     <string name="debug_key_list_dronecontrolnightnavigationled">控制led夜航灯</string>
-    <string name="debug_key_list_droneversionntfy">飞机设备信息通知</string>
+    <string name="debug_key_list_droneversionntfy">��机设备信息通知</string>
     <string name="debug_key_list_droneeventntfy">飞机事件通知</string>
     <string name="debug_key_list_dronetempconnectntfy">设备临时连接上报 飞机未连接时可以收到</string>
     <string name="debug_key_list_droneutctimesyncntfy">飞机gps utc时间同步</string>
@@ -787,8 +793,6 @@
     <string name="debug_item_virtual_stick_title">虚拟摇杆</string>
     <string name="debug_item__virtual_stick_description">演示如何使用虚拟摇杆</string>
 
-    <string name="debug_flight_data_title">实时飞行数据:</string>
-
     <string name="device_id_ip">设备ID: %1$s IP: %2$s</string>
     <string name="device_type_biz_node_type">设备类型: %1$s 业务节点类型: %2$s</string>
     <string name="network_node_type">网络节点类型: %s</string>
@@ -815,6 +819,8 @@
     <string name="rtk_narrow_fixed">窄巷固定解</string>
     <string name="rtk_inertial_nav">纯惯导定位解</string>
     <string name="rtk_inertial_single">惯导与单点定位组合解</string>
+     <string name="common_text_safety_distance">安全距离（%s-%s）</string>
+     <string name="common_text_alarm_distance">告警距离（%s-%s）</string>
     <string name="rtk_inertial_pseudorange">惯导与伪距差分组合解</string>
     <string name="rtk_inertial_float">惯导与载波相位差分浮点解组合解</string>
     <string name="rtk_inertial_fixed">惯导与载波相位差分固定解组合解</string>
@@ -825,9 +831,79 @@
     <string name="rtk_time_used">用时%1$ds</string>
     <string name="rtk_yes">是</string>
     <string name="rtk_no">否</string>
-    <string name="rtk_status_info">差分解类型值：%1$s,%2$s,posType:%3$d,是否FIX:%4$s,\n GPS卫星数:%5$d,北斗数：%6$d,格洛纳斯卫星数:%7$d,伽利略卫星数：%8$d,跟踪卫星数:%9$d\n坐标:(经度：%10$s，纬度:%11$s,海拔:%12$s)\n标准差:(经度偏差:%13$sm,纬度偏差:%14$sm ,高度偏差:%15$sm)</string>
+    <string name="rtk_status_info">差分解类型值：%1$s,%2$s,posType:%3$d,是否FIX:%4$s,\n GPS卫星数:%5$d,北斗数：%6$d,格洛纳斯卫星数:%7$d,���利略卫星数：%8$d,跟踪卫星数:%9$d\n坐标:(经度：%10$s，纬度:%11$s,海拔:%12$s)\n标准差:(经度偏差:%13$sm,纬度偏差:%14$sm ,高度偏差:%15$sm)</string>
     <string name="rtk_mobile_network_unavailable">移动网络不可用</string>
     <string name="rtk_mobile_network_status">移动网络状态：%1$s ,Ntrip状态：%2$s ,SIM状态：%3$s ,移动信号强度：%4$s</string>
     <string name="rtk_unconnected">RTK未连接</string>
     <string name="rtk_initial_status">差分解类型值：0,是否FIX：否,\n GPS卫星数0,北斗数：0,格洛纳斯卫星数：0,伽利略卫星数：0,跟踪卫星数：0\n坐标：（经度：0.0，纬度：0.0,海拔：0.0）\n标准差：(经度偏差:0.0,纬度偏差:0.0 ,高度偏差:0.0</string>
+
+    <string name="debug_item_fly_zone_title">飞行区域</string>
+    <string name="debug_item_fly_zone_description">测试飞行区域(禁飞区，授权区等)相关接口</string>
+    <string name="debug_frequency_band_page">合规频段</string>
+    <string name="debug_frequency_band_page_description">合规频段调试</string>
+    <string name="debug_flight_data_title">实时飞行数据:</string>
+
+    <string name="upload_mission">上传任务</string>
+    <string name="start_mission">开始任务</string>
+    <string name="pause_mission">暂停任务</string>
+    <string name="resume_mission">恢复任务</string>
+    <string name="exit_mission">退出任务</string>
+    <string name="mission_demo">航线任务管理</string>
+    <string name="mission_demo_description">航线任务接口流程演示</string>
+    <string name="mission_record">任务录制</string>
+    <string name="mission_record_description">任务录制演示</string>
+    <string name="take_photo">拍照</string>
+    <string name="enter_record">进入录制</string>
+    <string name="exit_record">退出录制</string>
+    <string name="debug_test_key">Key 测试</string>
+    <string name="debug_test_key_description">自动化测试所有 key</string>
+
+    <string name="debug_perception_page">感知避障</string>
+    <string name="debug_perception_page_description">感知避障调试</string>
+    <string name="common_text_avoidance_behavior">避障行为</string>
+    <string name="common_text_avoidance_behavior_desc">检测到飞行范围内有障碍物飞机将会启用刹停/绕行安全保护机制</string>
+    <string name="common_text_avoidance_behavior_close">关闭</string>
+    <string name="common_text_avoidance_behavior_brake">刹停</string>
+    <string name="common_text_avoidance_behavior_rounded">绕行</string>
+
+    <string name="debug_preview_info_page">SDK运行信息</string>
+    <string name="debug_preview_info_description">展示SDK运行信息</string>
+
+    <!--Alarm-->
+    <string name="debug_alarm_page">告警示例</string>
+    <string name="debug_alarm_page_description">告警接口调试</string>
+
+
+    <!--lte-->
+    <string name="debug_lte_page">LTE</string>
+    <string name="debug_lte_page_description">LTE接口调试</string>
+
+
+    <!--rtk center-->
+    <string name="debug_rtk_center_page">RTK Center</string>
+    <string name="debug_rtk_center_page_description">RTK Center 接口调试</string>
+
+    <string name="debug_open_radar">开启雷达</string>
+    <string name="debug_close_radar">关闭雷达</string>
+    <string name="debug_online_upgrade_title">在线升级以及检查</string>
+    <string name="debug_wappoint_api_test_title">航线任务管理接口调试</string>
+    <string name="debug_lte_api_title">LTE 接口调试</string>
+
+    <string name="debug_rtkcenter_title">RTKCenter接口调试</string>
+    <string name="debug_rtk_module_enable">RTK是否启用</string>
+    <string name="debug_qianxun_rtk">是否千寻RTK</string>
+    <string name="debug_rtk_fix_state">%1s:%2s</string>
+    <string name="debug_gps_satellites_total">跟踪卫星：%s</string>
+    <string name="debug_satellites_desc">GPS卫星:%1s  北斗卫星：%2s  \n格洛纳斯卫星：%3s  伽利略卫星：%4s  </string>
+    <string name="debug_rtk_location_desc">坐标位置：[经度：%1s;纬度：%2s;海拔：%3s]</string>
+    <string name="debug_rtk_accuracy_deviation">标准差：[经度：%1s;纬度：%2s;海拔：%3s]</string>
+    <string name="debug_rtk_result_Desc">差分解类型描述：%1s;是否FIX：%2s</string>
+
+    <!-- NetMesh related strings -->
+    <string name="netmesh_disband">组网解散</string>
+    <string name="netmesh_timeout">组网超时，重新开始</string>
+    <string name="center_set_success">中继设置成功：%d</string>
+    <string name="center_set_failed">中继设置失败：%s</string>
+    <string name="stream_set_success">码流设置成功：%d</string>
+    <string name="stream_set_failed">码流设置失败：%s</string>
 </resources>

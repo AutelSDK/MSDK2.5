@@ -3,6 +3,7 @@ package com.autel.sdk.debugtools.view.spinnerview;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -129,7 +130,7 @@ public class DebugSpinnerView extends LinearLayout implements View.OnClickListen
             @Override
             public void onDismiss() {
                 mIcon.setImageDrawable(mContext.getDrawable(R.drawable.debug_ic_outlined_arrow_down_white));
-                curTime = System.currentTimeMillis();
+                curTime = SystemClock.elapsedRealtime();
             }
         });
     }
@@ -146,7 +147,7 @@ public class DebugSpinnerView extends LinearLayout implements View.OnClickListen
     public void onClick(View v) {
         if (v.getId() == R.id.rl_container) {
             //防止事件穿透
-            if (System.currentTimeMillis() - curTime < 200) return;
+            if (SystemClock.elapsedRealtime() - curTime < 200) return;
             if (mPopupWindow != null && mPopupWindow.isShowing()) {
                 mPopupWindow.dismiss();
             } else {
