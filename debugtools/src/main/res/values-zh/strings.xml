@@ -829,7 +829,7 @@
     <string name="rtk_fix">FIX</string>
     <string name="rtk_na">N/A</string>
     <string name="rtk_time_used">用时%1$ds</string>
-    <string name="rtk_yes">是</string>
+    <string name="rtk_yes">��</string>
     <string name="rtk_no">否</string>
     <string name="rtk_status_info">差分解类型值：%1$s,%2$s,posType:%3$d,是否FIX:%4$s,\n GPS卫星数:%5$d,北斗数：%6$d,格洛纳斯卫星数:%7$d,���利略卫星数：%8$d,跟踪卫星数:%9$d\n坐标:(经度：%10$s，纬度:%11$s,海拔:%12$s)\n标准差:(经度偏差:%13$sm,纬度偏差:%14$sm ,高度偏差:%15$sm)</string>
     <string name="rtk_mobile_network_unavailable">移动网络不可用</string>
@@ -906,4 +906,17 @@
     <string name="center_set_failed">中继设置失败：%s</string>
     <string name="stream_set_success">码流设置成功：%d</string>
     <string name="stream_set_failed">码流设置失败：%s</string>
+
+    <string name="debug_text_rtk_reauthorize">重新授权</string>
+    <string name="debug_text_rtk_latitude">纬度</string>
+    <string name="debug_text_rtk_longitude">经度</string>
+    <string name="debug_text_rtk_altitude">高度</string>
+
+    <string name="mission_status_listener">监听航线任务执行状态</string>
+    <string name="mission_start_listener">开启航线任务执行监听</string>
+    <string name="mission_stop_listener">关闭航线任务执行监听</string>
+    <string name="drone_disconnected">飞机未连接!</string>
+    <string name="upload_mission_fail">上传任务失败</string>
+    <string name="upload_mission_progress">上传任务进度</string>
+    <string name="upload_mission_success">上传任务成功</string>
 </resources>

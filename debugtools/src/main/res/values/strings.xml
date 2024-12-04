@@ -915,4 +915,17 @@
     <string name="stream_set_success">Stream set successfully: %d</string>
     <string name="stream_set_failed">Stream set failed: %s</string>
 
+    <string name="debug_text_rtk_reauthorize">Reauthorize</string>
+    <string name="debug_text_rtk_latitude">latitude</string>
+    <string name="debug_text_rtk_longitude">longitude</string>
+    <string name="debug_text_rtk_altitude">altitude</string>
+
+    <string name="mission_status_listener">Mission status listener</string>
+    <string name="mission_start_listener">Start mission status listener</string>
+    <string name="mission_stop_listener">Stop mission status listener</string>
+    <string name="drone_disconnected">Drone disconnected!</string>
+    <string name="upload_mission_fail">Upload mission failed</string>
+    <string name="upload_mission_progress">Upload mission progress</string>
+    <string name="upload_mission_success">Upload mission success</string>
+
 </resources>
