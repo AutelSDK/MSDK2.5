@@ -1,10 +1,10 @@
 # V2.5.100融合SDK使用说明
 
-## 一.总体说明
+## 一. 总体说明
 
       MSDK **V2.5.100** 是在  **V2.5.2**（组网版）的基础上开发的，新增了对 **V2.0**（单机版）的兼容性支持。然而，由于飞机和遥控器固件版本的不同，以及 MSDK 接口的调整和持续迭代，可能会导致接口变化和兼容性问题。本文档详细列出了这些差异，旨在为不同开发者提供参考，帮助他们更好地理解和应对可能出现的问题。
 
-#### 1.V2.5与V2.0本质区别
+#### 1. V2.5与V2.0本质区别
 
 -  **V2.5 版本**：
   
@@ -30,11 +30,11 @@
   - **版本要求**：低于1.8.x的固件版本为单机版本。
   - **特性**：仅支持单一飞行设备连接，设备在SDK初始化时创建，并在对频后直接与遥控器建立连接，没有复杂的生命周期管理。
 
-#### 3.组网功能
+#### 3. 组网功能
 
     组网包括多机（多机多控）组网模式和单机（一机一控）模式，者两种模式都是基于设备发现([参考文档](https://developer.autelrobotics.cn/doc/v2.5/mobile_sdk/en/50/8)、[Demo]())。
 
-#### 4.机型固件信息参考
+#### 4. 机型固件信息参考
 
 | 机型                     | 固件版本    | 说明     |
 |:----------------------:|:-------:|:------:|
@@ -44,7 +44,7 @@
 | Autel Alpha/Titan      | 1.8及以上  | 多机组网版本 |
 | 1.8及以上                 | 1.8以下版本 | 单机版本   |
 
-## 二.开发细则
+## 二. 开发细则
 
   **场景一：使用 MSDK V2.5.100 开发APP同时支持单机和多机固件**
 
@@ -75,7 +75,7 @@
 | 飞机上报<br/>FlightControlStatusInfo | batteryNotInPlaceFlag ：Int                                                                                                                                                       | batteryNotInPlaceFlag: BatteryInPlaceEnum                                                                                                                                          | 类型变更                   |
 | 播放器                              | 1. com.autel.module_player.xxx<br/>2. com.autel.rtmp.publisher.IPublishListener<br/>3. com.autel.gb28181.IGB28181PublishListener<br/>4. com.autel.rtspserver.IRtspServerCallBack | 1. com.autel.player.xxx<br/>2. com.autel.publisher.IPublishListener<br/>3. com.autel.publisher.gb28181.IGB28181PublishListener<br/>4. com.autel.publisher.rtsp.IRtspServerCallBack | 包名变更<br/>拼写错误<br/>异常完善 |
 
-## 三.附加说明
+## 三. 附加说明
 
 1. MSDK会在初始化的时候会根据固件规则，自动判断当前是单机固件还是组网固件
 
@@ -91,6 +91,6 @@ val sdkInitCfg = SDKInitConfig().apply {
 SDKManager.get().init(this.applicationContext, sdkInitCfg)
 ```
 
- 3.组网接口[参考教程](https://developer.autelrobotics.cn/doc/v2.5/mobile_sdk/en/50/8)，点对点对频和单机对频使用同一AirLinkKey对频接口；双击电池开关进入对频，先短按后长按飞机进入组网模式
+3. 组网接口[参考教程](https://developer.autelrobotics.cn/doc/v2.5/mobile_sdk/en/50/8)，点对点对频和单机对频使用同一AirLinkKey对频接口；双击电池开关进入对频，先短按后长按飞机进入组网模式
 
- 4.其它接口变更问题，可以随时咨询
+4. 其它接口变更问题，可以随时咨询
