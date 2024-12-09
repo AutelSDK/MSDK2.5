@@ -6,12 +6,14 @@
 
 - **Release Notes**: this version is a backward-compatible release, capable of supporting both 1.7 and 1.8 firmware simultaneously.
   Additionally, it supports the Evo Lite Enterprise, Evo MAX, Evo Alpha, and others.
-- **Special Notes on Compatible Versions**:  [Refer to Documentation](V2.5.100 User Guide for the Integrated Version.md)
+- **Special Notes on Compatible Versions**:  [Refer to](https://developer.autelrobotics.cn/doc/v2.5/mobile_sdk/en/50/17)
 
 ### Version V2.5.100_no_webrtc
 
 Version V2.5.100_no_webrtc is tailored for customers whose apps depend on WebRTC and encounter conflicts with the WebRTC included in version V2.5.100.  
 For these users, it is necessary to depend on WebRTC in the app's build.gradle file as follows: implementation rootProject.ext.deps.external.webrtc_sdk.
+
+=============================================================================================================================
 
 ### Version V2.5.8.4_with_webrtc
 
