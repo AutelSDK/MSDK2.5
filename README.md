@@ -5,10 +5,8 @@
 ### Version V2.5.100
 
 - **Release Notes**: this version is a backward-compatible release, capable of supporting both 1.7 and 1.8 firmware simultaneously.
-Additionally, it supports the Evo Lite Enterprise, Evo MAX, Evo Alpha, and others.
-
-For detailed update information, please refer to the [official documentation](https://developer.autelrobotics.com/doc/v2.5/mobile_sdk/en/50/17).
-
+  Additionally, it supports the Evo Lite Enterprise, Evo MAX, Evo Alpha, and others.
+- **Special Notes on Compatible Versions**:  [Refer to](https://developer.autelrobotics.cn/doc/v2.5/mobile_sdk/en/50/17)
 
 ### Version V2.5.100_no_webrtc
 
@@ -16,6 +14,8 @@ Version V2.5.100_no_webrtc is tailored for customers whose apps depend on WebRTC
 For these users, it is necessary to depend on WebRTC in the app's build.gradle file as follows: implementation rootProject.ext.deps.external.webrtc_sdk.
 
 For detailed update information, please refer to the [official documentation](https://developer.autelrobotics.com/doc/v2.5/mobile_sdk/en/50/17).
+
+=============================================================================================================================
 
 ### Version V2.5.8.4_with_webrtc
 
@@ -37,11 +37,14 @@ SDKConstants changes to path com.autel.drone.sdk.SDKConstants
 ```
 
 # Overview
+
 The new version of the MSDK introduces networking capabilities, supporting the addition of multiple controllers (primary and secondary controllers), and multiple drones into a single network. After successful networking, there exists only one primary controller and one relay drone among all devices, while other controllers are secondary ones, and other drones are ordinary node drones.
 A group is a business construct based on networking, where drones that join the same group are considered part of a group, allowing for group control. Drones not in a group operate independently, with the choice of control modes (single control, full control, group control) to perform various operations on the drones.
 
 ## Terminology
+
 ### Concepts
+
 - **Networking**: Devices joining a network.
 - **Group**: Drones already networked joining a group.
 - **DeviceId**: Unique ID of a drone.
@@ -55,7 +58,9 @@ A group is a business construct based on networking, where drones that join the 
 - **Watch Device**: Device capable of viewing video streams.
 
 ## Networking Roles and Permissions
+
 ### Role
+
 - **Primary Controller**: Full permissions; cannot switch roles; can view the stream of controlled drones.
 - **Secondary Controller**: Joystick disabled; cannot switch roles; can view the stream of controlled drones.
 - **Relay Drone**: No role switching; can be replaced through a relay replacement process; can push streams to all controllers.
@@ -63,7 +68,9 @@ A group is a business construct based on networking, where drones that join the 
 - **Controlled Drone**: Can switch to leaf drone; can push streams to all controllers.
 
 ## MSDK Networking Interfaces
+
 ### 1. DeviceManager
+
 - **IMultiDeviceOperator Interface**
   - `getGroupMeshApi()`: Group operation interface.
   - `getNetMeshManager()`: Networking operation interface.
@@ -92,6 +99,7 @@ A group is a business construct based on networking, where drones that join the 
   - `getActiveAlbumBaseUrl()`, `getActiveFileBaseUrl()`: Base URLs for active drone album and file service.
 
 ### 2. Networking Related Interface
+
 - **INetMeshManager Interface**
   - `getAllMeshDeviceList()`: List of all mesh devices.
   - `getLocalRCName()`, `getMainRCName()`: Names of local and main RC.
@@ -106,6 +114,7 @@ A group is a business construct based on networking, where drones that join the 
   - `setNetMeshStreamControl()`: Networking stream control settings.
 
 ### 3. Group Related Interface
+
 - **IGroupMeshApi Interface**
   - `createGroup()`, `addDroneToGroup()`, `delDroneFromGroup()`: Create, add, and delete drones from groups.
   - `disbandGroup()`: Disband a group.
@@ -114,14 +123,17 @@ A group is a business construct based on networking, where drones that join the 
   - `setGroupDroneLeader()`: Set leader drone.
 
 ## Device Listeners
+
 - **Drone Event Listener**
   - `addDroneDevicesListener()`, `removeDroneDevicesListener()`: Add and remove drone device listeners.
 
 ## Drone Capabilities Provided
+
 - **IAutelDroneDevice Interface**
   - Provides access to various drone capabilities such as Album Manager, Waypoint Mission Manager, Track Mission Manager, Camera Ability Set Manager, Gimbal type, Player Manager, File Service Manager, RTK Manager, connection status, flight readiness, drone type, control status, node ID, group ID, IP address, and ports for services.
 
 ## MSDK Networking Function Example
+
 - **Main Controller**
   - `startNetMeshMatching()`: Begin pairing.
   - `delNetMeshDevice()`: Remove device.
@@ -134,6 +146,7 @@ A group is a business construct based on networking, where drones that join the 
   - `quitNetMeshMatching()`: Quit networking.
 
 ## Networking Listeners
+
 - **Device Status Listener**
   - `onDroneCreate()`, `onDroneChangedListener()`, `onMainServiceValid()`, `onCameraAbilityFetchListener()`, `onSDKErrorListener()`, `onDroneDestroy()`: Device lifecycle change listeners.
 - **Control Change Listener**
