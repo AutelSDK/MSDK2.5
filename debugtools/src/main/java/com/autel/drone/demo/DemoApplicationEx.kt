@@ -34,18 +34,18 @@ class DemoApplicationEx : Application() {
 
             /**
              * video render thread switch
-             * if nest mode, can close render thread
+             * if nest mode, can close render thread, Improve performance
              */
-            bRender = true //
+            bRender = true 
 
             /**
-             * drone on cloud mode switch
+             * drone on cloud switch
              * APP (app, msdk, cloudApi) run drone
              */
             bRunOnDrone = false
 
             /**
-             * Nest mode switch
+             * nest mode switch
              * true : nest mode , false: normal mode
              */
             bRunOnNest = false
@@ -57,7 +57,7 @@ class DemoApplicationEx : Application() {
 
             /**
              * true : single mode , false: mesh mode
-             * can auto when sdk initialize, if not success ,you can manually set mode
+             * can auto config when sdk initialize, if not success ,you can manually config
              */
             single = false
 
