@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
-import com.autel.drone.sdk.libbase.error.IAutelCode
 import com.autel.drone.sdk.log.SDKLog
-import com.autel.drone.sdk.v2.SDKManager
 import com.autel.drone.sdk.v2.manager.LTEManager
+import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.device.IAutelDroneListener
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
 import com.autel.sdk.debugtools.databinding.FragmentLteBinding
@@ -39,7 +38,6 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         SDKManager.get().getDeviceManager().addDroneListener(this)
-
         initViews()
     }
 
