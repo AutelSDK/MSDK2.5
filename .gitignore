@@ -8,7 +8,7 @@
 # 忽略 build 目录下的所有文件
 app/build/**
 **/build/**
-
+.vscode
 # 特别是忽略这些生成的文件和目录
 **/build/generated/**
 **/build/intermediates/**
