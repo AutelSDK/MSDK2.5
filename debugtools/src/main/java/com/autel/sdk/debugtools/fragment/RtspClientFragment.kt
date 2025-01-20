@@ -34,18 +34,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RtspClientFragment : AutelFragment()  {
-    var TAG = "RtspClientFragment"
-    var contentView: View? = null
-    lateinit var edit_url: EditText
-    lateinit var btn_start: Button
-
-    var right_view: LinearLayout? = null
+    private var TAG = "RtspClientFragment"
     private var mAutelPlayer: AutelPlayer? = null
-    var codecView: AutelPlayerView? = null
+    private var codecView: AutelPlayerView? = null
 
-    var left_view: LinearLayout? = null
     private var mAutelPlayer2: AutelPlayer? = null
-    var codecView2: AutelPlayerView? = null
+    private var codecView2: AutelPlayerView? = null
 
     private lateinit var uiBinding: FragmentRtspclientBinding
 
@@ -69,50 +63,37 @@ class RtspClientFragment : AutelFragment()  {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         uiBinding = FragmentRtspclientBinding.inflate(inflater, container, false)
-
         return uiBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        edit_url = uiBinding.root.findViewById(R.id.edit_url)
-        btn_start = uiBinding.root.findViewById(R.id.btn_start)
-
-        left_view = uiBinding.root.findViewById(R.id.layout_left_view)
         codecView = createAutelCodecView()
-        with(left_view) { this?.addView(codecView) }
-
+        with(uiBinding.layoutLeftView) { this.addView(codecView) }
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
         mAutelPlayer!!.addVideoView(codecView)
-
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer);
 
-
-        right_view = uiBinding.root.findViewById(R.id.layout_right_view)
         codecView2 = createAutelCodecView2()
-        with(right_view) { this?.addView(codecView2) }
-
-
+        with(uiBinding.layoutRightView) { this.addView(codecView2) }
         mAutelPlayer2 = AutelPlayer(SDKConstants.STREAM_CHANNEL_16115)
         mAutelPlayer2!!.addVideoView(codecView2)
-
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer2);
 
         mAutelPlayer!!.startPlayer()
         mAutelPlayer2!!.startPlayer()
 
-        initView();
+        initView()
         initListener()
-
     }
 
     /**
      * create code view for autel media player 2
      */
-    private fun createAutelCodecView2(): AutelPlayerView? {
+    private fun createAutelCodecView2(): AutelPlayerView {
         val codecView = AutelPlayerView(activity)
         val params = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
@@ -121,7 +102,7 @@ class RtspClientFragment : AutelFragment()  {
         return codecView
     }
 
-    private fun createAutelCodecView(): AutelPlayerView? {
+    private fun createAutelCodecView(): AutelPlayerView {
         val codecView = AutelPlayerView(activity)
         val params = ConstraintLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -132,20 +113,9 @@ class RtspClientFragment : AutelFragment()  {
     }
 
     private fun initView() {
-
-        //mPublisher = RTSPPublisherNew()
-        //CameraKey.KeyCameraTransferPayLoadType.create().set(VideoCompressStandardEnum.H265)
-        var param = PublishParam.Builder().setUrl(url).setStreamSource(iCurrentPort).setWidth(1920).setHeight(1440).setFps(30).build()
-        mPublisher.configure(param)
-
-        var param2 = PublishParam.Builder().setUrl(url2).setStreamSource(SDKConstants.STREAM_CHANNEL_16115).setWidth(640).setHeight(512).setFps(30).build()
-        mPublisher2.configure(param2)
-
-        edit_url.setText(url)
-        btn_start.isEnabled = true
-
-        btn_start.setOnClickListener {
-
+        uiBinding.editUrl.setText(url)
+        uiBinding.btnStart.isEnabled = true
+        uiBinding.btnStart.setOnClickListener {
             if (mPublishFlag) {
                 mPublishFlag = false;
                 stopPublish()
@@ -270,8 +240,6 @@ class RtspClientFragment : AutelFragment()  {
             }
 
         });
-
-
     }
 
     private fun stopPublish() {
@@ -282,32 +250,26 @@ class RtspClientFragment : AutelFragment()  {
 
         lifecycleScope.launch(Dispatchers.Main) {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                btn_start.text = getString(R.string.debug_start)
-            }
-        }
-    }
-
-    private fun stopPublish(rtspPublisher: RTSPPublisher) {
-        coroutineScope.launch {
-            rtspPublisher.stop()
-        }
-        mPublishFlag = false
-
-        lifecycleScope.launch(Dispatchers.Main) {
-            if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                btn_start.text = getString(R.string.debug_start)
+                uiBinding.btnStart.text = getString(R.string.debug_start)
             }
         }
     }
 
     private fun startPublish() {
         coroutineScope.launch {
+            val inputUrl = uiBinding.editUrl.text.toString().ifEmpty { url }
+            val param = PublishParam.Builder().setUrl("$inputUrl/zoom").setStreamSource(iCurrentPort).setWidth(1920).setHeight(1440).setFps(30).build()
+            mPublisher.configure(param)
+
+            val param2 = PublishParam.Builder().setUrl("$inputUrl/ir").setStreamSource(SDKConstants.STREAM_CHANNEL_16115).setWidth(640).setHeight(512).setFps(30).build()
+            mPublisher2.configure(param2)
+
             mPublisher.start()
             mPublisher2.start()
         }
         lifecycleScope.launch(Dispatchers.Main) {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                btn_start.text = getString(R.string.debug_stop)
+                uiBinding.btnStart.text = getString(R.string.debug_stop)
             }
         }
     }

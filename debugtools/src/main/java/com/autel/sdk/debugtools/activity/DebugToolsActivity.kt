@@ -6,12 +6,17 @@ import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import com.autel.drone.sdk.libbase.error.IAutelCode
 import com.autel.drone.sdk.log.SDKLog
 import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.device.IAutelDroneListener
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
 import com.autel.drone.sdk.vmodelx.interfaces.IBaseDevice
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.CameraKey
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.base.KeyTools
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.camera.enums.VideoCompressStandardEnum
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import com.autel.sdk.debugtools.*
 import com.autel.sdk.debugtools.fragment.ExternalMSDKInfoFragment
@@ -71,6 +76,18 @@ abstract class DebugToolsActivity : AppCompatActivity(), IAutelDroneListener {
         SDKLog.i("Application", "onDroneChangedListener--->$connected")
         if (connected) {
             AircraftUpMsgManager.listenMsg(drone)
+            drone.getKeyManager().let {
+                val key = KeyTools.createKey(CameraKey.KeyCameraTransferPayLoadType)
+                it.setValue(key, VideoCompressStandardEnum.H264, object: CommonCallbacks.CompletionCallback {
+                    override fun onFailure(code: IAutelCode, msg: String?) {
+                        SDKLog.i("Application", "KeyCameraTransferPayLoadType onFailure--->$code, $msg")
+                    }
+
+                    override fun onSuccess() {
+                        SDKLog.i("Application", "KeyCameraTransferPayLoadType onSuccess")
+                    }
+                })
+            }
         } else {
             AircraftUpMsgManager.cancelListenMsg(drone)
         }

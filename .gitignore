@@ -1,17 +1,6 @@
-/.gradle
-/local.properties
-/repo
-/AutelBuild/
+.gradle
+local.properties
+repo
 .idea
-.idea/
-
-# 忽略 build 目录下的所有文件
-app/build/**
-**/build/**
-
-# 特别是忽略这些生成的文件和目录
-**/build/generated/**
-**/build/intermediates/**
-app/build/intermediates/external_file_lib_dex_archives/debug/
-app/build/intermediates/project_dex_archive/debug/
-debugtools/build/generated/
+.vscode
+build
