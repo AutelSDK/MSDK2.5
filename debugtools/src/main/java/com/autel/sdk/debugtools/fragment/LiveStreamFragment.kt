@@ -38,22 +38,13 @@ import org.webrtc.VideoFrame
  */
 
 class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
-    var TAG = "LiveStreamFragment"
-    var contentView: View? = null
-    lateinit var edit_url: EditText
-    lateinit var btn_start: Button
-    lateinit var btn_switch:Button
-    lateinit var btn_refersh:Button
+    private var TAG = "LiveStreamFragment"
 
-    var right_view: LinearLayout? = null
     private var mAutelPlayer: AutelPlayer? = null
-    var codecView: AutelPlayerView? = null
+    private var codecView: AutelPlayerView? = null
 
-    var left_view: LinearLayout? = null
     private var mAutelPlayer2: AutelPlayer? = null
-    var codecView2: AutelPlayerView? = null
-
-    var rtmpPort:Int = SDKConstants.STREAM_CHANNEL_16110;
+    private var codecView2: AutelPlayerView? = null
 
     private lateinit var uiBinding: FragmentLivestreamBinding
 
@@ -65,8 +56,7 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
     //"rtmp://116.205.231.28/live/livestream/zoom77" // 公司内网推流地址
     private var rtmpUrl:String  = "rtmp://hwtest-mediacenter.autelrobotics.cn:1936/live/mediacenter" //"rtmp://a.rtmp.youtube.com/live2/5hh6-xas1-btk7-2cmc-2rz9"
 
-    private val coroutineScope = CoroutineScope(Dispatchers.Default)
-    private var connectStatus = -1;
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private var mPublisher = RTMPPublisherNew();
 
@@ -79,7 +69,7 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         uiBinding = FragmentLivestreamBinding.inflate(inflater, container, false)
         return uiBinding.root
     }
@@ -87,29 +77,15 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        edit_url = uiBinding.root.findViewById(R.id.edit_url)
-        btn_start = uiBinding.root.findViewById(R.id.btn_start)
-        btn_switch= uiBinding.root.findViewById(R.id.btn_switch)
-        btn_refersh = uiBinding.root.findViewById(R.id.btn_refersh)
-
-        left_view = uiBinding.root.findViewById(R.id.layout_left_view)
         codecView = createAutelCodecView()
-        with(left_view) { this?.addView(codecView) }
-
+        with(uiBinding.layoutLeftView) { this.addView(codecView) }
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
         mAutelPlayer!!.addVideoView(codecView)
 
-        right_view = uiBinding.root.findViewById(R.id.layout_right_view)
         codecView2 = createAutelCodecView2()
-        with(right_view) { this?.addView(codecView2) }
-
+        with(uiBinding.layoutRightView) { this.addView(codecView2) }
         mAutelPlayer2 = AutelPlayer(SDKConstants.STREAM_CHANNEL_16115)
         mAutelPlayer2!!.addVideoView(codecView2)
-
-        //mAutelPlayer!!.startPlayer()
-        //mAutelPlayer2!!.startPlayer()
-
-        //AutelPlayerManager.getInstance().addCodecListeners(TAG, SDKConstants.STREAM_CHANNEL_16110, this)
 
         initListener()
         initView()
@@ -140,9 +116,9 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
 
     private fun initView() {
 
-        edit_url.setText(rtmpUrl)
+        uiBinding.editUrl.setText(rtmpUrl)
 
-        btn_start.setOnClickListener {
+        uiBinding.btnStart.setOnClickListener {
                 if (mPublishFlag) {
                     mPublishFlag = false;
                     stopPublish()
@@ -152,7 +128,7 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
                 }
         }
 
-        btn_switch.setOnClickListener{
+        uiBinding.btnSwitch.setOnClickListener{
             coroutineScope.launch {
                 if(iCurrentPort == SDKConstants.STREAM_CHANNEL_16110){
                     if (mPublishFlag) {
@@ -174,16 +150,8 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
             }
         }
 
-        btn_refersh.setOnClickListener{
-            if(!mPublishFlag)
-                return@setOnClickListener
-            coroutineScope.launch {
-
-            }
-        }
-
         coroutineScope.launch {
-            var param = PublishParam.Builder().setUrl(rtmpUrl).setStreamSource(iCurrentPort).build()
+            val param = PublishParam.Builder().setUrl(rtmpUrl).setStreamSource(iCurrentPort).build()
             mPublisher.configure(param)
         }
 
@@ -274,7 +242,7 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
 
         lifecycleScope.launch(Dispatchers.Main) {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                btn_start.text = getString(R.string.debug_start)
+                uiBinding.btnStart.text = getString(R.string.debug_start)
                 uiBinding.leftPushFps.text = "推流帧率:" + 0 + "fps"
                 uiBinding.rightPushFps.text = "推流帧率:" + 0 + "fps"
             }
@@ -282,13 +250,16 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
     }
 
     private fun startPublish() {
+        rtmpUrl = uiBinding.editUrl.text.toString().ifEmpty { rtmpUrl }
         coroutineScope.launch {
-            mPublisher.start();
+            val param = PublishParam.Builder().setUrl(rtmpUrl).setStreamSource(iCurrentPort).build()
+            mPublisher.configure(param)
+            mPublisher.start()
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
             if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                btn_start.text = getString(R.string.debug_stop)
+                uiBinding.btnStart.text = getString(R.string.debug_stop)
             }
         }
     }

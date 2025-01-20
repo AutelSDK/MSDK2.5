@@ -25,6 +25,9 @@
     <string name="debug_item_livestreaming_title">RTMP推流</string>
     <string name="debug_item_livestreaming_title_description">演示如何使用 RTMP推流</string>
 
+    <string name="debug_item_rtspclient_title">RTSP推流</string>
+    <string name="debug_item_rtspclient_title_description">演示如何使用 RTSP推流</string>
+
     <string name="debug_item_gb28181_title">GB28181推流</string>
     <string name="debug_item_gb28181_title_description">演示如何使用 GB28181推流</string>
 

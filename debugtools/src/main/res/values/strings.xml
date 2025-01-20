@@ -18,14 +18,17 @@
     <string name="debug_item_multi_video_decoding_title">Multi-Video Decoding</string>
     <string name="debug_item_multi_video_decoding_description">Demonstrate how to use the Multi-Video Decoding function</string>
 
-    <string name="debug_item_audio_video_center_title">Audio Video Center</string>
+    <string name="debug_item_audio_video_center_title">Video Capabilities</string>
     <string name="debug_item_audio_video_center_title_description">Provides various audio and video capabilities</string>
 
-    <string name="debug_item_livestreaming_title">LiveStreaming</string>
-    <string name="debug_item_livestreaming_title_description">Demonstrate how to use the LiveStream</string>
+    <string name="debug_item_livestreaming_title">RTMP Publisher</string>
+    <string name="debug_item_livestreaming_title_description">Demonstrate how to use the RTMP Publisher</string>
 
-    <string name="debug_item_gb28181_title">GB28181Publisher</string>
-    <string name="debug_item_gb28181_title_description">Demonstrate how to use the GB28181Publisher</string>
+    <string name="debug_item_rtspclient_title">RTSP Publisher</string>
+    <string name="debug_item_rtspclient_title_description">Demonstrate how to use the RTSP Publisher</string>
+
+    <string name="debug_item_gb28181_title">GB28181 Publisher</string>
+    <string name="debug_item_gb28181_title_description">Demonstrate how to use the GB28181 Publisher</string>
 
     <string name="debug_item_multi_device_title">Multi-Device</string>
     <string name="debug_item_multi_device_title_description">Demonstrate how to use the MultiDevice</string>
