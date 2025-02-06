@@ -922,4 +922,10 @@
     <string name="upload_mission_fail">上传任务失败</string>
     <string name="upload_mission_progress">上传任务进度</string>
     <string name="upload_mission_success">上传任务成功</string>
+
+    <!--AI recognition-->
+    <string name="debug_recognition_page">AI识别</string>
+    <string name="debug_recognition_page_description">AI识别示例</string>
+    <string name="debug_recognition_start">开始识别</string>
+    <string name="debug_recognition_stop">停止识别</string>
 </resources>

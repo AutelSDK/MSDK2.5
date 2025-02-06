@@ -88,4 +88,9 @@
         android:id="@+id/alarm_page"
         android:name="com.autel.sdk.debugtools.fragment.AlarmFragment"
         android:label="alarm_page" />
+
+    <fragment
+        android:id="@+id/recognize_page"
+        android:name="com.autel.sdk.debugtools.fragment.AIRecognizeFragment"
+        android:label="recognize_page" />
 </navigation>

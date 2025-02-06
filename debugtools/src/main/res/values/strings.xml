@@ -931,4 +931,9 @@
     <string name="upload_mission_progress">Upload mission progress</string>
     <string name="upload_mission_success">Upload mission success</string>
 
+    <!--AI recognition-->
+    <string name="debug_recognition_page">AI Recognition</string>
+    <string name="debug_recognition_page_description">AI Recognition Demo</string>
+    <string name="debug_recognition_start">Start Recognition</string>
+    <string name="debug_recognition_stop">Stop Recognition</string>
 </resources>
