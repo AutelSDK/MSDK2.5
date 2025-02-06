@@ -87,6 +87,14 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
 
             items.add(
                 FragmentPageInfoItem(
+                    R.id.recognize_page,
+                    R.string.debug_recognition_page,
+                    R.string.debug_recognition_page_description
+                )
+            )
+
+            items.add(
+                FragmentPageInfoItem(
                     R.id.scenerio_testing_page,
                     R.string.debug_scenario_testing_title,
                     R.string.debug_scenario_testing_description
