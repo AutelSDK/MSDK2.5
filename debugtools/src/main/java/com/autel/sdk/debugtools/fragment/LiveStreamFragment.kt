@@ -8,6 +8,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -15,6 +17,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.autel.drone.sdk.SDKConstants
+import com.autel.drone.sdk.vmodelx.manager.DeviceManager
+import com.autel.drone.sdk.vmodelx.module.camera.bean.LensTypeEnum
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import com.autel.player.codec.OnRenderFrameInfoListener
 import com.autel.player.player.AutelPlayerManager
@@ -49,8 +53,9 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
     private lateinit var uiBinding: FragmentLivestreamBinding
 
     private var mPublishFlag: Boolean = false
+    private var currentLens: LensTypeEnum = LensTypeEnum.Zoom
 
-    private var iCurrentPort:Int = SDKConstants.STREAM_CHANNEL_16110 //可见光
+    //private var iCurrentPort:Int = SDKConstants.STREAM_CHANNEL_16110 //可见光
     //"rtmp://183.6.112.146:17072/live/YD202220530_flight"; // 南网外网环境
     // "rtmp://183.6.112.146:1935/live/NEST202203038_flight_zoom" // 南网内网推流地址
     //"rtmp://116.205.231.28/live/livestream/zoom77" // 公司内网推流地址
@@ -58,7 +63,7 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
 
     private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-    private var mPublisher = RTMPPublisherNew();
+    private var mPublisher = RTMPPublisherNew()
 
     private val handler = Handler(Looper.getMainLooper()) {
         getVideoFps()
@@ -114,13 +119,47 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
         return codecView
     }
 
+    private fun initLensType() {
+        val drone = DeviceManager.getDeviceManager().getFirstDroneDevice() ?: return
+        val lens = drone.getAbilitySetManager().getCameraAbilitySetManager().getLensList(drone.getGimbalDeviceType())?.map { it.value } ?: emptyList()
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, lens)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        uiBinding.lensType.adapter = adapter
+        uiBinding.lensType.setSelection(0)
+        currentLens = LensTypeEnum.find(lens[0])
+        uiBinding.lensType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val lensType = LensTypeEnum.find(lens[position])
+                switchLensType(lensType)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+        }
+    }
+
+    private fun switchLensType(lensType: LensTypeEnum) {
+        if (lensType == currentLens) return
+        coroutineScope.launch {
+            if (mPublishFlag) {
+                ToastUtils.showToast("开始推流摄像头(${lensType.value})画面")
+            } else {
+                ToastUtils.showToast(" 切换到摄像头(${lensType.value})端口，还没推流")
+            }
+            currentLens = lensType
+            val channelId = getChannelIdByLens(lensType)
+            mPublisher.switchStreamSource(channelId, true)
+        }
+    }
+
     private fun initView() {
+        initLensType()
 
         uiBinding.editUrl.setText(rtmpUrl)
 
         uiBinding.btnStart.setOnClickListener {
                 if (mPublishFlag) {
-                    mPublishFlag = false;
+                    mPublishFlag = false
                     stopPublish()
                 } else {
                     mPublishFlag = true
@@ -128,39 +167,24 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
                 }
         }
 
-        uiBinding.btnSwitch.setOnClickListener{
-            coroutineScope.launch {
-                if(iCurrentPort == SDKConstants.STREAM_CHANNEL_16110){
-                    if (mPublishFlag) {
-                        ToastUtils.showToast("开始推流红外摄像头画面")
-                    } else {
-                        ToastUtils.showToast(" 切换到红外摄像头端口，还没推流")
-                    }
-                    iCurrentPort = SDKConstants.STREAM_CHANNEL_16115
-                    mPublisher.switchStreamSource(iCurrentPort, true)
-                } else {
-                    if (mPublishFlag) {
-                        ToastUtils.showToast("开始推流广角摄像头画面")
-                    } else {
-                        ToastUtils.showToast(" 切换到广角摄像头端口，还没推流")
-                    }
-                    iCurrentPort = SDKConstants.STREAM_CHANNEL_16110
-                    mPublisher.switchStreamSource(iCurrentPort, true)
-                }
-            }
-        }
-
-        coroutineScope.launch {
-            val param = PublishParam.Builder().setUrl(rtmpUrl).setStreamSource(iCurrentPort).build()
-            mPublisher.configure(param)
-        }
-
         handler.sendEmptyMessageDelayed(1, 1000)
     }
 
+    private fun getChannelIdByLens(lensType: LensTypeEnum): Int {
+        val drone = DeviceManager.getDeviceManager().getFirstDroneDevice() ?: return SDKConstants.getZoomChancelId()
+        val lens = drone.getAbilitySetManager().getCameraAbilitySetManager().getLensList(drone.getGimbalDeviceType()) ?: emptyList()
+        return when (lensType) {
+            LensTypeEnum.Zoom -> if (lens.contains(LensTypeEnum.WideAngle)) SDKConstants.getTelZoomChancelId() else SDKConstants.getZoomChancelId()
+            LensTypeEnum.TeleZoom -> SDKConstants.getTelZoomChancelId()
+            LensTypeEnum.WideAngle -> SDKConstants.getWideAngleChannelId()
+            LensTypeEnum.Thermal, LensTypeEnum.TeleThermal -> SDKConstants.getInfraredChannelId()
+            LensTypeEnum.NightVision -> SDKConstants.getNightVisionChannelId()
+            else -> SDKConstants.getZoomChancelId()
+        }
+    }
+
     private fun initListener() {
-        mPublisher.setOnPublishListener(object :
-            IPublishListener{
+        mPublisher.setOnPublishListener(object : IPublishListener{
             override fun onConnecting() {
                 Log.i(TAG, "onConnecting");
                 ToastUtils.showToast("正在连接服务器...")
@@ -174,15 +198,14 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
             override fun onConnectedFailed(code: PublishErrorCode) {
                 Log.e(TAG, "onConnectedFailed:$code");
                 ToastUtils.showToast("连接服务器失败！！！")
+                activity?.runOnUiThread {
+                    uiBinding.lensType.isEnabled = true
+                }
             }
 
             override fun onStartPublish() {
                 Log.i(TAG, "onStartPublish");
-                if (iCurrentPort == SDKConstants.STREAM_CHANNEL_16110) {
-                    ToastUtils.showToast("开始推流广角摄像头画面")
-                } else if (iCurrentPort == SDKConstants.STREAM_CHANNEL_16115) {
-                    ToastUtils.showToast("开始推流红外摄像头画面")
-                }
+                ToastUtils.showToast("开始推流摄像头(${currentLens.value})画面")
             }
 
             override fun onStopPublish() {
@@ -195,10 +218,10 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
                 Log.d(TAG, "onFpsStatistic$fps");
                 lifecycleScope.launch(Dispatchers.Main) {
                     if (lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
-                        if (iCurrentPort == SDKConstants.STREAM_CHANNEL_16110) {
+                        if (currentLens.isVisible()) {
                             uiBinding.leftPushFps.text = "推流帧率:" + fps + "fps"
                             uiBinding.rightPushFps.text = "推流帧率:" + 0 + "fps"
-                        } else if (iCurrentPort == SDKConstants.STREAM_CHANNEL_16115) {
+                        } else if (currentLens.isThermal()) {
                             uiBinding.leftPushFps.text = "推流帧率:" + 0 + "fps"
                             uiBinding.rightPushFps.text = "推流帧率:" + fps + "fps"
                         }
@@ -207,11 +230,11 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
             }
 
             override fun onVideoBitrate(value: Int, channelName: String) {
-                Log.d(TAG, "onVideoBitrate:$value");
+                Log.d(TAG, "onVideoBitrate:$value")
             }
 
             override fun onAudioBitrate(value: Int) {
-                Log.d(TAG, "onAudioBitrate:$value");
+                Log.d(TAG, "onAudioBitrate:$value")
             }
 
             override fun onPublishSuccess() {
@@ -219,11 +242,13 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
             }
 
             override fun onPublishFailed(errorCode: PublishErrorCode) {
-                Log.e(TAG, "onPublishFailed:$errorCode");
+                Log.e(TAG, "onPublishFailed:$errorCode")
                 ToastUtils.showToast("推流失败")
             }
 
             override fun onPublishFailed(channelName: String, errorCode: PublishErrorCode) {
+                Log.e(TAG, "onPublishFailed:$errorCode $channelName")
+                ToastUtils.showToast("推流失败")
             }
 
             override fun onReconnect() {
@@ -252,7 +277,8 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
     private fun startPublish() {
         rtmpUrl = uiBinding.editUrl.text.toString().ifEmpty { rtmpUrl }
         coroutineScope.launch {
-            val param = PublishParam.Builder().setUrl(rtmpUrl).setStreamSource(iCurrentPort).build()
+            val channelId = getChannelIdByLens(currentLens)
+            val param = PublishParam.Builder().setUrl(rtmpUrl).setStreamSource(channelId).build()
             mPublisher.configure(param)
             mPublisher.start()
         }
