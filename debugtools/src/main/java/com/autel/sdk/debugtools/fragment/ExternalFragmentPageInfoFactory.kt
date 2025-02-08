@@ -26,6 +26,12 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
             R.string.debug_item_multi_video_decoding_description
         )
 
+        val surfacePage = audioVideoCenter.InnerFragmentPageInfoItem(
+            R.id.multi_video_with_surface_page,
+            R.string.debug_item_multi_video_surface_title,
+            R.string.debug_item_multi_video_surface_description
+        )
+
         val rtmpPage = audioVideoCenter.InnerFragmentPageInfoItem(
             R.id.livestream_page,
             R.string.debug_item_livestreaming_title,
@@ -43,6 +49,7 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
         )
         val avCenter = ArrayList<FragmentPageInfoItem.InnerFragmentPageInfoItem>()
         avCenter.add(multiDecoder)
+        avCenter.add(surfacePage)
         avCenter.add(rtmpPage)
         avCenter.add(rtspPage)
         avCenter.add(gb28181Page)

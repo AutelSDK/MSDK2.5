@@ -928,4 +928,7 @@
     <string name="debug_recognition_page_description">AI识别示例</string>
     <string name="debug_recognition_start">开始识别</string>
     <string name="debug_recognition_stop">停止识别</string>
+
+    <string name="debug_item_multi_video_surface_title">使用Surface显示解码视频</string>
+    <string name="debug_item_multi_video_surface_description">演示如何使用Surface显示解码视频</string>
 </resources>

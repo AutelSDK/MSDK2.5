@@ -936,4 +936,7 @@
     <string name="debug_recognition_page_description">AI Recognition Demo</string>
     <string name="debug_recognition_start">Start Recognition</string>
     <string name="debug_recognition_stop">Stop Recognition</string>
+
+    <string name="debug_item_multi_video_surface_title">Video Decoding With Surface</string>
+    <string name="debug_item_multi_video_surface_description">Demonstrate how to use the Multi-Video Decoding function with surface</string>
 </resources>
