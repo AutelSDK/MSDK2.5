@@ -14,6 +14,7 @@ import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.AirLinkKey
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.base.KeyTools
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.alink.enums.VideoTransMissionModeEnum
 import com.autel.player.MediaInfo
+import com.autel.player.codec.StreamData
 import com.autel.player.player.AutelPlayerManager
 import com.autel.player.player.IVideoStreamListener
 import com.autel.player.player.autelplayer.AutelPlayer
@@ -89,6 +90,9 @@ class MuiltCodecFragment : AutelFragment() {
             override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
             }
 
+            override fun onStreamSourceChanged(p0: Int, p1: StreamData.StreamSourceType?) {
+
+            }
         })
 
         mAutelPlayer!!.addVideoView(codecView)
