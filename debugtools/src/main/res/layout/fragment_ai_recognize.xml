@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/debug_color_white"
     android:paddingHorizontal="@dimen/debug_dimen_dp_12"
-    android:paddingTop="@dimen/debug_dimen_dp_12">
+    android:paddingVertical="@dimen/debug_dimen_dp_12">
 
     <Button
         android:id="@+id/btn_start_recognize"
@@ -46,5 +46,15 @@
         android:layout_marginTop="@dimen/debug_dimen_dp_15"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_start_recognize" />
+
+    <SurfaceView
+        android:id="@+id/surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/debug_dimen_dp_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_result" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
