@@ -49,6 +49,10 @@ dependencies {
 
     //implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     api(name: 'autel-msdk2-release_V2.5.100.2', ext: 'aar')
+    implementation rootProject.ext.deps.external.protobuf_javalite
+    //if you want to use protobuf java version
+    //implementation rootProject.ext.deps.external.protobuf_java
+    //api(name: 'autel-msdk2-release_protobuf_full_V2.5.100.2', ext: 'aar')
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -74,7 +78,8 @@ dependencies {
     implementation rootProject.ext.deps.external.android.design
     implementation rootProject.ext.deps.external.android.navi_fragment_ktx
     implementation rootProject.ext.deps.external.android.fragment_ktx
-    implementation rootProject.ext.deps.external.protobuf_java
+
+
 //    implementation 'com.github.Petterpx:FloatingX:1.0.4'
     implementation 'io.github.jeremyliao:live-event-bus-x:1.8.0'
     implementation rootProject.ext.deps.external.gson
