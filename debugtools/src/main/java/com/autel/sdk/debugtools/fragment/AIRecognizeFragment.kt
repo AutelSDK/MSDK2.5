@@ -18,6 +18,7 @@ import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.base.KeyTools
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.aiservice.bean.AIDetectConfigBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.aiservice.bean.DetectTrackNotifyBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.aiservice.enums.AiDetectSceneTypeEnum
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.aiservice.enums.AiLensTypeEnum
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.aiservice.enums.DetectTargetEnum
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.flight.enums.AiServiceStatueEnum
 import com.autel.drone.sdk.vmodelx.module.camera.bean.LensTypeEnum
@@ -42,7 +43,7 @@ class AIRecognizeFragment : AutelFragment() {
             val drone = DeviceManager.getDeviceManager().getFirstDroneDevice()
             val builder = StringBuilder()
             if (drone?.getDeviceStateData()?.flightControlData?.aiEnableFunc == AiServiceStatueEnum.AI_RECOGNITION) {
-                builder.append("timestamp: ${newValue.timestamp} lensId:${newValue.lensId} objNum:${newValue.objNum}\n")
+                builder.append("timestamp: ${newValue.timestamp} lensId:${newValue.lensId} objNum:${newValue.objNum} videoSize: ${newValue.resolutionWidth}x ${newValue.resolutionHeight}\n")
                 newValue.infoList.forEach {
                     val type = DetectTargetEnum.getEnglishName(DetectTargetEnum.findEnum(it.type))
                     builder.append("Type:$type status:${it.status} objectId: ${it.objectId} position:(${it.startX}, ${it.startY}, ${it.width}, ${it.height})\n")
@@ -177,6 +178,12 @@ class AIRecognizeFragment : AutelFragment() {
 
             targetTypeList = targetList
             lensId = droneLensId ?: 0
+            //compatible with 1.7.x version and 1.8.x version before 2024/10/15
+            aiLensTypeEnum = when {
+                lensType.isThermal() -> AiLensTypeEnum.INFRARED
+                lensType == LensTypeEnum.NightVision -> AiLensTypeEnum.Night
+                else -> AiLensTypeEnum.Visible
+            }
         }
 
         SDKLog.i(TAG, "startRecognize lensType:$lensType lensId:${bean.lensId}")
