@@ -39,6 +39,32 @@ class MuiltCodecFragment : AutelFragment() {
     private var codecView2: AutelPlayerView? = null
     private var isFrameSaved = false
     private lateinit var uiBinding: FragMuiltStreamBinding
+    private val videoInfoListener = object : IVideoStreamListener {
+        override fun onVideoSizeChanged(playerId: Int, width: Int, height: Int) {
+            isFrameSaved = false;
+        }
+
+        override fun onVideoInfoCallback(playerId: Int, x: Int, y: Int, w: Int, h: Int) {
+        }
+
+        override fun onFrameYuv(yuv: ByteBuffer?, mediaInfo: MediaInfo?) {
+            Log.i("MuiltCodecFragment", " yuv ${yuv?.capacity()} mediaInfo ${mediaInfo.toString()}")
+            if (!isFrameSaved && yuv != null && mediaInfo != null){
+                isFrameSaved = true;
+                if (mediaInfo.pixelFormat == MediaInfo.PixelFormat.PIX_FMT_NV12){
+                    saveYuvToFile(yuv, mediaInfo.width, mediaInfo.height, mediaInfo.stride, mediaInfo.sliceHeight)
+                }
+
+            }
+        }
+
+        override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
+        }
+
+        override fun onStreamSourceChanged(p0: Int, p1: StreamData.StreamSourceType?) {
+
+        }
+    }
 
 
     override fun onCreateView(
@@ -67,33 +93,7 @@ class MuiltCodecFragment : AutelFragment() {
 
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
 
-        mAutelPlayer?.setVideoInfoListener(object : IVideoStreamListener {
-            override fun onVideoSizeChanged(playerId: Int, width: Int, height: Int) {
-                isFrameSaved = false;
-            }
-
-            override fun onVideoInfoCallback(playerId: Int, x: Int, y: Int, w: Int, h: Int) {
-            }
-
-            override fun onFrameYuv(yuv: ByteBuffer?, mediaInfo: MediaInfo?) {
-                Log.i("MuiltCodecFragment", " yuv ${yuv?.capacity()} mediaInfo ${mediaInfo.toString()}")
-                if (!isFrameSaved && yuv != null && mediaInfo != null){
-                    isFrameSaved = true;
-                    if (mediaInfo.pixelFormat == MediaInfo.PixelFormat.PIX_FMT_NV12){
-                        saveYuvToFile(yuv, mediaInfo.width, mediaInfo.height, mediaInfo.stride, mediaInfo.sliceHeight)
-                    }
-
-                }
-            }
-
-
-            override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
-            }
-
-            override fun onStreamSourceChanged(p0: Int, p1: StreamData.StreamSourceType?) {
-
-            }
-        })
+        mAutelPlayer?.addVideoInfoListener(videoInfoListener)
 
         mAutelPlayer!!.addVideoView(codecView)
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer)
@@ -195,6 +195,7 @@ class MuiltCodecFragment : AutelFragment() {
         AutelPlayerManager.getInstance().endStreamChannel(SDKConstants.STREAM_CHANNEL_16115);
 
         if (mAutelPlayer != null) {
+            mAutelPlayer!!.removeVideoInfoListener(videoInfoListener)
             mAutelPlayer!!.removeVideoView()
             mAutelPlayer!!.releasePlayer()
         }
