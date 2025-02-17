@@ -936,4 +936,7 @@
     <string name="debug_recognition_page_description">AI Recognition Demo</string>
     <string name="debug_recognition_start">Start Recognition</string>
     <string name="debug_recognition_stop">Stop Recognition</string>
+    <!--Lidar Ranging-->
+    <string name="debug_lidar_ranging_page">Lidar Ranging</string>
+    <string name="debug_lidar_ranging_description">Lidar ganging sample code</string>
 </resources>

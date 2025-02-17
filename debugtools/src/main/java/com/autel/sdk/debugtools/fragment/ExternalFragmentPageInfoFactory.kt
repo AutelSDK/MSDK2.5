@@ -159,6 +159,13 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
                     R.string.debug_alarm_page_description
                 )
             )
+            items.add(
+                FragmentPageInfoItem(
+                    R.id.lidar_rang_page,
+                    R.string.debug_lidar_ranging_page,
+                    R.string.debug_lidar_ranging_description
+                )
+            )
         }
     }
 }
