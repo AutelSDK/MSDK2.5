@@ -2,6 +2,21 @@
 
 ### Changelog
 
+### Version V2.5.100.4
+
+**Release Notes**: 
+  1. Compatible with infrared AI recognition of old firmware versions
+  2. AutelPlayer supports setting external surface
+  3. Fixed issue that YUV data didn't callback
+  4. Fixed some performance issues
+
+**Build Variants**: 
+  1. autel-msdk2-release_V2.5.100.4: Normal version(build **with protobuf-javalite and webrtc**)
+  2. autel-msdk2-release_V2.5.100.4_no_webrtc: build **with protobuf-javalite** and **without webrtc**
+  3. autel-msdk2-release_V2.5.100.4_protobuf_full: build **with protobuf-java and webrtc**
+  4. autel-msdk2-release_V2.5.100.4_protobuf_full_no_webrtc: build **with protobuf-java** and **without webrtc**
+
+
 ### Version V2.5.100
 
 - **Release Notes**: this version is a backward-compatible release, capable of supporting both 1.7 and 1.8 firmware simultaneously.

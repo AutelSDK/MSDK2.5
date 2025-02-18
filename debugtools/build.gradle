@@ -48,7 +48,7 @@ configurations.all {
 dependencies {
 
     //implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    api(name: 'autel-msdk2-release_V2.5.100.3_protobuf_full', ext: 'aar')
+    api(name: 'autel-msdk2-release_V2.5.100.4', ext: 'aar')
     implementation rootProject.ext.deps.external.protobuf_java
     //if you want to use protobuf java version
     //implementation rootProject.ext.deps.external.protobuf_java
