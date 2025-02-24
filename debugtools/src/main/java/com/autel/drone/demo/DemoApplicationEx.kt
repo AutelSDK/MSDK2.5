@@ -26,11 +26,6 @@ class DemoApplicationEx : Application() {
              */
             appType = null
 
-            /**
-             * can auto calculate time zone by gps
-             * if true, your app must have setTimeZone permission
-             */
-            bAutoTimeZone = false
 
             /**
              * video render thread switch
@@ -38,17 +33,7 @@ class DemoApplicationEx : Application() {
              */
             bRender = true 
 
-            /**
-             * drone on cloud switch
-             * APP (app, msdk, cloudApi) run drone
-             */
-            bRunOnDrone = false
 
-            /**
-             * nest mode switch
-             * true : nest mode , false: normal mode
-             */
-            bRunOnNest = false
 
             /**
              * handle log by implementation of IAutelLog
