@@ -18,7 +18,6 @@ import com.autel.player.player.AutelPlayerManager
 import com.autel.player.player.IVideoStreamListener
 import com.autel.player.player.autelplayer.AutelPlayer
 import com.autel.player.player.autelplayer.AutelPlayerView
-import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragMuiltStreamBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -32,23 +31,19 @@ import java.nio.ByteOrder
  */
 class MuiltCodecFragment : AutelFragment() {
 
-    var right_view: LinearLayout? = null
     private var mAutelPlayer: AutelPlayer? = null
-    var codecView: AutelPlayerView? = null
+    private var codecView: AutelPlayerView? = null
 
-    var left_view: LinearLayout? = null
     private var mAutelPlayer2: AutelPlayer? = null
-    var codecView2: AutelPlayerView? = null
+    private var codecView2: AutelPlayerView? = null
     private var isFrameSaved = false
     private lateinit var uiBinding: FragMuiltStreamBinding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         uiBinding = FragMuiltStreamBinding.inflate(inflater, container, false)
-
-
         return uiBinding.root
     }
 
@@ -65,9 +60,9 @@ class MuiltCodecFragment : AutelFragment() {
                 }
             }
         )
-        left_view = uiBinding.root.findViewById(R.id.layout_left_view)
+
         codecView = createAutelCodecView()
-        with(left_view) { this?.addView(codecView) }
+        uiBinding.layoutLeftView.addView(codecView)
 
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
 
@@ -95,19 +90,15 @@ class MuiltCodecFragment : AutelFragment() {
             }
 
         })
+
         mAutelPlayer!!.addVideoView(codecView)
+        AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer)
 
-        AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer);
-
-
-        right_view = uiBinding.root.findViewById(R.id.layout_right_view)
         codecView2 = createAutelCodecView2()
-        with(right_view) { this?.addView(codecView2) }
-
+        uiBinding.layoutRightView.addView(codecView2)
 
         mAutelPlayer2 = AutelPlayer(SDKConstants.STREAM_CHANNEL_16115)
         mAutelPlayer2!!.addVideoView(codecView2)
-
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer2);
 
         mAutelPlayer!!.startPlayer()

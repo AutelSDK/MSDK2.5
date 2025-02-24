@@ -13,6 +13,41 @@ import com.autel.sdk.debugtools.activity.FragmentPageInfoItem
 class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
 
     override fun createPageInfo(): FragmentPageInfo {
+
+        // 音视频能力
+        val audioVideoCenter = FragmentPageInfoItem(
+            -1,
+            R.string.debug_item_audio_video_center_title,
+            R.string.debug_item_audio_video_center_title_description
+        )
+        val multiDecoder = audioVideoCenter.InnerFragmentPageInfoItem(
+            R.id.multi_video_decoding_page,
+            R.string.debug_item_multi_video_decoding_title,
+            R.string.debug_item_multi_video_decoding_description
+        )
+
+        val rtmpPage = audioVideoCenter.InnerFragmentPageInfoItem(
+            R.id.livestream_page,
+            R.string.debug_item_livestreaming_title,
+            R.string.debug_item_livestreaming_title_description
+        )
+        val rtspPage = audioVideoCenter.InnerFragmentPageInfoItem(
+            R.id.rtspclient_page,
+            R.string.debug_item_rtspclient_title,
+            R.string.debug_item_rtspclient_title_description
+        )
+        val gb28181Page = audioVideoCenter.InnerFragmentPageInfoItem(
+            R.id.gb28181_page,
+            R.string.debug_item_gb28181_title,
+            R.string.debug_item_gb28181_title_description
+        )
+        val avCenter = ArrayList<FragmentPageInfoItem.InnerFragmentPageInfoItem>()
+        avCenter.add(multiDecoder)
+        avCenter.add(rtmpPage)
+        avCenter.add(rtspPage)
+        avCenter.add(gb28181Page)
+        audioVideoCenter.fragmentInfoList = avCenter
+
         return FragmentPageInfo(R.navigation.nav_external).apply {
             items.add(
                 FragmentPageInfoItem(
@@ -46,29 +81,17 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
                     R.string.debug_item_media_file_description
                 )
             )
-            items.add(
-                FragmentPageInfoItem(
-                    R.id.multi_video_decoding_page,
-                    R.string.debug_item_multi_video_decoding_title,
-                    R.string.debug_item_multi_video_decoding_description
-                )
-            )
-            items.add(
-                FragmentPageInfoItem(
-                    R.id.livestream_page,
-                    R.string.debug_item_livestreaming_title,
-                    R.string.debug_item_livestreaming_title_description
-                )
-            )
+
+            // 添加音视频能力item
+            items.add(audioVideoCenter)
 
             items.add(
                 FragmentPageInfoItem(
-                    R.id.gb28181_page,
-                    R.string.debug_item_gb28181_title,
-                    R.string.debug_item_gb28181_title_description
+                    R.id.recognize_page,
+                    R.string.debug_recognition_page,
+                    R.string.debug_recognition_page_description
                 )
             )
-
 
             items.add(
                 FragmentPageInfoItem(
@@ -134,6 +157,13 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
                     R.id.alarm_page,
                     R.string.debug_alarm_page,
                     R.string.debug_alarm_page_description
+                )
+            )
+            items.add(
+                FragmentPageInfoItem(
+                    R.id.lidar_rang_page,
+                    R.string.debug_lidar_ranging_page,
+                    R.string.debug_lidar_ranging_description
                 )
             )
         }

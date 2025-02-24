@@ -88,4 +88,18 @@
         android:id="@+id/alarm_page"
         android:name="com.autel.sdk.debugtools.fragment.AlarmFragment"
         android:label="alarm_page" />
+
+    <fragment
+        android:id="@+id/recognize_page"
+        android:name="com.autel.sdk.debugtools.fragment.AIRecognizeFragment"
+        android:label="recognize_page" />
+
+    <fragment
+        android:id="@+id/multi_video_with_surface_page"
+        android:name="com.autel.sdk.debugtools.fragment.VideoUseSurfaceFragment"
+        android:label="multi_video_with_surface_page" />
+    <fragment
+        android:id="@+id/lidar_rang_page"
+        android:name="com.autel.sdk.debugtools.fragment.LidarRangingFragment"
+        android:label="lidar_rang_page" />
 </navigation>

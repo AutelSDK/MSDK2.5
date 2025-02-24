@@ -12,10 +12,10 @@ import android.widget.RadioButton
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.autel.drone.sdk.libbase.error.IAutelCode
-import com.autel.drone.sdk.v2.SDKManager
 import com.autel.drone.sdk.v2.enum.PerceptionDirection
 import com.autel.drone.sdk.v2.interfaces.RadarInformationListener
 import com.autel.drone.sdk.v2.manager.PerceptionManager
+import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.device.IAutelDroneListener
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
