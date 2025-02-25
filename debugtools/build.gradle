@@ -47,8 +47,9 @@ configurations.all {
 
 dependencies {
 
-    //implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    api(name: 'autel-msdk2-release_V2.5.100', ext: 'aar')
+//    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+//    api(name: 'autel-msdk2-release_V2.5.8.4_need_add_webrtc', ext: 'aar')
+    implementation 'com.autel.sdk:msdk2:2.5.100'
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -88,7 +89,7 @@ dependencies {
     androidTestImplementation rootProject.ext.deps.external.test.ext_junit
     androidTestImplementation rootProject.ext.deps.external.test.espresso
     implementation('com.tencent:mmkv-static:1.2.8')
-    //implementation rootProject.ext.deps.external.webrtc_sdk
+    implementation rootProject.ext.deps.external.webrtc_sdk
 }
 
 def getVersionFromAarFileName(fileName) {
