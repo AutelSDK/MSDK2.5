@@ -54,6 +54,11 @@ class VirtualStickFragment : AutelFragment() {
      * 舒适档：满杆量（水平速度）前后10，左右10，（垂直速度）上升5，下降4. 偏航 90度
      * 标准档：满杆量（水平速度）前后15，左右10，（垂直速度）上升6，下降6.  偏航 90度
      * 狂暴档：满杆量（水平速度）前23后18，左右20，（垂直速度）上升6，下降6. 偏航 120度
+     *
+     * Full:(Horizontal Speed) forward and backward 3, left and right 3, (Vertical speed) up and down 3, yam angle 90°
+     * Full:(Horizontal Speed) forward and backward 10, left and right 10, (Vertical speed) up 5 and down 4, yam angle 90°
+     * Full:(Horizontal Speed) forward and backward 15, left and right 10, (Vertical speed) up and down 6, yam angle 90°
+     * Full:(Horizontal Speed) forward 23 backward 18, left and right 20, (Vertical speed) up and down 6, yam angle 120°
      */
     private val speedLevel = arrayOf(
         arrayOf(3, 3, 3, 3, 3, 3, 90),
@@ -155,11 +160,12 @@ class VirtualStickFragment : AutelFragment() {
                 raiseOrDownValue, turnYawValue, forwardOrBackwardValue, leftOrRightValue)
         }
 
-        NestModelManager.getInstance().updateVirtualJoystick(
+        NestModelManager.getInstance().updateVirtualJoystickByAtService(
             raiseOrDownValue.toInt(),
             turnYawValue.toInt(),
             forwardOrBackwardValue.toInt(),
-            leftOrRightValue.toInt()
+            leftOrRightValue.toInt(),
+            0
         )
     }
 

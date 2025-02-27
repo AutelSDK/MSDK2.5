@@ -931,4 +931,15 @@
     <!--Lidar Ranging-->
     <string name="debug_lidar_ranging_page">激光雷达测距</string>
     <string name="debug_lidar_ranging_description">演示如何使用激光雷达测距</string>
+    
+    <string name="common_text_status">状态</string>
+    <string name="common_text_role">角色</string>
+    <string name="common_text_remoter_connect_tips_title">遥控器连接提示</string>
+    <string name="common_text_remoter_connect_tips_desc">网线接入其他遥控器，设置本遥控器为：</string>
+    <string name="common_text_save_info">保存设置</string>
+    <string name="common_text_remoter_master">主遥控</string>
+    <string name="common_text_remoter_relay">中继设备</string>
+
+    <string name="debug_wired_relay_page">有线中继</string>
+    <string name="debug_wired_relay_page_description">有线中继测试程序</string>
 </resources>

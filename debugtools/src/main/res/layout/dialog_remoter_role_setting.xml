@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="510dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/debug_sdk_shape_rect_solid_color_ff_radius_14"
+    android:orientation="vertical"
+    android:paddingStart="55dp"
+    android:paddingEnd="55dp"
+    android:paddingBottom="25dp">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/common_text_remoter_connect_tips_title"
+        android:textColor="@android:color/black"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:gravity="center"
+        android:text="@string/common_text_remoter_connect_tips_desc"
+        android:textColor="#808080"
+        android:textSize="17sp"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="132dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/common_shape_stroke_3c3c43_r5"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <TextView
+            android:id="@+id/tv_remote_relay"
+            android:layout_width="wrap_content"
+            android:layout_height="66dp"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/common_text_remoter_relay"
+            android:textColor="#FF333333"
+            android:textSize="17sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_remote_master"
+            android:layout_width="wrap_content"
+            android:layout_height="66dp"
+            android:layout_below="@id/tv_remote_relay"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:text="@string/common_text_remoter_master"
+            android:textColor="#FF333333"
+            android:textSize="17sp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/iv_remote_relay"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_alignParentEnd="true"
+            android:padding="22dp"
+            android:src="@drawable/icon_item_unchecked" />
+
+        <ImageView
+            android:id="@+id/iv_remote_master"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:layout_below="@+id/iv_remote_relay"
+            android:layout_alignParentEnd="true"
+            android:padding="22dp"
+            android:src="@drawable/icon_item_checked" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:background="#DEDEDE" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/tv_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="@string/common_text_save_info"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_content" />
+</LinearLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/debug_dimen_dp_12">
+
+    <TextView
+        android:id="@+id/tv_status_title"
+        android:layout_width="@dimen/debug_dimen_dp_60"
+        android:layout_height="wrap_content"
+        android:text="@string/common_text_status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/debug_dimen_dp_15"
+        app:layout_constraintStart_toEndOf="@+id/tv_status_title"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Connect" />
+
+    <TextView
+        android:id="@+id/tv_role_title"
+        android:layout_width="@dimen/debug_dimen_dp_60"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/debug_dimen_dp_32"
+        android:text="@string/common_text_role"
+        app:layout_constraintStart_toEndOf="@+id/tv_status"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_role"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/debug_dimen_dp_15"
+        app:layout_constraintStart_toEndOf="@+id/tv_role_title"
+        app:layout_constraintTop_toTopOf="@+id/tv_role_title"
+        tools:text="Master" />
+
+    <LinearLayout
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/debug_dimen_dp_15"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_status_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

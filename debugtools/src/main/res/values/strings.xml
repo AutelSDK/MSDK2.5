@@ -939,4 +939,15 @@
     <!--Lidar Ranging-->
     <string name="debug_lidar_ranging_page">Lidar Ranging</string>
     <string name="debug_lidar_ranging_description">Lidar ganging sample code</string>
+    
+        <string name="common_text_status">Status</string>
+    <string name="common_text_role">Role</string>
+    <string name="common_text_remoter_connect_tips_title">RC connection prompt</string>
+    <string name="common_text_remoter_connect_tips_desc">Another RC connected, set this RC to:</string>
+    <string name="common_text_save_info">Save settings</string>
+    <string name="common_text_remoter_master">Master RC</string>
+    <string name="common_text_remoter_relay">Relay Device</string>
+
+    <string name="debug_wired_relay_page">Wired Relay</string>
+    <string name="debug_wired_relay_page_description">Wired Relay Demo</string>
 </resources>
