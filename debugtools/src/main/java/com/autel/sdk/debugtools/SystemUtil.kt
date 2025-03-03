@@ -16,34 +16,6 @@ object SystemUtil {
     const val TAG = "SystemUtil"
 
     /**
-     * system sleep, screen off
-     */
-    fun goToSleep(ctx: Context) {
-        SDKLog.i(TAG, "goToSleep -> ")
-        val powerManager: PowerManager = ctx.applicationContext.getSystemService(POWER_SERVICE) as PowerManager
-        try {
-            powerManager.javaClass.getMethod("goToSleep", Long::class.javaPrimitiveType)
-                .invoke(powerManager, SystemClock.uptimeMillis())
-        } catch (e: Exception) {
-            e.cause?.printStackTrace()
-        }
-    }
-
-    /**
-     * system wake up, screen on
-     */
-    fun goToAlive(ctx: Context) {
-        SDKLog.i(TAG, "goToAlive -> ")
-        val powerManager: PowerManager = ctx.applicationContext.getSystemService(POWER_SERVICE) as PowerManager
-        try {
-            powerManager.javaClass.getMethod("wakeUp", Long::class.javaPrimitiveType)
-                .invoke(powerManager, SystemClock.uptimeMillis())
-        } catch (e: Exception) {
-            e.cause?.printStackTrace()
-        }
-    }
-
-    /**
      * volume setting
      */
     fun setStreamVolume(ctx: Context, index: Int) {

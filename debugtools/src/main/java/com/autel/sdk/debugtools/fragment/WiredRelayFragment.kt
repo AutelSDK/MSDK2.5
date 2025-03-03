@@ -35,6 +35,15 @@ class WiredRelayFragment : AutelFragment() {
 
     private val listener = object : WiredRelayListener {
         override fun onConnectStateChanged(connected: Boolean, role: Role) {
+
+            //if disconnected, dismiss dialog
+            if ((!connected && isShowDialog.get())
+                //If the connection is true, and the current rc role is determined, hide the pop-up window
+                || (connected && role != Role.UNKNOWN && isShowDialog.get())) {
+                dialog?.dismiss()
+                isShowDialog.set(false)
+            }
+
             if (isConnected == connected && myRole == role) {
                 return
             }
@@ -47,12 +56,7 @@ class WiredRelayFragment : AutelFragment() {
             dealSystemState()
         }
 
-        override fun onNeedChooseRole(need: Boolean) {
-            if (!need) {
-                dialog?.dismiss()
-                isShowDialog.set(false)
-                return
-            }
+        override fun onNeedChooseRole() {
 
             if (isShowDialog.get()) {
                 return
@@ -61,7 +65,10 @@ class WiredRelayFragment : AutelFragment() {
             isShowDialog.set(true)
             dialog = RemoterRoleSettingDialog()
             dialog?.let { dlg ->
-                dlg.setOnConfirmListener { onChooseRole(it) }
+                dlg.setOnConfirmListener {
+                    val role = if (it) Role.PRIMARY else Role.RELAY
+                    WiredRelayManager.get().setSelfRole(role)
+                }
                 dlg.dialog?.setOnDismissListener {
                     isShowDialog.set(false)
                 }
@@ -75,20 +82,12 @@ class WiredRelayFragment : AutelFragment() {
         }
     }
 
-    private fun onChooseRole(isMaster: Boolean) {
-        WiredRelayManager.get().setSelfRole(if (isMaster) Role.PRIMARY else Role.RELAY)
-    }
-
     private fun dealSystemState() {
         activity?.let {
-            //if not master, go to turn off screen and set volume to 0
+            //if not master, keep silence
             if (myRole == Role.RELAY) {
-                //need DEVICE_POWER permission
-                SystemUtil.goToSleep(it)
                 SystemUtil.setStreamVolume(it, 0)
             } else {
-                //need WAKE_LOCK permission
-                SystemUtil.goToAlive(it)
                 SystemUtil.setStreamVolume(it, 10)
             }
         }
