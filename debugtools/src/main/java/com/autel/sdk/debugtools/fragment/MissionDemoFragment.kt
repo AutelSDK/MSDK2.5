@@ -19,6 +19,7 @@ import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.mission.bean.MissionWa
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.mission.bean.MissionWaypointStatusReportNtfyBean
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import com.autel.internal.mission.v2.MissionInfoJNI
+import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragmentMissionDemoBinding
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
