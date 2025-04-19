@@ -142,7 +142,7 @@ class MuiltCodecFragment : AutelFragment() {
         return when(lensType) {
             LensTypeEnum.WideAngle -> SDKConstants.getWideAngleChannelId()
             LensTypeEnum.NightVision -> SDKConstants.getNightVisionChannelId()
-            LensTypeEnum.TeleZoom -> SDKConstants.getNightVisionChannelId()
+            LensTypeEnum.TeleZoom -> SDKConstants.getTelZoomChancelId()
             LensTypeEnum.Thermal, LensTypeEnum.TeleThermal -> SDKConstants.getInfraredChannelId()
             LensTypeEnum.Zoom -> if (lensList?.contains(LensTypeEnum.WideAngle) == true) {
                 SDKConstants.getTelZoomChancelId()
