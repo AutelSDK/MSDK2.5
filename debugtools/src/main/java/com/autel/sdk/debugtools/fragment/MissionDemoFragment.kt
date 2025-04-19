@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import com.autel.drone.sdk.SDKConfig
 import com.autel.drone.sdk.libbase.error.IAutelCode
 import com.autel.drone.sdk.log.SDKLog
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
@@ -14,10 +15,13 @@ import com.autel.drone.sdk.vmodelx.interfaces.IMissionManager
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.mission.bean.MissionKmlGUIDBean
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.mission.bean.MissionWaypointGUIDBean
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.mission.bean.MissionWaypointStatusReportNtfyBean
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
+import com.autel.internal.mission.v2.MissionInfoJNI
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragmentMissionDemoBinding
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,19 +32,37 @@ import java.io.InputStream
 import java.io.OutputStream
 
 /**
+ * 任务示例
+ * 1. 本Demo仅用于演示目的。
+ * 2. 无论是KMZ格式还是AUTEL格式的任务文件，均不适合直接用于实际飞行。
+ * 3. 用户需要自行规划任务，并根据实际情况设置合适的飞行高度和高度模式
+ */
+
+/**
  * Mission Sample
- *
+ * Notes:
+ * 1. This Demo is for demonstration purposes only.
+ * 2. Neither KMZ nor AUTEL format mission files are suitable for actual flight operations.
+ * 3. Users need to plan their missions independently and set appropriate flight altitudes and height modes based on real-world conditions.
  */
 class MissionDemoFragment : AutelFragment() {
     companion object {
         private const val TAG = "MissionDemoFragment"
+
+        //1.7 old version drone only support autel mission format mission
+        private val Autel_Mission_Test_Data = " {\"Action_Default\":{\"Action_Time\":0,\"Action_Type\":0,\"Action_Yaw_Ref\":0.0,\"Gimbal_Pitch\":0.0,\"Gimbal_Roll\":0.0,\"Shoot_Dis_Interval\":2000.0,\"Shoot_Time_Interval\":0,\"Zoom_Rate\":0,\"reserved\":[0,0]},\"Altitude_type\":0,\"Finish_Action\":0,\"GUID\":1742009974,\"Gimbal_Pitch_Mapping\":0.0,\"Gride_Enable_Mapping\":0,\"Min_OA_Dist\":0,\"Mission_ID\":0,\"Mission_Length\":34954,\"Mission_Time\":8254,\"Mission_type\":0,\"Obstacle_Mode\":0,\"Overlap_Mapping\":0,\"POI_Num\":0,\"RC_Lost_Action\":2,\"VFOV_Mapping\":30.0,\"Waypoint_Num\":3,\"Waypoints\":[{\"Action_Num\":1,\"Actions\":[{\"Action_Time\":10,\"Action_Type\":2,\"Action_Yaw_Ref\":0.0,\"Gimbal_Pitch\":0.0,\"Gimbal_Roll\":0.0,\"Shoot_Dis_Interval\":5000.0,\"Shoot_Time_Interval\":2,\"Zoom_Rate\":0,\"reserved\":[0]}],\"Altitude_Priority\":0,\"Center_Altitude\":60000,\"Center_Latitude\":226165011,\"Center_Longitude\":1140171942,\"Cur_Altitude\":60000,\"Cur_Latitude\":226165011,\"Cur_Longitude\":1140171942,\"FP_Length\":16195,\"FP_Time\":3749,\"Heading_Mode\":1,\"POI\":{\"Altitude\":0,\"Latitude\":0,\"Longitude\":0},\"POI_Valid\":-1,\"Prev_Altitude\":60000,\"Prev_Latitude\":226179025,\"Prev_Longitude\":1140167436,\"Velocity_Ref\":5.0,\"Velocity_Ref_Next\":5.0,\"Waypoint_Type\":1,\"lineType\":0,\"reserved\":[3,0]},{\"Action_Num\":2,\"Actions\":[{\"Action_Time\":10,\"Action_Type\":11,\"Action_Yaw_Ref\":30.0,\"Gimbal_Pitch\":31.0,\"Gimbal_Roll\":0.0,\"Shoot_Dis_Interval\":5000.0,\"Shoot_Time_Interval\":2,\"Zoom_Rate\":0,\"reserved\":[0]},{\"Action_Time\":10,\"Action_Type\":2,\"Action_Yaw_Ref\":0.0,\"Gimbal_Pitch\":0.0,\"Gimbal_Roll\":0.0,\"Shoot_Dis_Interval\":5000.0,\"Shoot_Time_Interval\":2,\"Zoom_Rate\":0,\"reserved\":[0]}],\"Altitude_Priority\":0,\"Center_Altitude\":60000,\"Center_Latitude\":226180065,\"Center_Longitude\":1140180311,\"Cur_Altitude\":60000,\"Cur_Latitude\":226180065,\"Cur_Longitude\":1140180311,\"FP_Length\":18759,\"FP_Time\":4345,\"Heading_Mode\":1,\"POI\":{\"Altitude\":0,\"Latitude\":0,\"Longitude\":0},\"POI_Valid\":-1,\"Prev_Altitude\":60000,\"Prev_Latitude\":226165011,\"Prev_Longitude\":1140171942,\"Velocity_Ref\":5.0,\"Velocity_Ref_Next\":5.0,\"Waypoint_Type\":1,\"lineType\":0,\"reserved\":[3,0]},{\"Action_Num\":1,\"Actions\":[{\"Action_Time\":10,\"Action_Type\":2,\"Action_Yaw_Ref\":0.0,\"Gimbal_Pitch\":0.0,\"Gimbal_Roll\":0.0,\"Shoot_Dis_Interval\":5000.0,\"Shoot_Time_Interval\":2,\"Zoom_Rate\":0,\"reserved\":[0]}],\"Altitude_Priority\":0,\"Center_Altitude\":60000,\"Center_Latitude\":226180065,\"Center_Longitude\":1140180311,\"Cur_Altitude\":60000,\"Cur_Latitude\":226180065,\"Cur_Longitude\":1140180311,\"FP_Length\":0,\"FP_Time\":160,\"Heading_Mode\":1,\"POI\":{\"Altitude\":0,\"Latitude\":0,\"Longitude\":0},\"POI_Valid\":-1,\"Prev_Altitude\":60000,\"Prev_Latitude\":226180065,\"Prev_Longitude\":1140180311,\"Velocity_Ref\":5.0,\"Velocity_Ref_Next\":0.0,\"Waypoint_Type\":1,\"lineType\":0,\"reserved\":[3,0]}],\"Yaw_Ref_Mapping\":0.0,\"reserved\":[0,0]}\n"
     }
+
+    // use Kmz mission  or old autel mission , drone only > 1.7 version support kmz
+    private var useOldMission = SDKConfig.isSingle()
 
     private var binding: FragmentMissionDemoBinding? = null
     private val handler = Handler(Looper.getMainLooper())
     private var guid: Int? = null
 
     private val logList: MutableList<String> = arrayListOf()
+
+
 
     private val listener =
         object : CommonCallbacks.KeyListener<MissionWaypointStatusReportNtfyBean> {
@@ -63,9 +85,20 @@ class MissionDemoFragment : AutelFragment() {
         return binding?.root
     }
 
+    var missionTypeTxt =  if(useOldMission) "Aut mission" else "KMZ mission"
+
     private fun initView() {
+
+        binding?.btnMissionType?.text = missionTypeTxt
+
+        binding?.btnMissionType?.setOnClickListener{
+            useOldMission = !useOldMission
+            missionTypeTxt =  if(useOldMission) "Aut mission" else "KMZ mission"
+            binding?.btnMissionType?.text = missionTypeTxt
+        }
+
         binding?.btnUpload?.setOnClickListener {
-            updateLogInfo(">> btnUpload click")
+            updateLogInfo(">> btnUpload click： $missionTypeTxt")
             if (!checkDeviceReady()) {
                 return@setOnClickListener
             }
@@ -134,34 +167,62 @@ class MissionDemoFragment : AutelFragment() {
     private fun uploadMission(kmzPath: String) {
         enableOrDisableBtn(binding?.btnUpload, false)
         guid = (System.currentTimeMillis() / 1000).toInt()
-        getMissionManger()?.uploadKmzMissionFile(
-            kmzPath,
-            guid!!,
-            object : CommonCallbacks.CompletionCallbackWithProgressAndParam<Long> {
+        if(!useOldMission) {
+            getMissionManger()?.uploadKmzMissionFile(
+                kmzPath,
+                guid!!,
+                object : CommonCallbacks.CompletionCallbackWithProgressAndParam<Long> {
+                    override fun onFailure(error: IAutelCode, msg: String?) {
+                        updateLogInfo(
+                            "upload kmz mission fail:[code:${error.code};msg:$msg]",
+                            isError = true
+                        )
+                        enableOrDisableBtn(binding?.btnUpload, true)
+                    }
+
+                    override fun onProgressUpdate(progress: Double) {
+                        updateLogInfo("upload kmz mission progress:$progress&percent:${progress * 100}%")
+                    }
+
+                    override fun onSuccess(t: Long?) {
+                        updateLogInfo("upload kmz mission success  guid=$t")
+                        enableOrDisableBtn(binding?.btnUpload, true)
+                    }
+                })
+        } else {
+            val missionJni =  Gson().fromJson(Autel_Mission_Test_Data, MissionInfoJNI::class.java)
+            getMissionManger()?.uploadMissionFile(missionJni,object :CommonCallbacks.CompletionCallbackWithProgressAndParam<Long>{
+                override fun onProgressUpdate(progress: Double) {
+                    updateLogInfo("upload aut mission progress:$progress&percent:${progress * 100}%")
+                }
+
                 override fun onFailure(error: IAutelCode, msg: String?) {
                     updateLogInfo(
-                        "${getString(R.string.upload_mission_fail)}:[code:${error.code};msg:$msg]",
+                        "upload aut mission fail:[code:${error.code};msg:$msg]",
                         isError = true
                     )
                     enableOrDisableBtn(binding?.btnUpload, true)
                 }
 
-                override fun onProgressUpdate(progress: Double) {
-                    updateLogInfo("${getString(R.string.upload_mission_progress)}:$progress&percent:${progress * 100}%")
-                }
-
                 override fun onSuccess(t: Long?) {
-                    updateLogInfo("${getString(R.string.upload_mission_success)} guid=$t")
+                    t?.let { guid = it.toInt() }
+                    updateLogInfo("upload aut mission success  guid=$t")
                     enableOrDisableBtn(binding?.btnUpload, true)
                 }
             })
+        }
     }
 
     private fun startMission() {
         enableOrDisableBtn(binding?.btnStart, false)
         guid?.let {
+            val bean  = if(useOldMission){
+                MissionWaypointGUIDBean(guid= it)
+            } else {
+                MissionKmlGUIDBean(kmlMissionId = it)
+            }
             getMissionManger()?.startMission(
-                MissionKmlGUIDBean(it),
+                bean,
                 object : CommonCallbacks.CompletionCallbackWithParam<Void> {
                     override fun onFailure(error: IAutelCode, msg: String?) {
                         updateLogInfo(
@@ -196,15 +257,20 @@ class MissionDemoFragment : AutelFragment() {
                     updateLogInfo("pause mission success")
                     enableOrDisableBtn(binding?.btnPause, true)
                 }
-            }, isKml = true)
+            }, isKml = !useOldMission)
         }
     }
 
     private fun resumeMission() {
         enableOrDisableBtn(binding?.btnResume, false)
         guid?.let {
+            val bean  = if(useOldMission){
+                MissionWaypointGUIDBean(guid= it)
+            } else {
+                MissionKmlGUIDBean(kmlMissionId = it)
+            }
             getMissionManger()?.resumeMission(
-                MissionKmlGUIDBean(it),
+                bean,
                 object : CommonCallbacks.CompletionCallbackWithParam<Void> {
                     override fun onFailure(error: IAutelCode, msg: String?) {
                         updateLogInfo("resume mission fail:[code:${error.code};msg:$msg]",isError = true)
@@ -234,7 +300,7 @@ class MissionDemoFragment : AutelFragment() {
                     updateLogInfo("exit mission success")
                     enableOrDisableBtn(binding?.btnExit, true)
                 }
-            }, isKml = true)
+            }, isKml = !useOldMission)
         }
     }
 

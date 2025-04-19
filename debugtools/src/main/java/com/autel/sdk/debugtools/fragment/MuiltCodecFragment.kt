@@ -5,14 +5,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.LinearLayout
+import android.widget.Spinner
 import com.autel.drone.sdk.SDKConstants
 import com.autel.drone.sdk.libbase.error.IAutelCode
+import com.autel.drone.sdk.log.SDKLog
+import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.AirLinkKey
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.key.base.KeyTools
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.alink.enums.VideoTransMissionModeEnum
+import com.autel.drone.sdk.vmodelx.module.camera.bean.GimbalTypeEnum
+import com.autel.drone.sdk.vmodelx.module.camera.bean.LensTypeEnum
 import com.autel.player.MediaInfo
 import com.autel.player.player.AutelPlayerManager
 import com.autel.player.player.IVideoStreamListener
@@ -39,6 +46,36 @@ class MuiltCodecFragment : AutelFragment() {
     private var isFrameSaved = false
     private lateinit var uiBinding: FragMuiltStreamBinding
 
+    private var droneDevice: IAutelDroneDevice? = null
+    private var gimbalType: GimbalTypeEnum = GimbalTypeEnum.XL801
+    private var lensTypeLeft: LensTypeEnum = LensTypeEnum.Zoom
+    private var lensTypeRight: LensTypeEnum = LensTypeEnum.Thermal
+
+    private var changedFromUser = true
+
+    private val listener = object : IVideoStreamListener {
+        override fun onVideoSizeChanged(playerId: Int, width: Int, height: Int) {
+            isFrameSaved = false;
+        }
+
+        override fun onVideoInfoCallback(playerId: Int, x: Int, y: Int, w: Int, h: Int) {
+        }
+
+        override fun onFrameYuv(yuv: ByteBuffer?, mediaInfo: MediaInfo?) {
+            Log.i("MuiltCodecFragment", " yuv ${yuv?.capacity()} mediaInfo ${mediaInfo.toString()}")
+            if (!isFrameSaved && yuv != null && mediaInfo != null){
+                isFrameSaved = true;
+                if (mediaInfo.pixelFormat == MediaInfo.PixelFormat.PIX_FMT_NV12){
+                    saveYuvToFile(yuv, mediaInfo.width, mediaInfo.height, mediaInfo.stride, mediaInfo.sliceHeight)
+                }
+
+            }
+        }
+
+        override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,62 +86,143 @@ class MuiltCodecFragment : AutelFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        DeviceManager.getDeviceManager().getFirstDroneDevice()?.getKeyManager()?.setValue(
+        droneDevice = DeviceManager.getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getKeyManager()?.setValue(
             KeyTools.createKey(AirLinkKey.KeyALinkTransmissionMode),
             VideoTransMissionModeEnum.HIGH_QUALITY, object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
                 }
 
-                override fun onFailure(error: IAutelCode, msg: String?) {
+                override fun onFailure(code: IAutelCode, msg: String?) {
                     //ToastUtils.showToast(msg?:getString(R.string.debug_setup_failed))
                 }
             }
         )
 
-        codecView = createAutelCodecView()
-        uiBinding.layoutLeftView.addView(codecView)
+        gimbalType = droneDevice?.getGimbalDeviceType() ?: GimbalTypeEnum.XL801
+        val lensList = droneDevice?.getCameraAbilitySetManger()?.getLensList(gimbalType)
+        lensList?.firstOrNull()?.let {
+            lensTypeLeft = it
 
-        mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
+            codecView = createAutelCodecView()
+            uiBinding.layoutLeftView.addView(codecView)
+            mAutelPlayer = AutelPlayer(getChannelIdByLens(lensTypeLeft))
+            mAutelPlayer?.setVideoInfoListener(listener)
 
-        mAutelPlayer?.setVideoInfoListener(object : IVideoStreamListener {
-            override fun onVideoSizeChanged(playerId: Int, width: Int, height: Int) {
-                isFrameSaved = false;
+            mAutelPlayer!!.addVideoView(codecView)
+            AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer)
+            mAutelPlayer!!.startPlayer()
+        }
+
+        lensList?.getOrNull(1)?.let {
+            lensTypeRight = it
+
+            codecView2 = createAutelCodecView()
+            uiBinding.layoutRightView.addView(codecView2)
+            mAutelPlayer2 = AutelPlayer(getChannelIdByLens(lensTypeRight))
+            mAutelPlayer2!!.addVideoView(codecView2)
+            AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer2)
+            mAutelPlayer2!!.startPlayer()
+        }
+
+        val moreLens = lensList?.filter { it != lensTypeLeft && it != lensTypeRight }.orEmpty()
+        val leftLens: MutableList<LensTypeEnum> = mutableListOf()
+        leftLens.add(0, lensTypeLeft)
+        leftLens.addAll(moreLens)
+        initSpinnerOption(uiBinding.spinnerLens1, leftLens)
+
+        val rightLens: MutableList<LensTypeEnum> = mutableListOf()
+        rightLens.add(0, lensTypeRight)
+        rightLens.addAll(moreLens)
+        initSpinnerOption(uiBinding.spinnerLens2, rightLens)
+    }
+
+    private fun getChannelIdByLens(lensType: LensTypeEnum): Int {
+        val lensList = droneDevice?.getCameraAbilitySetManger()?.getLensList(gimbalType)
+        return when(lensType) {
+            LensTypeEnum.WideAngle -> SDKConstants.getWideAngleChannelId()
+            LensTypeEnum.NightVision -> SDKConstants.getNightVisionChannelId()
+            LensTypeEnum.TeleZoom -> SDKConstants.getTelZoomChancelId()
+            LensTypeEnum.Thermal, LensTypeEnum.TeleThermal -> SDKConstants.getInfraredChannelId()
+            LensTypeEnum.Zoom -> if (lensList?.contains(LensTypeEnum.WideAngle) == true) {
+                SDKConstants.getTelZoomChancelId()
+            } else {
+                SDKConstants.getZoomChancelId()
             }
+            else -> SDKConstants.getZoomChancelId()
+        }
+    }
 
-            override fun onVideoInfoCallback(playerId: Int, x: Int, y: Int, w: Int, h: Int) {
-            }
-
-            override fun onFrameYuv(yuv: ByteBuffer?, mediaInfo: MediaInfo?) {
-                Log.i("MuiltCodecFragment", " yuv ${yuv?.capacity()} mediaInfo ${mediaInfo.toString()}")
-                if (!isFrameSaved && yuv != null && mediaInfo != null){
-                    isFrameSaved = true;
-                    if (mediaInfo.pixelFormat == MediaInfo.PixelFormat.PIX_FMT_NV12){
-                        saveYuvToFile(yuv, mediaInfo.width, mediaInfo.height, mediaInfo.stride, mediaInfo.sliceHeight)
-                    }
-
+    private fun initSpinnerOption(spinner: Spinner, data: List<LensTypeEnum>) {
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, data.map { it.name })
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val lensName = adapter.getItem(position) as String
+                SDKLog.d("MuiltCodecFragment", "${spinner.id} onItemSelected: $position $lensName")
+                val lensList = droneDevice?.getCameraAbilitySetManger()?.getLensList(gimbalType)
+                val lensType = lensList?.firstOrNull { it.name == lensName } ?: return
+                when (spinner) {
+                    uiBinding.spinnerLens1 -> switchLeftVideo(lensType)
+                    uiBinding.spinnerLens2 -> switchRightVideo(lensType)
                 }
             }
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
 
+    private fun switchLeftVideo(lensType: LensTypeEnum) {
+        SDKLog.d("MuiltCodecFragment", "switchLeftVideo $lensTypeLeft -> $lensType")
+        if (lensTypeLeft == lensType) return
 
-            override fun onVideoErrorCallback(playerId: Int, type: Int, errorContent: String?) {
-            }
+        mAutelPlayer?.removeVideoView()
+        mAutelPlayer?.releasePlayer()
 
-        })
+        lensTypeLeft = lensType
+        mAutelPlayer = AutelPlayer(getChannelIdByLens(lensTypeLeft))
+        mAutelPlayer?.setVideoInfoListener(listener)
 
         mAutelPlayer!!.addVideoView(codecView)
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer)
-
-        codecView2 = createAutelCodecView2()
-        uiBinding.layoutRightView.addView(codecView2)
-
-        mAutelPlayer2 = AutelPlayer(SDKConstants.STREAM_CHANNEL_16115)
-        mAutelPlayer2!!.addVideoView(codecView2)
-        AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer2);
-
         mAutelPlayer!!.startPlayer()
-        mAutelPlayer2!!.startPlayer()
+
+        val lensList = droneDevice?.getCameraAbilitySetManger()?.getLensList(gimbalType)
+        val rightLens = lensList?.filter { it != lensTypeLeft && it != lensTypeRight }.orEmpty().toMutableList()
+        val position = uiBinding.spinnerLens2.selectedItemPosition
+        rightLens.add(position, lensTypeRight)
+        SDKLog.d("MuiltCodecFragment", "switchLeftVideo lensList: $rightLens")
+        notifySpinnerDataChanged(uiBinding.spinnerLens2, rightLens)
     }
 
+    private fun switchRightVideo(lensType: LensTypeEnum) {
+        SDKLog.d("MuiltCodecFragment", "switchRightVideo $lensTypeRight -> $lensType")
+        if (lensTypeRight == lensType) return
+
+        mAutelPlayer2?.removeVideoView()
+        mAutelPlayer2?.releasePlayer()
+
+        lensTypeRight = lensType
+        mAutelPlayer2 = AutelPlayer(getChannelIdByLens(lensTypeRight))
+        mAutelPlayer2!!.addVideoView(codecView2)
+        AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer2)
+        mAutelPlayer2!!.startPlayer()
+
+        val lensList = droneDevice?.getCameraAbilitySetManger()?.getLensList(gimbalType)
+        val leftLens = lensList?.filter { it != lensTypeLeft && it != lensTypeRight }.orEmpty().toMutableList()
+        val position = uiBinding.spinnerLens1.selectedItemPosition
+        leftLens.add(position, lensTypeLeft)
+        SDKLog.d("MuiltCodecFragment", "switchLeftVideo lensList: $leftLens")
+        notifySpinnerDataChanged(uiBinding.spinnerLens1, leftLens)
+    }
+
+    private fun notifySpinnerDataChanged(spinner: Spinner, data: List<LensTypeEnum>) {
+        val adapter: ArrayAdapter<String> = spinner.adapter as ArrayAdapter<String>
+        adapter.setNotifyOnChange(false)
+        adapter.clear()
+        adapter.addAll(data.map { it.name }.toList())
+        adapter.notifyDataSetChanged()
+    }
 
     fun removeNV12Padding(originalBuffer: ByteBuffer, width: Int, height: Int, stride: Int, sliceHeight:Int): ByteBuffer {
         val ySize = width * height
@@ -163,18 +281,6 @@ class MuiltCodecFragment : AutelFragment() {
      * create code view for autel media player 1
      */
     private fun createAutelCodecView(): AutelPlayerView? {
-        val codecView = AutelPlayerView(activity)
-        val params = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        codecView.layoutParams = params
-        return codecView
-    }
-
-    /**
-     * create code view for autel media player 2
-     */
-    private fun createAutelCodecView2(): AutelPlayerView? {
         val codecView = AutelPlayerView(activity)
         val params = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
