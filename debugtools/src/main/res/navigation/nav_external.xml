@@ -102,4 +102,36 @@
         android:id="@+id/lidar_rang_page"
         android:name="com.autel.sdk.debugtools.fragment.LidarRangingFragment"
         android:label="lidar_rang_page" />
+
+    <fragment
+        android:id="@+id/psdk_page"
+        android:name="com.autel.sdk.debugtools.fragment.PayloadCenterFragment"
+        android:label="psdk_page">
+        <action
+            android:id="@+id/action_open_payload_data_page"
+            app:destination="@id/psdk_data_page" />
+
+        <action
+            android:id="@+id/action_open_payload_widget_page"
+            app:destination="@id/psdk_widget_page" />
+
+        <action
+            android:id="@+id/action_open_payload_operate_page"
+            app:destination="@+id/psdk_operate_page" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/psdk_data_page"
+        android:name="com.autel.sdk.debugtools.fragment.PayloadDataFragment"
+        android:label="psdk_data_page" />
+
+    <fragment
+        android:id="@+id/psdk_widget_page"
+        android:name="com.autel.sdk.debugtools.fragment.PayloadWidgetFragment"
+        android:label="psdk_widget_page" />
+
+    <fragment
+        android:id="@+id/psdk_operate_page"
+        android:name="com.autel.sdk.debugtools.fragment.PayloadOperateFragment"
+        android:label="psdk_operate_page" />
 </navigation>

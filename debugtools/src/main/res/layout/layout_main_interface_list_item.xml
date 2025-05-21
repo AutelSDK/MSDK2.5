@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:background="@color/debug_gray">
+
+    <com.autel.sdk.debugtools.view.PayloadWidgetView
+        android:id="@+id/iv_widget_icon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="@dimen/debug_dimen_dp_15"
+        android:src="@mipmap/icon_button1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_widget_name"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/debug_dimen_dp_12"
+        android:gravity="center"
+        android:textColor="@color/debug_white"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_widget_icon"
+        app:layout_constraintStart_toEndOf="@+id/iv_widget_icon"
+        app:layout_constraintTop_toTopOf="@+id/iv_widget_icon"
+        tools:text="widgetName" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

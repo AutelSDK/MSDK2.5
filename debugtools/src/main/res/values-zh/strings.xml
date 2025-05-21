@@ -822,8 +822,6 @@
     <string name="rtk_narrow_fixed">窄巷固定解</string>
     <string name="rtk_inertial_nav">纯惯导定位解</string>
     <string name="rtk_inertial_single">惯导与单点定位组合解</string>
-     <string name="common_text_safety_distance">安全距离（%s-%s）</string>
-     <string name="common_text_alarm_distance">告警距离（%s-%s）</string>
     <string name="rtk_inertial_pseudorange">惯导与伪距差分组合解</string>
     <string name="rtk_inertial_float">惯导与载波相位差分浮点解组合解</string>
     <string name="rtk_inertial_fixed">惯导与载波相位差分固定解组合解</string>
@@ -863,11 +861,13 @@
 
     <string name="debug_perception_page">感知避障</string>
     <string name="debug_perception_page_description">感知避障调试</string>
-    <string name="common_text_avoidance_behavior">避障行为</string>
-    <string name="common_text_avoidance_behavior_desc">检测到飞行范围内有障碍物飞机将会启用刹停/绕行安全保护机制</string>
-    <string name="common_text_avoidance_behavior_close">关闭</string>
-    <string name="common_text_avoidance_behavior_brake">刹停</string>
-    <string name="common_text_avoidance_behavior_rounded">绕行</string>
+    <string name="debug_text_avoidance_behavior">避障行为</string>
+    <string name="debug_text_avoidance_behavior_desc">检测到飞行范围内有障碍物飞机将会启用刹停/绕行安全保护机制</string>
+    <string name="debug_text_avoidance_behavior_close">关闭</string>
+    <string name="debug_text_avoidance_behavior_brake">刹停</string>
+    <string name="debug_text_avoidance_behavior_rounded">绕行</string>
+    <string name="debug_text_safety_distance">安全距离（%s-%s）</string>
+    <string name="debug_text_alarm_distance">告警距离（%s-%s）</string>
 
     <string name="debug_preview_info_page">SDK运行信息</string>
     <string name="debug_preview_info_description">展示SDK运行信息</string>
@@ -931,4 +931,19 @@
     <!--Lidar Ranging-->
     <string name="debug_lidar_ranging_page">激光雷达测距</string>
     <string name="debug_lidar_ranging_description">演示如何使用激光雷达测距</string>
+
+    <!--psdk-->
+    <string name="debug_text_psdk_title">PSDK</string>
+    <string name="debug_psdk_usage_page">PSDK 示例</string>
+    <string name="debug_psdk_usage">演示如何使用PSDK</string>
+    <string name="debug_text_data_page">数据页面</string>
+    <string name="debug_text_data_page_desc">数据页面:将会向你展示向当前飞机设备指定负载发送信息的功能</string>
+    <string name="debug_text_widget_page">组件页面</string>
+    <string name="debug_text_widget_page_desc">组件页面:将会向你展示当前飞机设备指定位置负载信息以及Widget信息</string>
+    <string name="debug_send_data_to_payload_demo">%s PayloadManager Data Page</string>
+    <string name="debug_send_data_tips">请输入需要发送给PSDK的数据</string>
+    <string name="debug_text_operate_page">操作页面</string>
+    <string name="debug_text_operate_page_desc">操作页面:将会向你展示当前飞机设备指定位置负载和Widget信息，并完成基本的操作</string>
+    <string name="debug_payload_main_interface_title">主接口</string>
+    <string name="debug_payload_config_interface_title">配置接口</string>
 </resources>

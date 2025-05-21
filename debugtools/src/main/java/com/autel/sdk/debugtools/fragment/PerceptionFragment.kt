@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Handler.Callback
 import android.os.Looper
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,8 @@ import android.widget.RadioButton
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.autel.drone.sdk.libbase.error.IAutelCode
-import com.autel.drone.sdk.v2.enum.PerceptionDirection
+import com.autel.drone.sdk.v2.enums.PerceptionDirection
 import com.autel.drone.sdk.v2.interfaces.RadarInformationListener
-import com.autel.drone.sdk.v2.manager.PerceptionManager
 import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.device.IAutelDroneListener
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
@@ -24,7 +22,6 @@ import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.vision.bean.VisionRada
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.vision.enums.ObstacleAvoidActionEnum
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragPerceptionPageBinding
-import kotlin.math.max
 
 /**
  * Copyright: Autel Robotics
@@ -40,6 +37,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
     private var breakDistance: Float = 1.0f
 
     private var warningDistance: Float = 1.0f
+    private var droneDevice:IAutelDroneDevice? = null
 
     companion object {
         //设置告警距离
@@ -75,6 +73,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        droneDevice = SDKManager.get().getDeviceManager().getFirstDroneDevice()
         //默认单机情况
         isConnected = DeviceManager.getFirstDroneDevice()?.isConnected() ?: false
         SDKManager.get().getDeviceManager().addDroneListener(this)
@@ -98,7 +97,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
         //告警距离
         //modelx 默认告警距离范围为1-10，默认情况下为5
         binding.tvWarningDistanceTitle.text =
-            getString(R.string.common_text_alarm_distance, "1", "10")
+            getString(R.string.debug_text_alarm_distance, "1", "10")
         binding.tvWarningDistanceStart.text = "1"
         binding.tvWarningDistanceEnd.text = "10"
 
@@ -137,12 +136,14 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
         //雷达
         binding.btOpenRadar.setOnClickListener {
             updataLogInfo("click 开启雷达")
-            PerceptionManager.get().getRadarManager()?.addRadarInformationListener(this)
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getPerceptionManager()?.getRadarManager()?.addRadarInformationListener(this)
         }
 
         binding.btCloseRadar.setOnClickListener {
             updataLogInfo("click 关闭雷达")
-            PerceptionManager.get().getRadarManager()?.removeRadarInformationListener(this)
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getPerceptionManager()?.getRadarManager()?.removeRadarInformationListener(this)
         }
 
         binding.tvClearLog.setOnClickListener {
@@ -160,7 +161,8 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             return
         }
         updataLogInfo("setAllBreakDistance distance:$distance")
-        PerceptionManager.get().setObstacleAvoidanceBrakingDistance(distance = distance.toDouble(),
+        droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceBrakingDistance(distance = distance.toDouble(),
             direction = PerceptionDirection.UPWARD,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
@@ -173,7 +175,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
 
             })
 
-        PerceptionManager.get().setObstacleAvoidanceBrakingDistance(distance = distance.toDouble(),
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceBrakingDistance(distance = distance.toDouble(),
             direction = PerceptionDirection.DOWNWARD,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
@@ -186,7 +188,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
 
             })
 
-        PerceptionManager.get().setObstacleAvoidanceBrakingDistance(distance = distance.toDouble(),
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceBrakingDistance(distance = distance.toDouble(),
             direction = PerceptionDirection.HORIZONTAL,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
@@ -212,13 +214,13 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             binding.seekbarBreakDistance.valueTo = 7f
             binding.tvBreakDistanceEnd.text = "7"
             binding.tvBreakDistanceTitle.text =
-                getString(R.string.common_text_safety_distance, "1", "7")
+                getString(R.string.debug_text_safety_distance, "1", "7")
         } else {
             if (maxValue>1){
                 binding.seekbarBreakDistance.valueTo = maxValue.toFloat()
                 binding.tvBreakDistanceEnd.text = maxValue.toString()
                 binding.tvBreakDistanceTitle.text =
-                    getString(R.string.common_text_safety_distance, "1", maxValue.toString())
+                    getString(R.string.debug_text_safety_distance, "1", maxValue.toString())
                 if (maxValue <= breakDistance) {
                     binding.seekbarBreakDistance.value = maxValue.toFloat()
                 }
@@ -238,9 +240,8 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             updataLogInfo("getBreakDistance 飞机未连接")
             return
         }
-
-        PerceptionManager.get()
-            .getObstacleAvoidanceBrakingDistance(direction = PerceptionDirection.HORIZONTAL,
+        droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getPerceptionManager()?.getObstacleAvoidanceBrakingDistance(direction = PerceptionDirection.HORIZONTAL,
                 object : CommonCallbacks.CompletionCallbackWithParam<Double> {
                     override fun onSuccess(t: Double?) {
                         updataLogInfo("getBreakDistance success distance:$t")
@@ -263,9 +264,8 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             updataLogInfo("getWarningDistance 飞机未连接")
             return
         }
-
-        PerceptionManager.get()
-            .getObstacleAvoidanceWarningDistance(direction = PerceptionDirection.HORIZONTAL,
+        droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getPerceptionManager()?.getObstacleAvoidanceWarningDistance(direction = PerceptionDirection.HORIZONTAL,
                 object : CommonCallbacks.CompletionCallbackWithParam<Double> {
                     override fun onSuccess(t: Double?) {
                         updataLogInfo("getWarningDistance success, distance:$t")
@@ -291,7 +291,8 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             return
         }
         updataLogInfo("setAllWarningDistance distance:$distance")
-        PerceptionManager.get().setObstacleAvoidanceWarningDistance(distance = distance.toDouble(),
+        droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceWarningDistance(distance = distance.toDouble(),
             direction = PerceptionDirection.UPWARD,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
@@ -304,7 +305,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
 
             })
 
-        PerceptionManager.get().setObstacleAvoidanceWarningDistance(distance = distance.toDouble(),
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceWarningDistance(distance = distance.toDouble(),
             direction = PerceptionDirection.DOWNWARD,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
@@ -317,7 +318,7 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
 
             })
 
-        PerceptionManager.get().setObstacleAvoidanceWarningDistance(distance = distance.toDouble(),
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceWarningDistance(distance = distance.toDouble(),
             direction = PerceptionDirection.HORIZONTAL,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
@@ -339,9 +340,8 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             updataLogInfo("changeObstacleAvoidanceType 飞机未连接")
             return
         }
-
-        PerceptionManager.get()
-            .setObstacleAvoidanceType(type, object : CommonCallbacks.CompletionCallback {
+        droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getPerceptionManager()?.setObstacleAvoidanceType(type, object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
                     updataLogInfo("changeObstacleAvoidanceType[${type.name}] success")
                     updateObstacleAvoidanceType(type)
@@ -362,7 +362,8 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
             updataLogInfo("getObstacleAvoidanceType 飞机未连接")
             return
         }
-        PerceptionManager.get().getObstacleAvoidanceType(object :
+        droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+        droneDevice?.getPerceptionManager()?.getObstacleAvoidanceType(object :
             CommonCallbacks.CompletionCallbackWithParam<ObstacleAvoidActionEnum> {
             override fun onSuccess(t: ObstacleAvoidActionEnum?) {
                 updataLogInfo("getObstacleAvoidanceType onSuccess")
@@ -404,17 +405,20 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
         isConnected = connected
         updataLogInfo("onDroneChangedListener connected:$connected")
         if (isConnected) {
+            droneDevice= drone
             getObstacleAvoidanceType()
             getWarningDistance()
 
             getBreakDistance()
+        }else{
+            droneDevice = null
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         SDKManager.get().getDeviceManager().removeDroneListener(this)
-        PerceptionManager.get().getRadarManager()?.destroy()
+        droneDevice?.getPerceptionManager()?.destroy()
     }
 
     override fun onValueChange(

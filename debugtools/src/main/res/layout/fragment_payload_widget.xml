@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/debug_light_gray2">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_payload_title"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:textColor="@color/debug_white"
+                android:textSize="18sp"
+                tools:text="Demo" />
+
+            <!--负载信息-->
+            <TextView
+                android:id="@id/tv_payload_basic_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_payload_title"
+                android:padding="12dp"
+                android:text="Payload Basic Info"
+                android:textColor="@color/debug_white"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tv_payload_basic_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_payload_basic_info_title"
+                android:layout_margin="12dp"
+                android:background="@drawable/debug_shape_list_item_default_4"
+                android:padding="12dp"
+                android:text="Payload Basic Info"
+                android:textColor="@color/debug_white"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@id/tv_payload_widget_info_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_payload_basic_info"
+                android:padding="12dp"
+                android:text="Payload Widget Info"
+                android:textColor="@color/debug_white"
+                tools:ignore="HardcodedText" />
+
+            <TextView
+                android:id="@+id/tv_payload_widget_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_payload_widget_info_title"
+                android:layout_margin="12dp"
+                android:background="@drawable/debug_shape_list_item_default_4"
+                android:padding="12dp"
+                android:text="Payload Widget Info"
+                android:textColor="@color/debug_white"
+                tools:ignore="HardcodedText" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_main_widget"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/tv_payload_widget_info"
+                android:layout_margin="@dimen/debug_dimen_dp_12"
+                android:layout_marginTop="@dimen/debug_dimen_dp_15" />
+
+            <Button
+                android:id="@+id/btn_pull_widget_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rv_main_widget"
+                android:layout_marginStart="@dimen/debug_dimen_dp_12"
+                android:text="pull widget info"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

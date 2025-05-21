@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.autel.drone.sdk.log.SDKLog
-import com.autel.drone.sdk.v2.manager.LTEManager
 import com.autel.drone.sdk.vmodelx.SDKManager
 import com.autel.drone.sdk.vmodelx.device.IAutelDroneListener
 import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
@@ -25,6 +24,7 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     private val tag = "LteFragment"
 
     private val logList: MutableList<String> = arrayListOf()
+    private var droneDevice:IAutelDroneDevice? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,18 +38,19 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         SDKManager.get().getDeviceManager().addDroneListener(this)
+
         initViews()
     }
 
     private fun initViews() {
-        val isConnected = SDKManager.get().getDeviceManager().isConnected()
-        if (isConnected) {
-            updateLogInfo("drone has connected")
-            getLTEModuleEnable()
-        }
+
+
+        getLTEModuleEnable()
+
         binding.btnOpenLte.setOnClickListener {
             updateLogInfo(">> btnOpenLte click")
-            LTEManager.get().setLTEModuleEnable(isEnable = true,
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.setLTEModuleEnable(isEnable = true,
                 onSuccess = {
                     updateLogInfo("open lte module success")
                 }, onFailure = { code, msg ->
@@ -59,7 +60,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
 
         binding.btnSetDomainName.setOnClickListener {
             updateLogInfo(">> btnSetDomainName click")
-            LTEManager.get().setLTEAPNDomainName(domainName = "test domain name",
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.setLTEAPNDomainName(domainName = "test domain name",
                 onSuccess = {
                     updateLogInfo("set domain name success")
                     getLTEDomainName()
@@ -70,7 +72,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
 
         binding.btnSetUsername.setOnClickListener {
             updateLogInfo(">> btnSetUsername click")
-            LTEManager.get().setLTEAPNUserName(userName = "test userName",
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.setLTEAPNUserName(userName = "test userName",
                 onSuccess = {
                     updateLogInfo("set username success")
                     getLTEUserName()
@@ -80,7 +83,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
         }
         binding.btnSetPsd.setOnClickListener {
             updateLogInfo(">> btnSetPsd click")
-            LTEManager.get().setLTEAPNPsd(passWord = "test passWord",
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.setLTEAPNPsd(passWord = "test passWord",
                 onSuccess = {
                     updateLogInfo("set password success")
                     getLTEPassWord()
@@ -90,7 +94,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
         }
         binding.btnGetCcid.setOnClickListener {
             updateLogInfo(">> btnGetCcid click")
-            LTEManager.get().getLTECcid(onSuccess = { ccid ->
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.getLTECcid(onSuccess = { ccid ->
                 updateLogInfo("get ccid onSuccess:[$ccid]")
             }, onFailure = { code, msg ->
                 updateLogInfo("get ccid onFailure:[code:$code;msg:$msg]")
@@ -98,7 +103,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
         }
         binding.btnGetPhonenumber.setOnClickListener {
             updateLogInfo(">> btnGetPhonenumber click")
-            LTEManager.get().getLTEPhoneNumber(onSuccess = { phone ->
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.getLTEPhoneNumber(onSuccess = { phone ->
                 updateLogInfo("get phone onSuccess:[$phone]")
             }, onFailure = { code, msg ->
                 updateLogInfo("get phone onFailure:[code:$code;msg:$msg]")
@@ -114,7 +120,12 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     override fun onDroneChangedListener(connected: Boolean, drone: IAutelDroneDevice) {
         super.onDroneChangedListener(connected, drone)
         updateLogInfo("drone connect state:$connected")
+
         if (connected) {
+            droneDevice = drone
+            getLTEModuleEnable()
+        }else{
+            droneDevice = null
             getLTEModuleEnable()
         }
 
@@ -123,7 +134,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     private fun getLTEDomainName() {
         lifecycleScope.launch {
             delay(1500)
-            LTEManager.get().getLTEAPNDomainName(onSuccess = { domain ->
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.getLTEAPNDomainName(onSuccess = { domain ->
                 updateLogInfo("get lte domain name onSuccess:[$domain]")
             }, onFailure = { code, msg ->
                 updateLogInfo("get lte domain name failure:[code:$code;msg:$msg]")
@@ -134,7 +146,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     private fun getLTEUserName() {
         lifecycleScope.launch {
             delay(1500)
-            LTEManager.get().getLTEAPNUserName(onSuccess = { userName ->
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.getLTEAPNUserName(onSuccess = { userName ->
                 updateLogInfo("get lte userName onSuccess:[$userName]")
 
             }, onFailure = { code, msg ->
@@ -146,7 +159,8 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
     private fun getLTEPassWord() {
         lifecycleScope.launch {
             delay(1500)
-            LTEManager.get().getLTEAPNPsd(onSuccess = { passWord ->
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.getLTEAPNPsd(onSuccess = { passWord ->
                 updateLogInfo("get lte passWord onSuccess:[$passWord]")
 
             }, onFailure = { code, msg ->
@@ -157,13 +171,17 @@ class LteFragment : AutelFragment(), IAutelDroneListener {
 
     private fun getLTEModuleEnable() {
         lifecycleScope.launch {
-            delay(1000)
-            LTEManager.get().getLTEModuleEnable(onSuccess = { state ->
+            droneDevice = droneDevice?:SDKManager.get().getDeviceManager().getFirstDroneDevice()
+            droneDevice?.getLTEManager()?.getLTEModuleEnable(onSuccess = { state ->
                 updateButtonEnable(state)
                 binding.btnOpenLte.isEnabled = !state
                 updateLogInfo("get lte module enable state:$state")
             }, onFailure = { code, msg ->
                 updateLogInfo("get lte module enable state onFailure:[code:$code;msg:$msg]")
+                 lifecycleScope.launch {
+                     delay(3000)
+                     getLTEModuleEnable()
+                 }
             })
         }
 

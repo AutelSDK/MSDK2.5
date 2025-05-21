@@ -24,7 +24,7 @@
                 android:id="@+id/tv_obstacle_avoidance_type_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/common_text_avoidance_behavior"
+                android:text="@string/debug_text_avoidance_behavior"
                 android:textColor="@color/debug_color_white"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/debug_dimen_dp_6"
-                android:text="@string/common_text_avoidance_behavior_desc"
+                android:text="@string/debug_text_avoidance_behavior_desc"
                 android:textColor="@color/debug_gray_light"
                 android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_obstacle_avoidance_type_title" />
@@ -52,7 +52,7 @@
                     android:id="@+id/rb_obstacle_close"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/common_text_avoidance_behavior_close"
+                    android:text="@string/debug_text_avoidance_behavior_close"
                     android:textColor="@color/debug_gray_light" />
 
                 <RadioButton
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/debug_dimen_dp_6"
-                    android:text="@string/common_text_avoidance_behavior_brake"
+                    android:text="@string/debug_text_avoidance_behavior_brake"
                     android:textColor="@color/debug_gray_light" />
 
                 <RadioButton
@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/debug_dimen_dp_6"
-                    android:text="@string/common_text_avoidance_behavior_rounded"
+                    android:text="@string/debug_text_avoidance_behavior_rounded"
                     android:textColor="@color/debug_gray_light" />
 
             </RadioGroup>
@@ -88,7 +88,7 @@
                 android:id="@+id/tv_break_distance_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/common_text_safety_distance"
+                android:text="@string/debug_text_safety_distance"
                 android:textColor="@color/debug_color_white"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -162,7 +162,7 @@
                 android:id="@+id/tv_warning_distance_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/common_text_alarm_distance"
+                android:text="@string/debug_text_alarm_distance"
                 android:textColor="@color/debug_color_white"
                 android:textSize="16sp"
                 android:textStyle="bold"

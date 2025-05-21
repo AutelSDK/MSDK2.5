@@ -872,13 +872,13 @@
     <!--Perception-->
     <string name="debug_perception_page">Perception</string>
     <string name="debug_perception_page_description">Perception API Debug</string>
-    <string name="common_text_avoidance_behavior">Obstacle Avoidance System</string>
-    <string name="common_text_avoidance_behavior_desc">When obstacles are detected within the flight range, the aircraft will automatically apply the OA (Obstacle Avoidance) system to ensure safety.</string>
-    <string name="common_text_avoidance_behavior_close">Off</string>
-    <string name="common_text_avoidance_behavior_brake">Brake</string>
-    <string name="common_text_avoidance_behavior_rounded">Bypass</string>
-    <string name="common_text_safety_distance">Safety Distance (%s-%s)</string>
-    <string name="common_text_alarm_distance">Warning Distance (%s-%s)</string>
+    <string name="debug_text_avoidance_behavior">Obstacle Avoidance System</string>
+    <string name="debug_text_avoidance_behavior_desc">When obstacles are detected within the flight range, the aircraft will automatically apply the OA (Obstacle Avoidance) system to ensure safety.</string>
+    <string name="debug_text_avoidance_behavior_close">Off</string>
+    <string name="debug_text_avoidance_behavior_brake">Brake</string>
+    <string name="debug_text_avoidance_behavior_rounded">Bypass</string>
+    <string name="debug_text_safety_distance">Safety Distance (%s-%s)</string>
+    <string name="debug_text_alarm_distance">Warning Distance (%s-%s)</string>
 
     <string name="debug_preview_info_page">SDK Info.</string>
     <string name="debug_preview_info_description">Show current sdk information</string>
@@ -939,4 +939,20 @@
     <!--Lidar Ranging-->
     <string name="debug_lidar_ranging_page">Lidar Ranging</string>
     <string name="debug_lidar_ranging_description">Lidar ganging sample code</string>
+
+    <!--psdk-->
+    <string name="debug_text_psdk_title">PSDK</string>
+    <string name="debug_psdk_usage_page">PSDK Demo</string>
+    <string name="debug_psdk_usage">Demonstrate how to use PSDK related functions</string>
+    <string name="debug_text_data_page">data page</string>
+    <string name="debug_text_data_page_desc">Data page: It will show you the function of sending information to the specified load of the current aircraft equipment</string>
+    <string name="debug_text_widget_page">widget page</string>
+    <string name="debug_text_widget_page_desc">Widget page:It will display the current aircraft equipment specified location load information and Widget information to you.</string>
+    <string name="debug_send_data_to_payload_demo">%s PayloadManager Data Page</string>
+    <string name="debug_send_data_tips">Please input test data to PSDK</string>
+    <string name="debug_text_operate_page">operate page</string>
+    <string name="debug_text_operate_page_desc">Operate page:It will display the specified location load and widget information of the current aircraft equipment to you, and complete the basic operations</string>
+    <string name="debug_payload_main_interface_title">Main Interface</string>
+    <string name="debug_payload_config_interface_title">Config Interface</string>
+
 </resources>
