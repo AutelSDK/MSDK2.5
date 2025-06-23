@@ -1,5 +1,6 @@
 package com.autel.sdk.debugtools.fragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
@@ -8,7 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.payload.internal.WidgetFloatNtfyBean
 import com.autel.drone.sdk.vmodelx.module.payload.PayloadIndexType
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import com.autel.sdk.debugtools.PayloadDataVm
@@ -28,11 +33,16 @@ class PayloadDataFragment : AutelFragment() {
     private lateinit var binding: FragmentPayloadDataBinding
     private var payloadIndexType: PayloadIndexType = PayloadIndexType.UP
 
-    //list
+    //send data
     private var msgList: ArrayList<String> = arrayListOf()
     private lateinit var payloadAdapter: ArrayAdapter<String>
 
+    //float
+    private lateinit var floatInfoAdapter: FloatInfoAdapter
+    private var floatingInfoList: MutableList<WidgetFloatNtfyBean> = ArrayList()
+
     private val payloadDataVm: PayloadDataVm by viewModels()
+
     private val onKeyListener: View.OnKeyListener = object : View.OnKeyListener {
         override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_DOWN) {
@@ -60,12 +70,17 @@ class PayloadDataFragment : AutelFragment() {
         initView()
 
         initListener()
+
+        payloadDataVm.addFloatMessageListener()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initView() {
-        val typeName = arguments?.getString(PayloadCenterFragment.KEY_PAYLOAD_INDEX_TYPE)?:"unknown"
+        val typeName =
+            arguments?.getString(PayloadCenterFragment.KEY_PAYLOAD_INDEX_TYPE) ?: "unknown"
         payloadIndexType = PayloadIndexType.findType(typeName)
 
+        //与负载数据交互
         payloadAdapter =
             ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, msgList)
 
@@ -80,6 +95,20 @@ class PayloadDataFragment : AutelFragment() {
         binding.tvTitle.text = getString(
             R.string.debug_send_data_to_payload_demo, payloadIndexType.name.lowercase()
         )
+
+        //负载悬浮窗数据
+        floatInfoAdapter = FloatInfoAdapter(floatingInfoList)
+
+        binding.recyclerviewFloat.adapter = floatInfoAdapter
+        binding.recyclerviewFloat.layoutManager = LinearLayoutManager(requireContext())
+
+        payloadDataVm.floatingInfoLiveData.observe(viewLifecycleOwner) { list ->
+            if (floatingInfoList.isNotEmpty()) {
+                floatingInfoList.clear()
+            }
+            floatingInfoList.addAll(list)
+            floatInfoAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun initListener() {
@@ -99,6 +128,31 @@ class PayloadDataFragment : AutelFragment() {
             }
             payloadDataVm.sendMessageToPayloadSdk(byteArray)
             ToastUtils.showToast("send data:$sendText")
+        }
+    }
+
+
+    class FloatInfoAdapter(private val dataList: List<WidgetFloatNtfyBean>) :
+        RecyclerView.Adapter<FloatInfoAdapter.TextViewHolder>() {
+
+        // 创建ViewHolder，加载布局
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(android.R.layout.simple_list_item_1, parent, false)
+            return TextViewHolder(view)
+        }
+
+        // 绑定数据到ViewHolder
+        override fun onBindViewHolder(holder: TextViewHolder, position: Int) {
+            holder.textView.text = dataList[position].msg
+        }
+
+        // 返回数据总数
+        override fun getItemCount() = dataList.size
+
+        // ViewHolder类
+        inner class TextViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+            val textView: TextView = itemView.findViewById(android.R.id.text1)
         }
     }
 }

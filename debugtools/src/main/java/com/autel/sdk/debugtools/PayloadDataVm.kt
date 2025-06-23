@@ -3,8 +3,12 @@ package com.autel.sdk.debugtools
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.autel.drone.sdk.libbase.error.IAutelCode
+import com.autel.drone.sdk.log.SDKLog
+import com.autel.drone.sdk.vmodelx.interfaces.IAutelDroneDevice
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
 import com.autel.drone.sdk.vmodelx.manager.keyvalue.callback.CommonCallbacks
+import com.autel.drone.sdk.vmodelx.manager.keyvalue.value.payload.internal.WidgetFloatNtfyBean
+import com.autel.drone.sdk.vmodelx.module.payload.IPayloadFloatMsgListener
 import com.autel.drone.sdk.vmodelx.module.payload.PayloadCenter
 import com.autel.drone.sdk.vmodelx.module.payload.PayloadIndexType
 import com.autel.drone.sdk.vmodelx.module.payload.listener.PayloadDataListener
@@ -21,6 +25,10 @@ class PayloadDataVm : ViewModel() {
     private val payloadManagerMap = PayloadCenter.get().getPayloadManager()
     val receiveMessageLiveData = MutableLiveData<String>()
 
+    //悬浮窗实时信息
+    private val floatInfoDeque:ArrayDeque<WidgetFloatNtfyBean> = ArrayDeque()
+    val floatingInfoLiveData = MutableLiveData<MutableList<WidgetFloatNtfyBean>>()
+
     private val payloadDataListener = object : PayloadDataListener {
         override fun onDataFromPayloadUpdate(data: ByteArray) {
             var result = "接受时间：${getTimeNow()}"
@@ -35,8 +43,18 @@ class PayloadDataVm : ViewModel() {
 
     }
 
+    //悬浮窗
+    private val floatListener: IPayloadFloatMsgListener = object : IPayloadFloatMsgListener {
+        override fun onFloatMessage(device: IAutelDroneDevice, msgBean: WidgetFloatNtfyBean) {
+            floatInfoDeque.addFirst(msgBean)
+//            SDKLog.i("PayloadDataVm", "floatListener:${msgBean.toString()}")
+            floatingInfoLiveData.value = floatInfoDeque.toMutableList()
+        }
+    }
+
     fun sendMessageToPayloadSdk(data: ByteArray) {
-        payloadManagerMap[payloadIndexType]?.sendDataToPayload(null, data,
+        payloadManagerMap[payloadIndexType]?.sendDataToPayload(
+            null, data,
             object : CommonCallbacks.CompletionCallback {
                 override fun onSuccess() {
                     ToastUtils.showToast("send message to payload success")
@@ -49,14 +67,19 @@ class PayloadDataVm : ViewModel() {
             })
     }
 
-    fun initPayloadDataListener(payloadType: PayloadIndexType){
+    fun initPayloadDataListener(payloadType: PayloadIndexType) {
         this.payloadIndexType = payloadType
         payloadManagerMap[payloadType]?.addPayloadDataListener(payloadDataListener)
+    }
+
+    fun addFloatMessageListener() {
+        PayloadCenter.get().addFloatMessageListener(floatListener)
     }
 
     override fun onCleared() {
         super.onCleared()
         payloadManagerMap[payloadIndexType]?.removePayloadDataListener(payloadDataListener)
+        PayloadCenter.get().removeFloatMessageListener(floatListener)
     }
 
     private fun getTimeNow(): String {

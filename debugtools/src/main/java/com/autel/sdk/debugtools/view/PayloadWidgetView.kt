@@ -2,11 +2,8 @@ package com.autel.sdk.debugtools.view
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.View
-import android.view.View.OnClickListener
 import androidx.appcompat.widget.AppCompatImageView
 import com.autel.drone.sdk.vmodelx.module.payload.WidgetType
-import com.autel.drone.sdk.vmodelx.module.payload.data.bean.IconFilePath
 import com.autel.drone.sdk.vmodelx.module.payload.widget.PayloadWidget
 import com.autel.sdk.debugtools.R
 

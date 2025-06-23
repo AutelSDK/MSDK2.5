@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/debug_light_gray2">
@@ -17,36 +18,97 @@
         android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/et_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/debug_send_data_tips"
-        android:textColorHint="@color/debug_white_half"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
-
-    <Button
-        android:id="@+id/btn_send_data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/debug_send"
-        app:layout_constraintStart_toStartOf="@+id/et_input"
-        app:layout_constraintTop_toBottomOf="@+id/et_input" />
-
-    <ListView
-        android:id="@+id/message_listview"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_send_data"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="@dimen/debug_dimen_dp_15"
-        android:layout_marginEnd="16dp"
-        android:divider="@color/debug_white"
-        android:dividerHeight="0.5dp"
+        android:layout_margin="@dimen/debug_dimen_dp_6"
+        android:background="@drawable/debug_shape_list_item_default_4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_send_data" />
+        app:layout_constraintEnd_toStartOf="@+id/layout_float"
+        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+        <TextView
+            android:id="@+id/tv_send_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/debug_gray"
+            android:gravity="center"
+            android:padding="@dimen/debug_dimen_dp_12"
+            android:text="send data to payload"
+            android:textColor="@color/debug_white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:hint="@string/debug_send_data_tips"
+            android:textColorHint="@color/debug_white_half"
+            app:layout_constraintTop_toBottomOf="@+id/tv_send_title" />
+
+        <Button
+            android:id="@+id/btn_send_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/debug_send"
+            app:layout_constraintStart_toStartOf="@+id/et_input"
+            app:layout_constraintTop_toBottomOf="@+id/et_input" />
+
+        <ListView
+            android:id="@+id/message_listview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="@dimen/debug_dimen_dp_15"
+            android:layout_marginEnd="16dp"
+            android:divider="@color/debug_white"
+            android:dividerHeight="0.5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_send_data" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--悬浮窗内容-->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_float"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/debug_dimen_dp_6"
+        android:background="@drawable/debug_shape_list_item_default_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintStart_toEndOf="@+id/layout_send_data"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+        <TextView
+            android:id="@+id/tv_float_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/debug_gray"
+            android:gravity="center"
+            android:padding="@dimen/debug_dimen_dp_12"
+            android:text="payload floating msg info"
+            android:textColor="@color/debug_white"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="HardcodedText" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_float"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_float_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

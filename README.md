@@ -2,6 +2,12 @@
 
 ### Changelog
 
+### Version V2.5.100.16
+
+- **Release Notes**: This version is a trial version of Payload related features, mainly adding load related control and interactive functions.
+
+- **Notes**: Not officially released yet.
+
 ### Version V2.5.100
 
 - **Release Notes**: this version is a backward-compatible release, capable of supporting both 1.7 and 1.8 firmware simultaneously.
