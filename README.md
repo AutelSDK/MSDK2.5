@@ -7,6 +7,7 @@
 - **Release Notes**: this version is a backward-compatible release, capable of supporting both 1.7 and 1.8 firmware simultaneously.
   Additionally, it supports the Evo Lite Enterprise, Evo MAX, Evo Alpha, and others.
 - **Special Notes on Compatible Versions**:  [Refer to](https://developer.autelrobotics.cn/doc/v2.5/mobile_sdk/en/50/17)
+- **PSDK Sample**: View PSDK related example code for the branch [develop_payload](https://github.com/AutelSDK/MSDK2.5/tree/develop_payload)
 
 ### Version V2.5.100_no_webrtc
 

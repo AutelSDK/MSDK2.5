@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools.fragment
 
 import android.annotation.SuppressLint
@@ -17,10 +18,12 @@ import com.autel.sdk.debugtools.adapter.PayloadWidgetIconAdapter
 import com.autel.sdk.debugtools.adapter.PayloadWidgetItem
 import com.autel.sdk.debugtools.databinding.FragmentPayloadWidgetBinding
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/15
- */
+ *//*
+
 class PayloadWidgetFragment : AutelFragment() {
     private var payloadIndexType: PayloadIndexType = PayloadIndexType.UNKNOWN
 
@@ -199,4 +202,4 @@ class PayloadWidgetFragment : AutelFragment() {
         data.add(PayloadWidgetItem(selectDesc, mainSelectIconPath))
         data.add(PayloadWidgetItem(unselectDesc, mainUnSelectIconPath))
     }
-}
+}*/

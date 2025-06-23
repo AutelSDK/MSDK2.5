@@ -167,13 +167,13 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
                 )
             )
 
-            items.add(
-                FragmentPageInfoItem(
-                    R.id.psdk_page,
-                    R.string.debug_psdk_usage_page,
-                    R.string.debug_psdk_usage
-                )
-            )
+//            items.add(
+//                FragmentPageInfoItem(
+//                    R.id.psdk_page,
+//                    R.string.debug_psdk_usage_page,
+//                    R.string.debug_psdk_usage
+//                )
+//            )
         }
     }
 }

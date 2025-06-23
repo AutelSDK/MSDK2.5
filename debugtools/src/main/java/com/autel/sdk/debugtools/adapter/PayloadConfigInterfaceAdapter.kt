@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools.adapter
 
 import android.content.Context
@@ -32,11 +33,13 @@ import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.listener.OnSeekBarChangeListener
 
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/17
  * 配置界面
- */
+ *//*
+
 class PayloadConfigInterfaceAdapter(
     private val payloadIndexType: PayloadIndexType,
     private val onItemClick: ((position: Int, widget: PayloadWidget) -> Unit)? = null
@@ -219,9 +222,11 @@ class PayloadConfigInterfaceAdapter(
         return type
     }
 
-    /**
+    */
+/**
      * 获取单控飞机
-     */
+     *//*
+
     private fun getSingleControlDrone(): IAutelDroneDevice? {
         return if (DeviceManager.getDeviceManager().isSingleControl()) {
             DeviceManager.getMultiDeviceOperator().getControlledDroneList().firstOrNull()
@@ -461,4 +466,4 @@ class PayloadConfigInterfaceAdapter(
         }
 
     }
-}
+}*/

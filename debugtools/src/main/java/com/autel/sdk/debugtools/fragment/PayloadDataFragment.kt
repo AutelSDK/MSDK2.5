@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools.fragment
 
 import android.content.Context
@@ -15,10 +16,12 @@ import com.autel.sdk.debugtools.PayloadDataVm
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.databinding.FragmentPayloadDataBinding
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/15
- */
+ *//*
+
 class PayloadDataFragment : AutelFragment() {
 
     companion object {
@@ -101,4 +104,4 @@ class PayloadDataFragment : AutelFragment() {
             ToastUtils.showToast("send data:$sendText")
         }
     }
-}
+}*/

@@ -155,13 +155,16 @@ class VirtualStickFragment : AutelFragment() {
                 raiseOrDownValue, turnYawValue, forwardOrBackwardValue, leftOrRightValue)
         }
 
-        NestModelManager.getInstance().updateVirtualJoystick(
+        NestModelManager.getInstance().updateVirtualJoystickByAtService(
             raiseOrDownValue.toInt(),
             turnYawValue.toInt(),
             forwardOrBackwardValue.toInt(),
-            leftOrRightValue.toInt()
+            leftOrRightValue.toInt(),
+            0
         )
     }
+
+
 
     @SuppressLint("SetTextI18n", "DefaultLocale")
     private fun updateLocationInfo() {

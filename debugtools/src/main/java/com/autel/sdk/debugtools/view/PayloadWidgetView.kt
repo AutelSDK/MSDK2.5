@@ -5,9 +5,9 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.View.OnClickListener
 import androidx.appcompat.widget.AppCompatImageView
-import com.autel.drone.sdk.vmodelx.module.payload.WidgetType
-import com.autel.drone.sdk.vmodelx.module.payload.data.bean.IconFilePath
-import com.autel.drone.sdk.vmodelx.module.payload.widget.PayloadWidget
+//import com.autel.drone.sdk.vmodelx.module.payload.WidgetType
+//import com.autel.drone.sdk.vmodelx.module.payload.data.bean.IconFilePath
+//import com.autel.drone.sdk.vmodelx.module.payload.widget.PayloadWidget
 import com.autel.sdk.debugtools.R
 
 /**
@@ -16,7 +16,7 @@ import com.autel.sdk.debugtools.R
  */
 class PayloadWidgetView : AppCompatImageView {
 
-    private var payloadWidget: PayloadWidget? = null
+//    private var payloadWidget: PayloadWidget? = null
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -26,32 +26,32 @@ class PayloadWidgetView : AppCompatImageView {
         defStyleAttr
     )
 
-    fun setPayloadWidget(widget: PayloadWidget) {
-        payloadWidget = widget
-
-        val widgetType = WidgetType.findWidgetType(widget.widgetType)
-        val iconFilePath = widget.iconFilePath
-        if (iconFilePath == null || widgetType == WidgetType.LIST || !widget.subItemsList.isNullOrEmpty())
-            return
-
-        totalIconResource()
-    }
+//    fun setPayloadWidget(widget: PayloadWidget) {
+//        payloadWidget = widget
+//
+//        val widgetType = WidgetType.findWidgetType(widget.widgetType)
+//        val iconFilePath = widget.iconFilePath
+//        if (iconFilePath == null || widgetType == WidgetType.LIST || !widget.subItemsList.isNullOrEmpty())
+//            return
+//
+//        totalIconResource()
+//    }
 
     fun totalIconResource() {
-        val iconFilePath = payloadWidget?.iconFilePath
-        if (payloadWidget == null || iconFilePath == null)
-            return
-
-        val resId = if (isSelected) {
-            isSelected = false
-            findIconRes(iconFilePath.unSelectedIconPath)
-        } else {
-            isSelected = true
-            findIconRes(iconFilePath.selectedIconPath)
-        }
-
-        if (resId != -1)
-            setImageResource(resId)
+//        val iconFilePath = payloadWidget?.iconFilePath
+//        if (payloadWidget == null || iconFilePath == null)
+//            return
+//
+//        val resId = if (isSelected) {
+//            isSelected = false
+//            findIconRes(iconFilePath.unSelectedIconPath)
+//        } else {
+//            isSelected = true
+//            findIconRes(iconFilePath.selectedIconPath)
+//        }
+//
+//        if (resId != -1)
+//            setImageResource(resId)
     }
 
     private fun findIconRes(resStr: String?): Int {

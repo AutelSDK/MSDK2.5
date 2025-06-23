@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools
 
 import androidx.lifecycle.MutableLiveData
@@ -12,10 +13,12 @@ import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/15
- */
+ *//*
+
 class PayloadDataVm : ViewModel() {
     private var payloadIndexType: PayloadIndexType = PayloadIndexType.UNKNOWN
     private val payloadManagerMap = PayloadCenter.get().getPayloadManager()
@@ -63,4 +66,4 @@ class PayloadDataVm : ViewModel() {
         val currentTime = System.currentTimeMillis()
         return SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.CHINA).format(currentTime)
     }
-}
+}*/

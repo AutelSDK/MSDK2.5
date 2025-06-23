@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools
 
 import android.util.Log
@@ -18,10 +19,12 @@ import com.autel.drone.sdk.vmodelx.module.payload.listener.PayloadBasicInfoListe
 import com.autel.drone.sdk.vmodelx.module.payload.listener.PayloadWidgetInfoListener
 import com.autel.drone.sdk.vmodelx.utils.ToastUtils
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/15
- */
+ *//*
+
 class PayloadWidgetVM : ViewModel() {
     companion object {
         private const val TAG = "PayloadWidgetVM"
@@ -57,9 +60,11 @@ class PayloadWidgetVM : ViewModel() {
         }
 
 
-    /**
+    */
+/**
      * 设置飞机对应负载的Widget value
-     */
+     *//*
+
     fun setWidgetValue(
         value: WidgetValue,
         onSuccess: () -> Unit,
@@ -84,9 +89,11 @@ class PayloadWidgetVM : ViewModel() {
         }
     }
 
-    /**
+    */
+/**
      * 发送数据给对应负载
-     */
+     *//*
+
     fun sendDataToPayload(
         byteArray: ByteArray,
         onSuccess: () -> Unit,
@@ -119,18 +126,22 @@ class PayloadWidgetVM : ViewModel() {
 
     }
 
-    /**
+    */
+/**
      * 拉取widget数据
-     */
+     *//*
+
     fun pullWidgetInfo() {
         val manager = payloadManagerMap[payloadIndexType]
         Log.d(TAG, "pullWidgetInfo->manager:$manager")
         manager?.pullWidgetInfoFromPayload(getSingleControlDrone())
     }
 
-    /**
+    */
+/**
      * 获取单控飞机
-     */
+     *//*
+
     fun getSingleControlDrone(): IAutelDroneDevice? {
         return if (DeviceManager.getDeviceManager().isSingleControl()) {
             DeviceManager.getMultiDeviceOperator().getControlledDroneList().firstOrNull()
@@ -146,4 +157,4 @@ class PayloadWidgetVM : ViewModel() {
 
     }
 
-}
+}*/

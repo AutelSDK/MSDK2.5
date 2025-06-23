@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools.fragment
 
 import android.annotation.SuppressLint
@@ -26,11 +27,13 @@ import com.autel.sdk.debugtools.adapter.PayloadMainInterfaceAdapter
 import com.autel.sdk.debugtools.databinding.FragmentPayloadOperateBinding
 import com.autel.sdk.debugtools.fragment.PayloadDataFragment.Companion.MAX_LENGTH_OF_SEND_DATA
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/17
  * 单一位置负载Widget功能展示以及通信实例
- */
+ *//*
+
 class PayloadOperateFragment : AutelFragment() {
 
     private lateinit var binding: FragmentPayloadOperateBinding
@@ -164,4 +167,4 @@ class PayloadOperateFragment : AutelFragment() {
         })
 
     }
-}
+}*/

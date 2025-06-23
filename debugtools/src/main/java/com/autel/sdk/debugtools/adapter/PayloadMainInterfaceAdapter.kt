@@ -1,3 +1,4 @@
+/*
 package com.autel.sdk.debugtools.adapter
 
 import android.content.Context
@@ -12,11 +13,13 @@ import com.autel.drone.sdk.vmodelx.module.payload.widget.PayloadWidget
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.view.PayloadWidgetView
 
+*/
 /**
  * Copyright: Autel Robotics
  * @author R24033 on 2025/4/17
  * 主界面
- */
+ *//*
+
 class PayloadMainInterfaceAdapter(private val onItemClick: ((position: Int, widget: PayloadWidget) -> Unit)? = null) :
     ListAdapter<PayloadWidget, PayloadMainInterfaceAdapter.ViewHolder>(DiffCallback) {
 
@@ -58,4 +61,4 @@ class PayloadMainInterfaceAdapter(private val onItemClick: ((position: Int, widg
         }
 
     }
-}
+}*/
