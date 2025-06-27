@@ -48,7 +48,7 @@ configurations.all {
 dependencies {
 
     //implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    api(name: 'autel-msdk2-release_V2.5.100', ext: 'aar')
+    api(name: 'autel-msdk2-release_V2.5.100.20', ext: 'aar')
 
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -80,26 +80,5 @@ dependencies {
     //implementation rootProject.ext.deps.external.webrtc_sdk
     implementation rootProject.ext.deps.external.glide.glide
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.10")
-}
-
-def getVersionFromAarFileName(fileName) {
-    def matcher = (fileName =~ /.*_V([\d.]+)\.aar/)
-    if (matcher.matches()) {
-        def versionString = matcher[0][1]
-        return versionString.split('\\.').collect { it.toInteger() }
-    }
-    return []
-}
-
-def compareVersions(version1, version2) {
-    for (int i = 0; i < Math.max(version1.size(), version2.size()); i++) {
-        def v1 = i < version1.size() ? version1[i] : 0
-        def v2 = i < version2.size() ? version2[i] : 0
-
-        if (v1 != v2) {
-            return v1 <=> v2
-        }
-    }
-    return 0
 }
 
