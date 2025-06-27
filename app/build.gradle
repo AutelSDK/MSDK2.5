@@ -24,22 +24,35 @@ android {
             abiFilters 'arm64-v8a'
         }
 
-
         applicationId "com.autel.drone.demo"
     }
 
+    signingConfigs {
+
+        def filePath = '../sign/autel.jks'
+        def pwd = "com.autel.drone"
+        def alias = "autel"
+
+        release {
+            storeFile file(filePath)
+            storePassword pwd
+            keyAlias alias
+            keyPassword pwd
+        }
+
+    }
 
     buildTypes {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
 
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.release
+            signingConfig signingConfigs.release
         }
     }
 

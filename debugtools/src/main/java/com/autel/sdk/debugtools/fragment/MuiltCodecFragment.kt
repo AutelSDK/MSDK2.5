@@ -99,7 +99,7 @@ class MuiltCodecFragment : AutelFragment() {
 
         mAutelPlayer = AutelPlayer(SDKConstants.STREAM_CHANNEL_16110)
 
-        mAutelPlayer?.addVideoInfoListener(videoInfoListener)
+        mAutelPlayer?.setVideoInfoListener(videoInfoListener)
         mAutelPlayer!!.addVideoView(codecView)
 
         AutelPlayerManager.getInstance().addAutelPlayer(mAutelPlayer);
@@ -205,7 +205,6 @@ class MuiltCodecFragment : AutelFragment() {
         AutelPlayerManager.getInstance().endStreamChannel(SDKConstants.STREAM_CHANNEL_16115);
 
         if (mAutelPlayer != null) {
-            mAutelPlayer!!.removeVideoInfoListener(videoInfoListener)
             mAutelPlayer!!.removeVideoView()
             mAutelPlayer!!.releasePlayer()
         }

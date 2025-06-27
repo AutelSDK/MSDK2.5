@@ -155,11 +155,12 @@ class VirtualStickFragment : AutelFragment() {
                 raiseOrDownValue, turnYawValue, forwardOrBackwardValue, leftOrRightValue)
         }
 
-        NestModelManager.getInstance().updateVirtualJoystick(
+        NestModelManager.getInstance().updateVirtualJoystickNew(
             raiseOrDownValue.toInt(),
             turnYawValue.toInt(),
             forwardOrBackwardValue.toInt(),
-            leftOrRightValue.toInt()
+            leftOrRightValue.toInt(),
+            0
         )
     }
 
