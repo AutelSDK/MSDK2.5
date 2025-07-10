@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -42,7 +43,6 @@ import org.webrtc.VideoFrame
  */
 
 class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
-    private var TAG = "LiveStreamFragment"
 
     private var mAutelPlayer: AutelPlayer? = null
     private var codecView: AutelPlayerView? = null
@@ -65,9 +65,9 @@ class LiveStreamFragment : AutelFragment() , OnRenderFrameInfoListener {
 
     private var mPublisher = RTMPPublisherNew()
 
-    private val handler = Handler(Looper.getMainLooper()) {
+    override fun handleMessage(msg: Message): Boolean {
         getVideoFps()
-        true
+        return true
     }
 
     override fun onCreateView(

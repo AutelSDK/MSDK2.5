@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Handler.Callback
 import android.os.Looper
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,24 +46,23 @@ class PerceptionFragment : AutelFragment(), IAutelDroneListener,RadarInformation
         private const val MSG_UPDATE_WARNING_DISTANCE = 0x1001
     }
 
-    private val handler: Handler = Handler(Looper.getMainLooper(), Callback {
-        when (it.what) {
+    override fun handleMessage(msg: Message): Boolean {
+        when (msg.what) {
             MSG_UPDATE_WARNING_DISTANCE -> {
-                it.data.getInt("distance").let { distance ->
+                msg.data.getInt("distance").let { distance ->
                     setAllWarningDistance(distance)
                 }
 
             }
 
             MSG_UPDATE_BREAK_DISTANCE -> {
-                it.data.getInt("distance").let { distance ->
+                msg.data.getInt("distance").let { distance ->
                     setAllBreakDistance(distance)
                 }
-
             }
         }
-        true
-    })
+        return true
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

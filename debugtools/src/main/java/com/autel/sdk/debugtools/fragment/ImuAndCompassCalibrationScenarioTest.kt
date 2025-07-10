@@ -89,7 +89,7 @@ class ImuAndCompassCalibrationScenarioTest : Fragment() {
                 }
                 CalibrationEventEnum.NO_GPS -> {
                     calibrationFailed()
-                    preformAction.showToast(getString(R.string.debug_text_no_gps))
+                    preformAction.showToast2(getString(R.string.debug_text_no_gps))
                 }
                 CalibrationEventEnum.WRONG_DIRECTION -> {}
                 else -> {
@@ -190,7 +190,7 @@ class ImuAndCompassCalibrationScenarioTest : Fragment() {
             val isGpsValid =
                 FlightControlUploadMsgManager.warningStateData.getValue()?.isGPSValid ?: false
             if (!isGpsValid) {
-                preformAction.showToast(getString(R.string.debug_text_step_no_gps))
+                preformAction.showToast2(getString(R.string.debug_text_step_no_gps))
                 return
             }
             scenarioVM.startCalibration(CalibrationTypeEnum.COMPASS, {
@@ -248,7 +248,7 @@ class ImuAndCompassCalibrationScenarioTest : Fragment() {
     private fun calibrationFailed() {
         binding.startImuCalibration.visibility = View.VISIBLE
         isInCal = false
-        preformAction.showToast(getString(R.string.debug_common_text_calibration_faild))
+        preformAction.showToast2(getString(R.string.debug_common_text_calibration_faild))
         binding.calibrateInstruction.text = getString(R.string.debug_common_text_calibration_faild)
         binding.calibrateStateLayout.visibility = View.GONE
         binding.calibrateInstruction.background =
@@ -262,11 +262,11 @@ class ImuAndCompassCalibrationScenarioTest : Fragment() {
         binding.startImuCalibration.visibility = View.VISIBLE
         isInCal = false
         if (type == CalibrationTypeEnum.COMPASS) {
-            preformAction.showToast(getString(R.string.debug_compass_calibration_success))
+            preformAction.showToast2(getString(R.string.debug_compass_calibration_success))
             binding.calibrateInstruction.text =
                 getString(R.string.debug_compass_calibration_success)
         } else {
-            preformAction.showToast(getString(R.string.debug_imu_calibration_successful))
+            preformAction.showToast2(getString(R.string.debug_imu_calibration_successful))
             binding.calibrateInstruction.text = getString(R.string.debug_imu_calibration_successful)
         }
         binding.calibrateStateLayout.visibility = View.GONE
@@ -336,6 +336,6 @@ class ImuAndCompassCalibrationScenarioTest : Fragment() {
     interface PreformAction {
         fun resetStep()
         fun enableGimbal(): Boolean
-        fun showToast(msg: String)
+        fun showToast2(msg: String)
     }
 }

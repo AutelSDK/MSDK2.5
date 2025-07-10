@@ -33,15 +33,17 @@ class LidarRangingFragment : AutelFragment() {
     private var autelPlayer: AutelPlayer? = null
 
     private val lidarKey = KeyTools.createKey(GimbalKey.KeyLaserRangingSwitch)
-    private val handler = object : Handler(Looper.getMainLooper()) {
-        override fun handleMessage(msg: Message) {
-            when (msg.what) {
-                MSG_UPDATE_RESULT -> {
-                    updateResult()
-                }
+
+    override fun handleMessage(msg: Message): Boolean {
+        when (msg.what) {
+            MSG_UPDATE_RESULT -> {
+                updateResult()
+                return true
             }
         }
+        return false
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

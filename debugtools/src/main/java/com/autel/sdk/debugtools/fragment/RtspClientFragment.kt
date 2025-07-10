@@ -34,7 +34,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class RtspClientFragment : AutelFragment()  {
-    private var TAG = "RtspClientFragment"
     private var mAutelPlayer: AutelPlayer? = null
     private var codecView: AutelPlayerView? = null
 

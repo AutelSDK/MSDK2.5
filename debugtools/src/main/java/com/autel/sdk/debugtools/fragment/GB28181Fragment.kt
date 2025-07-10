@@ -39,7 +39,6 @@ import kotlin.collections.set
 
 
 class GB28181Fragment : AutelFragment()  {
-    var TAG = "GB28181Fragment"
     var contentView: View? = null
     lateinit var edit_url: TextView
     lateinit var btn_start: Button

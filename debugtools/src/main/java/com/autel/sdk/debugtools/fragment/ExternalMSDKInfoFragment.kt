@@ -39,7 +39,6 @@ import java.util.*
  */
 class ExternalMSDKInfoFragment : AutelFragment() {
 
-    private val TAG = "MSDKInfoFragment"
     private lateinit var binging: FragMainTitleBinding
 
     private lateinit var csvLanguageSetting: DebugSpinnerView

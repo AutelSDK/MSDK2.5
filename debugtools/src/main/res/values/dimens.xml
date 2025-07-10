@@ -6,6 +6,8 @@
     <dimen name="debug_dimen_dp_12">12dp</dimen>
     <dimen name="debug_dimen_dp_6">6dp</dimen>
     <dimen name="debug_dimen_dp_15">15dp</dimen>
+    <dimen name="debug_dimen_dp_24">24dp</dimen>
+    <dimen name="debug_dimen_dp_48">48dp</dimen>
     <dimen name="debug_dimen_dp_100">100dp</dimen>
     <dimen name="debug_dimen_dp_150">150dp</dimen>
     <dimen name="debug_dimen_dp_250">250dp</dimen>
@@ -19,4 +21,5 @@
     <!--上方雷达高度-->
     <dimen name="debug_variety_size_radar_panel_width">145dp</dimen><!--雷达片段宽度-->
     <dimen name="debug_variety_size_radar_panel_height">50dp</dimen><!--雷达片段宽度-->
+    <dimen name="debug_sp_15">15sp</dimen>
 </resources>

@@ -726,7 +726,7 @@ open class ScenerioTestFragment : AutelFragment(), IMTestClickListener,
         resultAdapter.clearData(ScenarioTestResultDataModel(getString(R.string.debug_result_will_be_displayed_here)))
     }
 
-    override fun showToast(msgRes: String) {
+    override fun showToast2(msgRes: String) {
         try {
             Toast.makeText(requireContext(), msgRes, Toast.LENGTH_SHORT).show()
         } catch (_: Exception) {

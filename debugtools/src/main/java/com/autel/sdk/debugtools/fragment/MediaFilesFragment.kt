@@ -57,8 +57,6 @@ class MediaFilesFragment : AutelFragment() {
     private var orderType = OrderTypeEnum.NORMAL
     private val pageCount = 30   //MAX 500
 
-    private val handler = Handler(Looper.getMainLooper())
-
     private val mediaList = mutableListOf<AutelMediaBean>()
 
     override fun onCreateView(

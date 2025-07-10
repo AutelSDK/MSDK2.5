@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,13 +41,13 @@ class VirtualStickFragment : AutelFragment() {
     private var currentLevel = 1
     private var binding: FragmentVirtualStickBinding? = null
 
-    private val handler = Handler(Looper.getMainLooper()) {
-        when (it.what) {
+    override fun handleMessage(msg: Message): Boolean {
+        when (msg.what) {
             1 -> {
                 updateLocationInfo()
             }
         }
-        return@Handler true
+        return true
     }
 
     /**

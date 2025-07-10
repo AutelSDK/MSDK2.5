@@ -57,7 +57,6 @@ class MissionDemoFragment : AutelFragment() {
     private var useOldMission = SDKConfig.isSingle()
 
     private var binding: FragmentMissionDemoBinding? = null
-    private val handler = Handler(Looper.getMainLooper())
     private var guid: Int? = null
 
     private val logList: MutableList<String> = arrayListOf()
