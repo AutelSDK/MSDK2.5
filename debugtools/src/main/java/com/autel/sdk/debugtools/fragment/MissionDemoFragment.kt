@@ -90,12 +90,6 @@ class MissionDemoFragment : AutelFragment() {
 
         binding?.btnMissionType?.text = missionTypeTxt
 
-        binding?.btnMissionType?.setOnClickListener{
-            useOldMission = !useOldMission
-            missionTypeTxt =  if(useOldMission) "Aut mission" else "KMZ mission"
-            binding?.btnMissionType?.text = missionTypeTxt
-        }
-
         binding?.btnUpload?.setOnClickListener {
             updateLogInfo(">> btnUpload click： $missionTypeTxt")
             if (!checkDeviceReady()) {
