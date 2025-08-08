@@ -19,7 +19,7 @@ import com.autel.sdk.debugtools.R
 open class AutelFragment : Fragment() {
 
     protected val TAG = this::class.java.simpleName
-    protected val handler by lazy {
+    protected open val handler by lazy {
         Handler(requireContext().mainLooper) {
             return@Handler handleMessage(it)
         }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string-array name="debug_index_arrays">
         <item>左边或主要</item>
         <item>右</item>
@@ -24,5 +24,11 @@
         <item>满杆量:（水平速度）前后10，左右10，（垂直速度）上升5，下降4，偏航角90度</item>
         <item>满杆量:（水平速度）前后15，左右10，（垂直速度）上升6，下降6，偏航角90度</item>
         <item>满杆量:（水平速度）前23后18，左右20，（垂直速度）上升6，下降6，偏航角120度</item>
+    </string-array>
+
+    <string-array name="debug_stick_mode" tools:ignore="InconsistentArrays">
+        <item>美国手</item>
+        <item>中国手</item>
+        <item>日本手</item>
     </string-array>
 </resources>

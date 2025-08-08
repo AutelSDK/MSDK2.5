@@ -34,9 +34,9 @@
     </string-array>
 
     <string-array name="debug_device_log_type" translatable="false">
-         <item>RC</item>
-         <item>DRONE</item>
-         <item>NEST</item>
+        <item>RC</item>
+        <item>DRONE</item>
+        <item>NEST</item>
         <item>APP</item>
     </string-array>
 
@@ -52,4 +52,11 @@
         <item>Full:(Horizontal Speed) forward and backward 15, left and right 10, (Vertical speed) up and down 6, yam angle 90°</item>
         <item>Full:(Horizontal Speed) forward 23 backward 18, left and right 20, (Vertical speed) up and down 6, yam angle 120°</item>
     </string-array>
+
+    <string-array name="debug_stick_mode">
+        <item>Mode USA</item>
+        <item>Mode China</item>
+        <item>Mode Japan</item>
+    </string-array>
+
 </resources>

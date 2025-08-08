@@ -946,4 +946,18 @@
     <string name="debug_text_operate_page_desc">操作页面:将会向你展示当前飞机设备指定位置负载和Widget信息，并完成基本的操作</string>
     <string name="debug_payload_main_interface_title">主接口</string>
     <string name="debug_payload_config_interface_title">配置接口</string>
+
+    <string name="debug_text_controller_model_up_title">上升</string>
+    <string name="debug_text_controller_model_turn_right_title">右转</string>
+    <string name="debug_text_controller_model_down_title">下降</string>
+    <string name="debug_text_controller_model_turn_left_title">左转</string>
+    <string name="debug_text_controller_model_forward_title">前进</string>
+    <string name="debug_text_controller_model_back_title">后退</string>
+    <string name="debug_text_controller_model_right_title">向右</string>
+    <string name="debug_text_controller_model_left_title">向左</string>
+    <string name="debug_text_controller_model_right_remote">右摇杆</string>
+    <string name="debug_text_controller_model_left_remote">左摇杆</string>
+    <string name="debug_stick_control_mode">摇杆模式:</string>
+    <string name="debug_gear_level">档位:</string>
+
 </resources>

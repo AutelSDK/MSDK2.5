@@ -9,9 +9,6 @@ class DemoApplicationEx : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //SDKManager.get().init(applicationContext, true)
-
-
         /**
          * MSDK init parameter setting
          */
@@ -19,7 +16,7 @@ class DemoApplicationEx : Application() {
             /**
              * debug mode
              */
-            debug = false
+            debug = true
 
             /**
              * app type: Reserved field, do not set

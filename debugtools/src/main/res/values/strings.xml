@@ -955,4 +955,18 @@
     <string name="debug_payload_main_interface_title">Main Interface</string>
     <string name="debug_payload_config_interface_title">Config Interface</string>
 
+
+    <string name="debug_text_controller_model_up_title">Ascend</string>
+    <string name="debug_text_controller_model_turn_right_title">Turn Right</string>
+    <string name="debug_text_controller_model_down_title">Descend</string>
+    <string name="debug_text_controller_model_turn_left_title">Turn Left</string>
+    <string name="debug_text_controller_model_forward_title">Forward</string>
+    <string name="debug_text_controller_model_back_title">Backward</string>
+    <string name="debug_text_controller_model_right_title">Move Right</string>
+    <string name="debug_text_controller_model_left_title">Move Left</string>
+    <string name="debug_text_controller_model_right_remote">Right Stick</string>
+    <string name="debug_text_controller_model_left_remote">Left Stick</string>
+    <string name="debug_stick_control_mode">Stick Mode:</string>
+    <string name="debug_gear_level">Gear Level:</string>
+
 </resources>
