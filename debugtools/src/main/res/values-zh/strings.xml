@@ -795,6 +795,9 @@
     <string name="debug_topology_device_description">拓扑设备接口调试</string>
     <string name="debug_item_virtual_stick_title">虚拟摇杆</string>
     <string name="debug_item__virtual_stick_description">演示如何使用虚拟摇杆</string>
+    <!--surround task-->
+    <string name="debug_surround_task_page">建模环绕</string>
+    <string name="debug_surround_task_page_description">演示如何进行建模环绕</string>
 
     <string name="device_id_ip">设备ID: %1$s IP: %2$s</string>
     <string name="device_type_biz_node_type">设备类型: %1$s 业务节点类型: %2$s</string>
@@ -847,6 +850,7 @@
     <string name="upload_mission">上传任务</string>
     <string name="start_mission">开始任务</string>
     <string name="pause_mission">暂停任务</string>
+    <string name="enter_mission">进入任务</string>
     <string name="resume_mission">恢复任务</string>
     <string name="exit_mission">退出任务</string>
     <string name="mission_demo">航线任务管理</string>

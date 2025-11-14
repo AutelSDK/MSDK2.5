@@ -167,6 +167,12 @@ class ExternalFragmentPageInfoFactory : IFragmentPageInfoFactory {
                 )
             )
 
+            items.add(
+                FragmentPageInfoItem(R.id.surround_task_page,
+                    R.string.debug_surround_task_page,
+                    R.string.debug_surround_task_page_description)
+            )
+
 //            items.add(
 //                FragmentPageInfoItem(
 //                    R.id.psdk_page,

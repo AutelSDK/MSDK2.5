@@ -859,6 +859,7 @@
     <string name="start_mission">start mission</string>
     <string name="pause_mission">pause mission</string>
     <string name="resume_mission">resume mission</string>
+    <string name="enter_mission">enter mission</string>
     <string name="exit_mission">exit mission</string>
     <string name="mission_demo">WaypointMissionManager Demo</string>
     <string name="mission_demo_description">Demonstration of Route Task Interface Process</string>
@@ -939,6 +940,10 @@
     <!--Lidar Ranging-->
     <string name="debug_lidar_ranging_page">Lidar Ranging</string>
     <string name="debug_lidar_ranging_description">Lidar ganging sample code</string>
+
+    <!--surround task-->
+    <string name="debug_surround_task_page">Surround Task Page</string>
+    <string name="debug_surround_task_page_description">Surround task sample code</string>
 
     <!--psdk-->
     <string name="debug_text_psdk_title">PSDK</string>

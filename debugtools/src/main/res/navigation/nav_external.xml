@@ -103,6 +103,12 @@
         android:name="com.autel.sdk.debugtools.fragment.LidarRangingFragment"
         android:label="lidar_rang_page" />
 
+    <!--建模环绕-->
+    <fragment
+        android:id="@+id/surround_task_page"
+        android:name="com.autel.sdk.debugtools.fragment.SurroundTaskFragment"
+        android:label="surround_task_page" />
+
     <fragment
         android:id="@+id/psdk_page"
         android:name="com.autel.sdk.debugtools.fragment.PayloadCenterFragment"
