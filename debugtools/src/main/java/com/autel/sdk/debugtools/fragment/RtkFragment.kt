@@ -1,5 +1,6 @@
 package com.autel.sdk.debugtools.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -84,6 +85,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
         SDKManager.get().getDeviceManager().removeDroneListener(this)
     }
 
+    @SuppressLint("SetTextI18n", "StringFormatMatches")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
@@ -120,6 +122,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
             tvRtkFix = when (it?.posType) {
                 RTKPositionTypeEnum.UNRECOGNIZED,
                 RTKPositionTypeEnum.UNKNOWN_POSITION -> getString(R.string.rtk_na)
+
                 RTKPositionTypeEnum.SINGLE_POINT -> getString(R.string.rtk_single)
                 RTKPositionTypeEnum.PSEUDORANGE,
                 RTKPositionTypeEnum.SBAS,
@@ -130,6 +133,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                 RTKPositionTypeEnum.INERTIAL_SINGLE,
                 RTKPositionTypeEnum.INERTIAL_CARRIER_FLOAT,
                 RTKPositionTypeEnum.INERTIAL_CARRIER -> getString(R.string.rtk_float)
+
                 else -> getString(R.string.rtk_fix)
             }
             when (it?.fixSta) {
@@ -140,9 +144,11 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                             RTKPositionTypeEnum.UNKNOWN_POSITION -> {
                                 "N/A"
                             }
+
                             RTKPositionTypeEnum.SINGLE_POINT -> {
                                 "SINGLE"
                             }
+
                             RTKPositionTypeEnum.PSEUDORANGE,
                             RTKPositionTypeEnum.SBAS,
                             RTKPositionTypeEnum.L1_FLOAT,
@@ -154,25 +160,38 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                             RTKPositionTypeEnum.INERTIAL_CARRIER -> {
                                 "FLOAT"
                             }
+
                             else -> {
                                 "FIX"
                             }
                         }
                     } ,duration ${(System.currentTimeMillis() - connectDroneTime) / 1000}s"
                 }
+
                 1 ->
                     if (connectDroneTime != 0L) {
-                        tvRtkFix = getString(R.string.rtk_time_used, (System.currentTimeMillis() - connectDroneTime) / 1000)
+                        tvRtkFix = getString(
+                            R.string.rtk_time_used,
+                            (System.currentTimeMillis() - connectDroneTime) / 1000
+                        )
                         connectDroneTime = 0L
                     }
+
                 else -> {
                     tvRtkFix = "N/A"
                 }
             }
-            binding.tvReportInfo.text = getString(R.string.rtk_status_info,
-                posTypeName, tvRtkFix, it?.posType?.value,
+            binding.tvReportInfo.text = getString(
+                R.string.rtk_status_info,
+                posTypeName,
+                tvRtkFix,
+                it?.posType?.value,
                 if (it?.fixSta == 1) getString(R.string.rtk_yes) else getString(R.string.rtk_no),
-                it?.gpsCnt, it?.beidouCnt ?: 0, it?.glonassCnt ?: 0, it?.galileoCnt ?: 0, it?.svCnt ?: 0,
+                it?.gpsCnt,
+                it?.beidouCnt ?: 0,
+                it?.glonassCnt ?: 0,
+                it?.galileoCnt ?: 0,
+                it?.svCnt ?: 0,
                 getFloatNoMoreThanTwoDigits((it?.lon ?: 0.0) / Math.pow(10.0, 7.0)),
                 getFloatNoMoreThanTwoDigits((it?.lat ?: 0.0) / Math.pow(10.0, 7.0)),
                 getFloatNoMoreThanTwoDigits((it?.hgt ?: 0.0) / Math.pow(10.0, 7.0)),
@@ -180,7 +199,8 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                 getFloatNoMoreThanTwoDigits(((it?.latSigma ?: 0.0f).toDouble())),
                 getFloatNoMoreThanTwoDigits(((it?.hgtSigma ?: 0.0f).toDouble()))
             ) + if (droneSystemStateLFNtfyBean != null) {
-                getString(R.string.rtk_mobile_network_status,
+                getString(
+                    R.string.rtk_mobile_network_status,
                     droneSystemStateLFNtfyBean?.lteStatus,
                     droneSystemStateLFNtfyBean?.ntripStatus,
                     droneSystemStateLFNtfyBean?.lteCardIsDetected,
@@ -205,7 +225,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
             DeviceManager.getFirstDroneDevice()?.getRtkManager()
                 ?.enableRTKLocation(p1, object : IRTKManager.ChangeRTKConfigCallback {
                     override fun onNeedAuterInfo(singnalEnum: RTKSignalEnum, isQianxun: Boolean) {
-                        autorNetRtk(singnalEnum, isQianxun)
+                        autorNetRtk(singnalEnum)
                     }
 
                     override fun onUpdateConfigSuccess() {
@@ -214,7 +234,8 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
 
                     override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
                         onUpdateConfigFininsh()
-                        binding.rtkReportInfo.text = appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
+                        binding.rtkReportInfo.text =
+                            appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
 
                     }
 
@@ -226,22 +247,28 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
         binding.rtkTvService.setSpinnerViewListener { position ->
             signalIndex = rtkSignalEnumsList[position]
             DeviceManager.getFirstDroneDevice()?.getRtkManager()
-                ?.switchRTKSignalEnum(RTKSignalEnum.findEnum(position + 1), object : IRTKManager.ChangeRTKConfigCallback {
-                    override fun onNeedAuterInfo(singnalEnum: RTKSignalEnum, isQianxun: Boolean) {
-                        autorNetRtk(singnalEnum, isQianxun)
-                    }
+                ?.switchRTKSignalEnum(
+                    RTKSignalEnum.findEnum(position + 1),
+                    object : IRTKManager.ChangeRTKConfigCallback {
+                        override fun onNeedAuterInfo(
+                            singnalEnum: RTKSignalEnum,
+                            isQianxun: Boolean
+                        ) {
+                            autorNetRtk(singnalEnum)
+                        }
 
-                    override fun onUpdateConfigSuccess() {
-                        onUpdateConfigFininsh()
-                    }
+                        override fun onUpdateConfigSuccess() {
+                            onUpdateConfigFininsh()
+                        }
 
-                    override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
-                        onUpdateConfigFininsh()
-                        binding.rtkReportInfo.text = appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
+                        override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
+                            onUpdateConfigFininsh()
+                            binding.rtkReportInfo.text =
+                                appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
 
-                    }
+                        }
 
-                })
+                    })
         }
 
         // 清除日志
@@ -253,7 +280,13 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
         binding.tvReAutor.setOnClickListener {
             RtkAuthorDialog(requireContext()).apply {
                 setTitle(getString(R.string.debug_setup_title))
-                setOnConfirmListener(listener = fun(uslHost: String, post: Int, userName: String, passWord: String, pointMount: String) {
+                setOnConfirmListener(listener = fun(
+                    uslHost: String,
+                    post: Int,
+                    userName: String,
+                    passWord: String,
+                    pointMount: String
+                ) {
                     this@RtkFragment.uslHost = uslHost
                     this@RtkFragment.post = post
                     this@RtkFragment.mAccount = userName
@@ -264,28 +297,42 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                     SDKStorage.setStringValue(SP_NTRIP_RTK_ACCOUNT, userName)
                     SDKStorage.setStringValue(SP_NTRIP_RTK_PWD, passWord)
                     SDKStorage.setStringValue(SP_NTRIP_RTK_MOUNT_POINT, pointMount)
-                    when (DeviceManager.getFirstDroneDevice()?.getRtkManager()?.rtkSignalEnum ?: RTKSignalEnum.NETWORK) {
+                    when (DeviceManager.getFirstDroneDevice()?.getRtkManager()?.rtkSignalEnum
+                        ?: RTKSignalEnum.NETWORK) {
                         RTKSignalEnum.NETWORK -> {
                             DeviceManager.getFirstDroneDevice()?.getRtkManager()
-                                ?.updateNetRtkType(binding.switchNetRtk.isChecked, uslHost, post, object : IRTKManager.ChangeRTKConfigCallback {
-                                    override fun onNeedAuterInfo(singnalEnum: RTKSignalEnum, isQianxun: Boolean) {
-                                        autorNetRtk(singnalEnum, isQianxun)
-                                    }
+                                ?.updateNetRtkType(
+                                    false,
+                                    uslHost,
+                                    post,
+                                    object : IRTKManager.ChangeRTKConfigCallback {
+                                        override fun onNeedAuterInfo(
+                                            singnalEnum: RTKSignalEnum,
+                                            isQianxun: Boolean
+                                        ) {
+                                            autorNetRtk(singnalEnum)
+                                        }
 
-                                    override fun onUpdateConfigSuccess() {
-                                        onUpdateConfigFininsh()
-                                    }
+                                        override fun onUpdateConfigSuccess() {
+                                            onUpdateConfigFininsh()
+                                        }
 
-                                    override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
-                                        onUpdateConfigFininsh()
-                                        binding.rtkReportInfo.text = appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
-                                    }
+                                        override fun onUpdateConfigFailure(
+                                            error: IAutelCode,
+                                            msg: String?
+                                        ) {
+                                            onUpdateConfigFininsh()
+                                            binding.rtkReportInfo.text =
+                                                appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
+                                        }
 
-                                })
+                                    })
                         }
+
                         RTKSignalEnum.MOBILE_NETWORK_SERVICES -> {
-                            autorNetRtk(RTKSignalEnum.MOBILE_NETWORK_SERVICES, false)
+                            autorNetRtk(RTKSignalEnum.MOBILE_NETWORK_SERVICES)
                         }
+
                         else -> {
 
                         }
@@ -333,32 +380,6 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
             )
         )
         binding.rtkTvService.dataList = rtkSignalEnumsList
-        /**
-         * 用户根据需要设置网络RTK类型，国内建议采用千寻SDK账号体系，否则网络RTK采用Ntrip方式实现
-         */
-        binding.switchNetRtk.setOnCheckedChangeListener { _, p1 ->
-            run {
-                SDKStorage.setStringValue(SP_NTRIP_RTK_HOST, uslHost)
-                SDKStorage.setIntValue(SP_NTRIP_RTK_PORT, post)
-                DeviceManager.getFirstDroneDevice()?.getRtkManager()
-                    ?.updateNetRtkType(p1, uslHost, post, object : IRTKManager.ChangeRTKConfigCallback {
-                        override fun onNeedAuterInfo(singnalEnum: RTKSignalEnum, isQianxun: Boolean) {
-                            autorNetRtk(singnalEnum, isQianxun)
-                        }
-
-                        override fun onUpdateConfigSuccess() {
-                            onUpdateConfigFininsh()
-                        }
-
-                        override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
-                            onUpdateConfigFininsh()
-                            binding.rtkReportInfo.text = appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
-
-                        }
-
-                    })
-            }
-        }
     }
 
     private fun iniRtkSingleMode() {
@@ -375,25 +396,33 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
             signalModeIndex = rtkSignalModeList[position]
             binding.rtkTvService.setDefaultText(signalModeIndex)
             DeviceManager.getFirstDroneDevice()?.getRtkManager()
-                ?.switchRTKSignalMode(RTKSignalModeEnum.findEnum(position), object : IRTKManager.ChangeRTKConfigCallback {
-                    override fun onNeedAuterInfo(singnalEnum: RTKSignalEnum, isQianxun: Boolean) {
-                        autorNetRtk(singnalEnum, isQianxun)
-                    }
+                ?.switchRTKSignalMode(
+                    RTKSignalModeEnum.findEnum(position),
+                    object : IRTKManager.ChangeRTKConfigCallback {
+                        override fun onNeedAuterInfo(
+                            singnalEnum: RTKSignalEnum,
+                            isQianxun: Boolean
+                        ) {
+                            autorNetRtk(singnalEnum)
+                        }
 
-                    override fun onUpdateConfigSuccess() {
-                        onUpdateConfigFininsh()
-                    }
+                        override fun onUpdateConfigSuccess() {
+                            onUpdateConfigFininsh()
+                        }
 
-                    override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
-                        onUpdateConfigFininsh()
-                        binding.rtkReportInfo.text = appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
+                        override fun onUpdateConfigFailure(error: IAutelCode, msg: String?) {
+                            onUpdateConfigFininsh()
+                            binding.rtkReportInfo.text =
+                                appendLogMessageRecord("\nonUpdateConfigFailure,error:$error,msg:$msg\n")
 
-                    }
+                        }
 
-                })
+                    })
         }
 
-        var rtkSignalModeEnum = DeviceManager.getFirstDroneDevice()?.getRtkManager()?.rtkSwitchModeEnum ?: RTKSignalModeEnum.ALL_SINGLE_MODE
+        var rtkSignalModeEnum =
+            DeviceManager.getFirstDroneDevice()?.getRtkManager()?.rtkSwitchModeEnum
+                ?: RTKSignalModeEnum.ALL_SINGLE_MODE
         signalModeIndex = rtkSignalModeList[rtkSignalModeEnum.value]
         binding.rtkTvService.setDefaultText(signalModeIndex)
 
@@ -412,12 +441,14 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
             SP_NTRIP_RTK_HOST,
             RTKConstans.NTRIP_RTK_HOST
         ).toString()
-        RTKConstans.NTRIP_RTK_PORT = SDKStorage.getIntValue(SP_NTRIP_RTK_PORT, RTKConstans.NTRIP_RTK_PORT)
+        RTKConstans.NTRIP_RTK_PORT =
+            SDKStorage.getIntValue(SP_NTRIP_RTK_PORT, RTKConstans.NTRIP_RTK_PORT)
         RTKConstans.NTRIP_RTK_ACCOUNT = SDKStorage.getStringValue(
             SP_NTRIP_RTK_ACCOUNT,
             RTKConstans.NTRIP_RTK_ACCOUNT
         ).toString()
-        RTKConstans.NTRIP_RTK_PWD = SDKStorage.getStringValue(SP_NTRIP_RTK_PWD, RTKConstans.NTRIP_RTK_PWD).toString()
+        RTKConstans.NTRIP_RTK_PWD =
+            SDKStorage.getStringValue(SP_NTRIP_RTK_PWD, RTKConstans.NTRIP_RTK_PWD).toString()
         RTKConstans.NTRIP_RTK_MOUNT_POINT = SDKStorage.getStringValue(
             SP_NTRIP_RTK_MOUNT_POINT,
             RTKConstans.NTRIP_RTK_MOUNT_POINT
@@ -436,62 +467,49 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
 
 
 
-        DeviceManager.getFirstDroneDevice()?.getKeyManager()?.listen(KeyTools.createKey(
-            CommonKey.KeyDroneSystemStatusLFNtfy
-        ), object : CommonCallbacks.KeyListener<DroneSystemStateLFNtfyBean> {
-            override fun onValueChange(oldValue: DroneSystemStateLFNtfyBean?, newValue: DroneSystemStateLFNtfyBean) {
-                this@RtkFragment.droneSystemStateLFNtfyBean = newValue
-            }
+        DeviceManager.getFirstDroneDevice()?.getKeyManager()?.listen(
+            KeyTools.createKey(
+                CommonKey.KeyDroneSystemStatusLFNtfy
+            ), object : CommonCallbacks.KeyListener<DroneSystemStateLFNtfyBean> {
+                override fun onValueChange(
+                    oldValue: DroneSystemStateLFNtfyBean?,
+                    newValue: DroneSystemStateLFNtfyBean
+                ) {
+                    this@RtkFragment.droneSystemStateLFNtfyBean = newValue
+                }
 
-        })
+            })
     }
 
 
     private fun autorNetRtk(
-        singnalEnum: RTKSignalEnum,
-        isQianxun: Boolean
+        singnalEnum: RTKSignalEnum
     ) {
         lifecycleScope.launch {
             when (singnalEnum) {
                 RTKSignalEnum.NETWORK -> {
-                    if (isQianxun) {
-                        DeviceManager.getFirstDroneDevice()?.getRtkManager()?.autherQianxunRtk(
-                            "D2k4942jg6br6c",
-                            "2498fac96aff70b6",
-                            "Evo2_RTK",
-                            "AU1660705691", object : IRTKManager.RTKAuthoCallback {
 
-                                override fun onRtkAuthorSuccess() {
-                                    binding.rtkReportInfo.text = appendLogMessageRecord("\nautherQianxunRtk:onSuccess\n")
-                                    Log.d(TAG, "autherQianxunRtk:onSuccess")
-                                }
+                    DeviceManager.getFirstDroneDevice()?.getRtkManager()?.autherNetRtk(
+                        mAccount,
+                        mPassWord,
+                        mMountPoint,// 该值使用AUTO或null,用户可以输入自己获取的挂载点，但不建议这样
+                        object : IRTKManager.RTKAuthoCallback {
 
-                                override fun onFailure(code: IAutelCode, msg: String?) {
-                                    binding.rtkReportInfo.text = appendLogMessageRecord("\nautherQianxunRtk:onFailure\n, code: $code ,msg :$msg")
-                                    Log.d(TAG, "autherQianxunRtk:onFailure ,code: $code ,msg :$msg")
-                                }
-
-                            })
-                    } else {
-                        DeviceManager.getFirstDroneDevice()?.getRtkManager()?.autherNetRtk(
-                            mAccount,
-                            mPassWord,
-                            mMountPoint,// 该值使用AUTO或null,用户可以输入自己获取的挂载点，但不建议这样
-                            object : IRTKManager.RTKAuthoCallback {
-
-                                override fun onRtkAuthorSuccess() {
-                                    binding.rtkReportInfo.text = appendLogMessageRecord("\nautherQianxunRtk:onSuccess\n")
-                                    Log.d(TAG, "autherQianxunRtk:onSuccess")
-                                }
+                            override fun onRtkAuthorSuccess() {
+                                binding.rtkReportInfo.text =
+                                    appendLogMessageRecord("\nautherNetRtk:onSuccess\n")
+                                Log.d(TAG, "autherNetRtk:onSuccess")
+                            }
 
 
-                                override fun onFailure(code: IAutelCode, msg: String?) {
-                                    binding.rtkReportInfo.text = appendLogMessageRecord("\nautherQianxunRtk:onFailure\n, code: $code ,msg :$msg")
-                                    Log.d(TAG, "autherNetRtk:onFailure, code: $code ,msg :$msg")
-                                }
-                            })
-                    }
+                            override fun onFailure(code: IAutelCode, msg: String?) {
+                                binding.rtkReportInfo.text =
+                                    appendLogMessageRecord("\nautherNetRtk:onFailure\n, code: $code ,msg :$msg")
+                                Log.d(TAG, "autherNetRtk:onFailure, code: $code ,msg :$msg")
+                            }
+                        })
                 }
+
                 RTKSignalEnum.MOBILE_NETWORK_SERVICES -> {
                     DeviceManager.getFirstDroneDevice()?.getRtkManager()?.autherMobileServiceRtk(
                         uslHost,
@@ -502,13 +520,15 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                         object : IRTKManager.RTKAuthoCallback {
 
                             override fun onRtkAuthorSuccess() {
-                                binding.rtkReportInfo.text = appendLogMessageRecord("\nautherQianxunRtk:onSuccess\n")
-                                Log.d(TAG, "autherQianxunRtk:onSuccess")
+                                binding.rtkReportInfo.text =
+                                    appendLogMessageRecord("\nautherMobileServiceRtk:onSuccess\n")
+                                Log.d(TAG, "autherMobileServiceRtk:onSuccess")
                             }
 
 
                             override fun onFailure(code: IAutelCode, msg: String?) {
-                                binding.rtkReportInfo.text = appendLogMessageRecord("\nautherQianxunRtk:onFailure\n, code: $code ,msg :$msg")
+                                binding.rtkReportInfo.text =
+                                    appendLogMessageRecord("\nautherMobileServiceRtk:onFailure\n, code: $code ,msg :$msg")
                                 Log.d(TAG, "autherNetRtk:onFailure, code: $code ,msg :$msg")
                             }
                         })
@@ -534,6 +554,7 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
                     RTKSignalEnum.SELF_NETWORK -> {
                         binding.nestRtkView.visibility = View.VISIBLE
                     }
+
                     else -> {
                         binding.nestRtkView.visibility = View.GONE
                     }
@@ -559,7 +580,8 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
     override fun onRtkUnConnected(rtkSignalEnum: RTKSignalEnum) {
         Log.d(TAG, "onRtkUnConnected")
         lifecycleScope.launch {
-            binding.rtkReportInfo.text = appendLogMessageRecord("\nonRtkUnConnected:${rtkSignalEnum.name}\n")
+            binding.rtkReportInfo.text =
+                appendLogMessageRecord("\nonRtkUnConnected:${rtkSignalEnum.name}\n")
             binding.rtkStatus.text = getString(R.string.rtk_unconnected)
         }
     }
@@ -584,7 +606,8 @@ class RtkFragment : AutelFragment(), IRTKManager.RTKReportInfoCallback,
     override fun onNestRtkReportInfo(nestRtkReportInfo: NestRtkStatusNotifyBean) {
         Log.d(TAG, "nestRtkReportInfo:$nestRtkReportInfo")
         lifecycleScope.launch {
-            binding.rtkNestReportInfo.text = appendLogNestMessageRecord(nestRtkReportInfo.toString())
+            binding.rtkNestReportInfo.text =
+                appendLogNestMessageRecord(nestRtkReportInfo.toString())
             scrollToBottom()
         }
     }
