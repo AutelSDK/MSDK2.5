@@ -2,7 +2,7 @@
 
 ### Changelog
 
-### Version V2.5.100
+### Version V2.5.100 
 
 - **Release Notes**: this version is a backward-compatible release, capable of supporting both 1.7 and 1.8 firmware simultaneously.
   Additionally, it supports the Evo Lite Enterprise, Evo MAX, Evo Alpha, and others.
