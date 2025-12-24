@@ -44,7 +44,7 @@ class DemoApplicationEx : Application() {
              * true : single mode , false: mesh mode
              * can auto config when sdk initialize, if not success ,you can manually config
              */
-            single = false
+            single = true
 
             /**
              * handle data storage by implementation of IAutelStorage

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.autel.drone.sdk.log.SDKLog
 import com.autel.drone.sdk.v2.bean.AutelDeviceStatus
 import com.autel.drone.sdk.v2.callback.AutelDeviceStatusChangeListener
-import com.autel.drone.sdk.v2.enum.WarningLevel
+import com.autel.drone.sdk.v2.enums.WarningLevel
 import com.autel.drone.sdk.vmodelx.manager.DeviceManager
 import com.autel.sdk.debugtools.R
 import com.autel.sdk.debugtools.beans.DeviceAlarm
